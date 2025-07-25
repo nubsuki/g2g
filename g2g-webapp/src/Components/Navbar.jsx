@@ -1,18 +1,14 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './Navbar.css'
 import { useAuth } from '../contexts/AuthContext'
 
-const Navbar = ({ onLoginClick, onProfileClick }) => {
+const Navbar = ({ onLoginClick }) => {
   const { currentUser, userProfile, logout } = useAuth();
 
   const handleLoginClick = (e) => {
     e.preventDefault();
     onLoginClick();
-  };
-
-  const handleProfileClick = (e) => {
-    e.preventDefault();
-    onProfileClick();
   };
 
   const handleLogout = async (e) => {
@@ -26,15 +22,14 @@ const Navbar = ({ onLoginClick, onProfileClick }) => {
 
   return (
     <header className='header'>
-      <a href='#' className='logo'>G2G</a>
+      <Link to="/" className='logo'>G2G</Link>
       <nav className='navbar'>
-        <a href='#'>Home</a>
-        <a href='#'>About</a>
+        <Link to="/">Home</Link>
         {currentUser ? (
           <>
-            <a href='#' onClick={handleProfileClick} className='username-link'>
+            <Link to="/profile" className='username-link'>
               {userProfile?.username || 'User'}
-            </a>
+            </Link>
             <a href='#' onClick={handleLogout}>Logout</a>
           </>
         ) : (

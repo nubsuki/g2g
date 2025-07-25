@@ -1,31 +1,32 @@
 import React from 'react'
-import './Profile.css'
 import { useAuth } from '../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
+import './ProfilePage.css'
 
-const Profile = ({ onClose }) => {
+const ProfilePage = () => {
   const { currentUser, userProfile, logout } = useAuth();
-
-  const handleBackdropClick = (e) => {
-    if (e.target.className === 'profile-backdrop') {
-      onClose();
-    }
-  };
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logout();
-      onClose(); // Close profile modal after logout
+      navigate('/'); // Redirect to home after logout
     } catch (error) {
       console.log('Failed to logout:', error);
     }
   };
 
+  // Redirect if not logged in
+  if (!currentUser) {
+    navigate('/');
+    return null;
+  }
+
   return (
-    <div className='profile-backdrop' onClick={handleBackdropClick}>
-      <div className='profile-wrapper'>
+    <div className='profile-page'>
+      <div className='profile-container'>
         <div className='profile-header'>
-          <h2>User Profile</h2>
-          <button className='close-btn' onClick={onClose}>×</button>
+          <h1>User Profile</h1>
         </div>
         
         <div className='profile-content'>
@@ -38,6 +39,11 @@ const Profile = ({ onClose }) => {
             <div className='info-item'>
               <label>Email:</label>
               <span>{currentUser?.email}</span>
+            </div>
+            
+            <div className='info-item'>
+              <label>Role:</label>
+              <span>{userProfile?.role || 'user'}</span>
             </div>
             
             <div className='info-item'>
@@ -63,4 +69,4 @@ const Profile = ({ onClose }) => {
   )
 }
 
-export default Profile 
+export default ProfilePage 
