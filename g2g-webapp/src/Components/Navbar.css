@@ -20,23 +20,6 @@
     gap: 2px;
 }
 
-.logo img {
-    height: 40px;
-    width: auto;
-    display: block;
-    object-fit: cover;
-    border-radius: 15%;
-    
-}
-@keyframes spin {
-    from {
-        transform: rotatey(0deg);
-    }
-    to {
-        transform: rotatey(360deg);
-    }
-}
-
 .navbar a{
     position: relative;
     font-size: 18px;
