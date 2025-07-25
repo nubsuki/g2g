@@ -40,3 +40,17 @@
 .navbar a:hover::before{
     width: 100%;
 }
+
+.username-link {
+  font-weight: bold;
+  text-decoration: none;
+  color: inherit;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.username-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}

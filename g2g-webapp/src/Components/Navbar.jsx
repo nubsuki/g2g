@@ -1,11 +1,27 @@
 import React from 'react'
 import './Navbar.css'
-import g2gLogo from '../assets/logo.png'
+import { useAuth } from '../contexts/AuthContext'
 
-const Navbar = ({ onLoginClick }) => {
+const Navbar = ({ onLoginClick, onProfileClick }) => {
+  const { currentUser, userProfile, logout } = useAuth();
+
   const handleLoginClick = (e) => {
     e.preventDefault();
     onLoginClick();
+  };
+
+  const handleProfileClick = (e) => {
+    e.preventDefault();
+    onProfileClick();
+  };
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await logout();
+    } catch (error) {
+      console.log('Failed to logout:', error);
+    }
   };
 
   return (
@@ -14,7 +30,16 @@ const Navbar = ({ onLoginClick }) => {
       <nav className='navbar'>
         <a href='#'>Home</a>
         <a href='#'>About</a>
-        <a href='#' onClick={handleLoginClick}>Login</a>
+        {currentUser ? (
+          <>
+            <a href='#' onClick={handleProfileClick} className='username-link'>
+              {userProfile?.username || 'User'}
+            </a>
+            <a href='#' onClick={handleLogout}>Logout</a>
+          </>
+        ) : (
+          <a href='#' onClick={handleLoginClick}>Login</a>
+        )}
       </nav>
     </header>
   )
