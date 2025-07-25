@@ -4,7 +4,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, query, collection, where, getDocs } from 'firebase/firestore';
 
@@ -94,6 +95,11 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
+  // Password reset function
+  function resetPassword(email) {
+    return sendPasswordResetEmail(auth, email);
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
@@ -118,6 +124,7 @@ export function AuthProvider({ children }) {
     login,
     signup,
     logout,
+    resetPassword,
     createUserProfile,
     getUserProfile,
     checkUsernameExists

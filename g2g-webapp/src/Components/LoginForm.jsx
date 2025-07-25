@@ -1,26 +1,48 @@
 import React, { useState } from 'react'
 import './LoginForm.css'
-import { FaUserAlt, FaLock, FaEdit, FaTimes } from "react-icons/fa";
+import { FaUserAlt, FaLock, FaEdit, FaTimes, FaCheck, FaArrowLeft } from "react-icons/fa";
 import { useAuth } from '../contexts/AuthContext';
 
 const LoginForm = ({ onClose }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { login, signup } = useAuth();
+  const { login, signup, resetPassword } = useAuth();
 
   const toggleForm = (e) => {
     e.preventDefault();
     setIsLogin(!isLogin);
     setError('');
+    setSuccessMessage('');
+    setIsForgotPassword(false);
     // Clear fields when switching forms
     setEmail('');
     setPassword('');
     setUsername('');
+  };
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    if (!email) {
+      setError('Please enter your email first');
+      return;
+    }
+    setIsForgotPassword(true);
+    setError('');
+    setSuccessMessage('');
+  };
+
+  const handleBackToLogin = (e) => {
+    e.preventDefault();
+    setIsForgotPassword(false);
+    setError('');
+    setSuccessMessage('');
   };
 
   const handleBackdropClick = (e) => {
@@ -32,6 +54,21 @@ const LoginForm = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Handle forgot password submission
+    if (isForgotPassword) {
+      try {
+        setError('');
+        setLoading(true);
+        await resetPassword(email);
+        setSuccessMessage('Password reset email sent! Check your inbox.');
+      } catch (error) {
+        setError('Failed to send reset email. Please check your email address.');
+      }
+      setLoading(false);
+      return;
+    }
+
+    // Regular login/signup validation
     if (password.length < 6) {
       return setError('Password must be at least 6 characters');
     }
@@ -63,7 +100,38 @@ const LoginForm = ({ onClose }) => {
   return (
     <div className='backdrop' onClick={handleBackdropClick}>
       <div className='wrapper'>
-        {isLogin ? (
+        {isForgotPassword ? (
+          // Forgot Password Form
+          <form onSubmit={handleSubmit}>
+            <div>
+              <h1>Reset Password</h1>
+              <div className='input-box'>
+                <input 
+                  type="email" 
+                  placeholder='Email' 
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <FaUserAlt className='icon'/>
+              </div>
+              
+              {error && <div className="error"><FaTimes /> {error}</div>}
+              {successMessage && <div className="success"><FaCheck /> {successMessage}</div>}
+              
+              <button disabled={loading} type="submit" className='btn'>
+                {loading ? 'Sending...' : 'Send Reset Email'}
+              </button>
+              
+              <div className='back-to-login'>
+                <a href="#" onClick={handleBackToLogin}>
+                  <FaArrowLeft /> Back to Login
+                </a>
+              </div>
+            </div>
+          </form>
+        ) : isLogin ? (
+          // Login Form
           <form onSubmit={handleSubmit}>
             <div>
               <h1>Login</h1>
@@ -89,9 +157,9 @@ const LoginForm = ({ onClose }) => {
               </div>
               <div className='remember-forgot'>
                 <label><input type="checkbox"/> Remember me</label>
-                <a href="#">Forgot password?</a>
+                <a href="#" onClick={handleForgotPassword}>Forgot password?</a>
               </div>
-              {error && <div className="error"><FaTimes />{error}</div>}
+              {error && <div className="error"><FaTimes /> {error}</div>}
               <button disabled={loading} type="submit" className='btn'>
                 {loading ? 'Loading...' : 'Login'}
               </button>
@@ -101,6 +169,7 @@ const LoginForm = ({ onClose }) => {
             </div>
           </form>
         ) : (
+          // Register Form
           <form onSubmit={handleSubmit}>
             <div>
               <h1>Register</h1>
@@ -134,7 +203,7 @@ const LoginForm = ({ onClose }) => {
                 />
                 <FaLock className='icon'/>
               </div>
-              {error && <div className="error"><FaTimes/>{error}</div>}
+              {error && <div className="error"><FaTimes/> {error}</div>}
               <button disabled={loading} type="submit" className='btn'>
                 {loading ? 'Loading...' : 'Register'}
               </button>
