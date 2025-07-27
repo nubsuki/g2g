@@ -3,32 +3,42 @@ import { useAuth } from "../contexts/AuthContext";
 import Loading from "../Components/Loading";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
-import { doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  getDocs,
+} from "firebase/firestore";
 import "./ProfilePage.css";
 
 const ProfilePage = () => {
   const { currentUser, userProfile, logout } = useAuth();
   const navigate = useNavigate();
 
-  // State for tab navigation
+  // Tab navigation state
   const [activeTab, setActiveTab] = useState("profile");
 
-  // State for benchmarker status
+  // Benchmarker status and application state
   const [isBenchmarker, setIsBenchmarker] = useState(false);
   const [applyingBenchmarker, setApplyingBenchmarker] = useState(false);
 
-  // State for games list and filtering
+  // Games autocomplete data and state
   const [gamesList, setGamesList] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
   const [showGameDropdown, setShowGameDropdown] = useState(false);
 
-  // State for benchmark form autocomplete
+  // Benchmark form autocomplete states
   const [filteredBenchmarkCpus, setFilteredBenchmarkCpus] = useState([]);
   const [filteredBenchmarkGpus, setFilteredBenchmarkGpus] = useState([]);
-  const [showBenchmarkCpuDropdown, setShowBenchmarkCpuDropdown] = useState(false);
-  const [showBenchmarkGpuDropdown, setShowBenchmarkGpuDropdown] = useState(false);
+  const [showBenchmarkCpuDropdown, setShowBenchmarkCpuDropdown] =
+    useState(false);
+  const [showBenchmarkGpuDropdown, setShowBenchmarkGpuDropdown] =
+    useState(false);
 
-  // State for benchmark data form
+  // Benchmark data form state - matches Firebase schema
   const [benchmarkData, setBenchmarkData] = useState({
     CPU: "",
     FPS: "",
@@ -37,11 +47,11 @@ const ProfilePage = () => {
     Mode: "",
     RAM: "",
     Resolution: "",
-    VRAM: ""
+    VRAM: "",
   });
   const [submittingBenchmark, setSubmittingBenchmark] = useState(false);
 
-  // State for form inputs (existing specs)
+  // User specs form state
   const [specs, setSpecs] = useState({
     cpu: "",
     gpu: "",
@@ -49,55 +59,53 @@ const ProfilePage = () => {
     resolution: "",
   });
 
-  // State for autocomplete data
+  // Hardware autocomplete data from Firebase
   const [cpuList, setCpuList] = useState([]);
   const [gpuList, setGpuList] = useState([]);
   const [filteredCpus, setFilteredCpus] = useState([]);
   const [filteredGpus, setFilteredGpus] = useState([]);
 
-  // State for dropdown visibility
+  // Profile specs dropdown visibility
   const [showCpuDropdown, setShowCpuDropdown] = useState(false);
   const [showGpuDropdown, setShowGpuDropdown] = useState(false);
 
-  // State for loading and specs existence
+  // Loading and specs existence state
   const [loading, setLoading] = useState(true);
   const [hasSpecs, setHasSpecs] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // Refs for input fields
+  // Input field refs for click-outside detection
   const cpuInputRef = useRef(null);
   const gpuInputRef = useRef(null);
   const gameInputRef = useRef(null);
   const benchmarkCpuInputRef = useRef(null);
   const benchmarkGpuInputRef = useRef(null);
 
-  // RAM options
+  // Dropdown options
   const ramOptions = ["8GB", "16GB", "32GB", "64GB"];
-
-  // Resolution options
   const resolutionOptions = ["1920x1080", "2560x1440", "3840x2160 (4K)"];
-
-  // Game mode options
   const gameModeOptions = ["Low", "Medium", "High", "Ultra"];
 
-  // Fetch CPU, GPU, and Games data from Firebase
+  // Initialize data on component mount - fetch hardware specs, games, and user data
   useEffect(() => {
     const fetchSpecsData = async () => {
       try {
-        // Fetch CPU data
+        // Fetch available CPUs from Firebase
         const cpuDoc = await getDoc(doc(db, "cpu_names", "all_cpus"));
         if (cpuDoc.exists()) {
           setCpuList(cpuDoc.data().names || []);
         }
 
-        // Fetch GPU data
+        // Fetch available GPUs with VRAM data from Firebase
         const gpuDoc = await getDoc(doc(db, "gpu_names", "all_gpus"));
         if (gpuDoc.exists()) {
           setGpuList(gpuDoc.data().gpus || []);
         }
 
-        // Fetch Games data from game_requirements collection
-        const gameRequirementsSnapshot = await getDocs(collection(db, "game_requirements"));
+        // Fetch games from requirements collection for benchmarking
+        const gameRequirementsSnapshot = await getDocs(
+          collection(db, "game_requirements")
+        );
         const games = [];
         gameRequirementsSnapshot.forEach((doc) => {
           const gameData = doc.data();
@@ -105,22 +113,21 @@ const ProfilePage = () => {
             games.push(gameData.Game_Name);
           }
         });
-        // Sort games alphabetically
-        games.sort();
+        games.sort(); // Alphabetical order for better UX
         setGamesList(games);
 
-        // Check if user already has specs and benchmarker status
+        // Load user's existing data if available
         if (currentUser) {
           const userDoc = await getDoc(doc(db, "users", currentUser.uid));
           if (userDoc.exists()) {
             const userData = userDoc.data();
-            
-            // Check specs
+
+            // Load existing specs
             if (userData.specs) {
               setSpecs(userData.specs);
               setHasSpecs(true);
             }
-            
+
             // Check benchmarker status
             if (userData.benchmarker === "yes") {
               setIsBenchmarker(true);
@@ -139,14 +146,14 @@ const ProfilePage = () => {
     }
   }, [currentUser]);
 
-  // Handle CPU input change and filtering
+  // Profile specs autocomplete handlers
   const handleCpuChange = (value) => {
     setSpecs((prev) => ({ ...prev, cpu: value }));
 
     if (value.length > 0) {
       const filtered = cpuList
         .filter((cpu) => cpu.toLowerCase().includes(value.toLowerCase()))
-        .slice(0, 10); // Limit to 10 results
+        .slice(0, 10);
       setFilteredCpus(filtered);
       setShowCpuDropdown(true);
     } else {
@@ -154,14 +161,13 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle GPU input change and filtering
   const handleGpuChange = (value) => {
     setSpecs((prev) => ({ ...prev, gpu: value }));
 
     if (value.length > 0) {
       const filtered = gpuList
         .filter((gpu) => gpu.name.toLowerCase().includes(value.toLowerCase()))
-        .slice(0, 10); // Limit to 10 results
+        .slice(0, 10);
       setFilteredGpus(filtered);
       setShowGpuDropdown(true);
     } else {
@@ -169,26 +175,24 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle CPU selection from dropdown
   const selectCpu = (cpu) => {
     setSpecs((prev) => ({ ...prev, cpu }));
     setShowCpuDropdown(false);
   };
 
-  // Handle GPU selection from dropdown
   const selectGpu = (gpu) => {
     setSpecs((prev) => ({ ...prev, gpu: `${gpu.name} (${gpu.vram}GB VRAM)` }));
     setShowGpuDropdown(false);
   };
 
-  // Handle game input change and filtering
+  // Benchmark form autocomplete handlers
   const handleGameChange = (value) => {
-    setBenchmarkData(prev => ({ ...prev, Game_Name: value }));
+    setBenchmarkData((prev) => ({ ...prev, Game_Name: value }));
 
     if (value.length > 0) {
       const filtered = gamesList
         .filter((game) => game.toLowerCase().includes(value.toLowerCase()))
-        .slice(0, 10); // Limit to 10 results
+        .slice(0, 10);
       setFilteredGames(filtered);
       setShowGameDropdown(true);
     } else {
@@ -196,9 +200,8 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle benchmark CPU input change and filtering
   const handleBenchmarkCpuChange = (value) => {
-    setBenchmarkData(prev => ({ ...prev, CPU: value }));
+    setBenchmarkData((prev) => ({ ...prev, CPU: value }));
 
     if (value.length > 0) {
       const filtered = cpuList
@@ -211,9 +214,8 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle benchmark GPU input change and filtering
   const handleBenchmarkGpuChange = (value) => {
-    setBenchmarkData(prev => ({ ...prev, GPU: value }));
+    setBenchmarkData((prev) => ({ ...prev, GPU: value }));
 
     if (value.length > 0) {
       const filtered = gpuList
@@ -226,29 +228,26 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle game selection from dropdown
   const selectGame = (gameName) => {
-    setBenchmarkData(prev => ({ ...prev, Game_Name: gameName }));
+    setBenchmarkData((prev) => ({ ...prev, Game_Name: gameName }));
     setShowGameDropdown(false);
   };
 
-  // Handle benchmark CPU selection from dropdown
   const selectBenchmarkCpu = (cpu) => {
-    setBenchmarkData(prev => ({ ...prev, CPU: cpu }));
+    setBenchmarkData((prev) => ({ ...prev, CPU: cpu }));
     setShowBenchmarkCpuDropdown(false);
   };
 
-  // Handle benchmark GPU selection from dropdown
   const selectBenchmarkGpu = (gpu) => {
-    setBenchmarkData(prev => ({ 
-      ...prev, 
+    setBenchmarkData((prev) => ({
+      ...prev,
       GPU: gpu.name,
-      VRAM: gpu.vram.toString() // Auto-populate VRAM
+      VRAM: gpu.vram.toString(), // Auto-populate VRAM from GPU data
     }));
     setShowBenchmarkGpuDropdown(false);
   };
 
-  // Save or update user specs
+  // Save user's hardware specs to Firebase
   const handleSaveSpecs = async () => {
     if (!specs.cpu || !specs.gpu || !specs.ram || !specs.resolution) {
       alert("Please fill in all fields");
@@ -260,13 +259,11 @@ const ProfilePage = () => {
       const userRef = doc(db, "users", currentUser.uid);
 
       if (hasSpecs) {
-        // Update existing specs
         await updateDoc(userRef, {
           specs: specs,
           specsUpdatedAt: new Date(),
         });
       } else {
-        // Add new specs
         await updateDoc(userRef, {
           specs: specs,
           specsCreatedAt: new Date(),
@@ -285,7 +282,98 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle logout
+  // Apply to become a game benchmarker
+  const handleApplyBenchmarker = async () => {
+    if (isBenchmarker) return;
+
+    setApplyingBenchmarker(true);
+    try {
+      const userRef = doc(db, "users", currentUser.uid);
+
+      await updateDoc(userRef, {
+        benchmarker: "yes",
+        rank: "bronze",
+        benchmarkerAppliedAt: new Date(),
+      });
+
+      setIsBenchmarker(true);
+      alert(
+        "Successfully applied to be a game benchmarker! You now have Bronze rank."
+      );
+    } catch (error) {
+      console.error("Error applying for benchmarker:", error);
+      alert("Failed to apply. Please try again.");
+    } finally {
+      setApplyingBenchmarker(false);
+    }
+  };
+
+  // Handle form input changes for benchmark data
+  const handleBenchmarkChange = (field, value) => {
+    setBenchmarkData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Submit benchmark data to users_benchmarks collection
+  const handleSubmitBenchmark = async () => {
+    const requiredFields = [
+      "CPU",
+      "FPS",
+      "GPU",
+      "Game_Name",
+      "Mode",
+      "RAM",
+      "Resolution",
+      "VRAM",
+    ];
+    const missingFields = requiredFields.filter(
+      (field) => !benchmarkData[field]
+    );
+
+    if (missingFields.length > 0) {
+      alert(`Please fill in all fields: ${missingFields.join(", ")}`);
+      return;
+    }
+
+    setSubmittingBenchmark(true);
+    try {
+      // Create benchmark document with proper data types and metadata
+      const benchmarkDoc = {
+        ...benchmarkData,
+        FPS: parseFloat(benchmarkData.FPS), // Convert to number
+        RAM: parseInt(benchmarkData.RAM), // Convert to number
+        VRAM: parseInt(benchmarkData.VRAM), // Convert to number
+        userName: userProfile?.username || currentUser?.email,
+        userId: currentUser.uid,
+        submittedAt: new Date(),
+        status: "pending", // For review process
+      };
+
+      const benchmarksRef = collection(db, "users_benchmarks");
+      await addDoc(benchmarksRef, benchmarkDoc);
+
+      // Reset form after successful submission
+      setBenchmarkData({
+        CPU: "",
+        FPS: "",
+        GPU: "",
+        Game_Name: "",
+        Mode: "",
+        RAM: "",
+        Resolution: "",
+        VRAM: "",
+      });
+
+      alert(
+        "Benchmark data submitted successfully! It will be reviewed before being added to the database."
+      );
+    } catch (error) {
+      console.error("Error submitting benchmark:", error);
+      alert("Failed to submit benchmark data. Please try again.");
+    } finally {
+      setSubmittingBenchmark(false);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -295,91 +383,11 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle apply for benchmarker
-  const handleApplyBenchmarker = async () => {
-    if (isBenchmarker) return; // Prevent duplicate applications
-
-    setApplyingBenchmarker(true);
-    try {
-      const userRef = doc(db, "users", currentUser.uid);
-      
-      await updateDoc(userRef, {
-        benchmarker: "yes",
-        rank: "bronze",
-        benchmarkerAppliedAt: new Date(),
-      });
-
-      setIsBenchmarker(true);
-      alert("Successfully applied to be a game benchmarker! You now have Bronze rank.");
-    } catch (error) {
-      console.error("Error applying for benchmarker:", error);
-      alert("Failed to apply. Please try again.");
-    } finally {
-      setApplyingBenchmarker(false);
-    }
-  };
-
-  // Handle benchmark data input changes
-  const handleBenchmarkChange = (field, value) => {
-    setBenchmarkData(prev => ({ ...prev, [field]: value }));
-  };
-
-  // Handle benchmark data submission
-  const handleSubmitBenchmark = async () => {
-    // Validate required fields
-    const requiredFields = ['CPU', 'FPS', 'GPU', 'Game_Name', 'Mode', 'RAM', 'Resolution', 'VRAM'];
-    const missingFields = requiredFields.filter(field => !benchmarkData[field]);
-    
-    if (missingFields.length > 0) {
-      alert(`Please fill in all fields: ${missingFields.join(', ')}`);
-      return;
-    }
-
-    setSubmittingBenchmark(true);
-    try {
-      // Create the benchmark document with user info
-      const benchmarkDoc = {
-        ...benchmarkData,
-        FPS: parseFloat(benchmarkData.FPS), // Convert to number
-        RAM: parseInt(benchmarkData.RAM), // Convert to number
-        VRAM: parseInt(benchmarkData.VRAM), // Convert to number
-        userName: userProfile?.username || currentUser?.email,
-        userId: currentUser.uid,
-        submittedAt: new Date(),
-        status: "pending" // For review process
-      };
-
-      // Add to users_benchmarks collection
-      const benchmarksRef = collection(db, "users_benchmarks");
-      await addDoc(benchmarksRef, benchmarkDoc);
-
-      // Reset form
-      setBenchmarkData({
-        CPU: "",
-        FPS: "",
-        GPU: "",
-        Game_Name: "",
-        Mode: "",
-        RAM: "",
-        Resolution: "",
-        VRAM: ""
-      });
-
-      alert("Benchmark data submitted successfully! It will be reviewed before being added to the database.");
-    } catch (error) {
-      console.error("Error submitting benchmark:", error);
-      alert("Failed to submit benchmark data. Please try again.");
-    } finally {
-      setSubmittingBenchmark(false);
-    }
-  };
-
-  // Handle tab switching
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  // Close dropdowns when clicking outside
+  // Close all dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (cpuInputRef.current && !cpuInputRef.current.contains(event.target)) {
@@ -388,13 +396,22 @@ const ProfilePage = () => {
       if (gpuInputRef.current && !gpuInputRef.current.contains(event.target)) {
         setShowGpuDropdown(false);
       }
-      if (gameInputRef.current && !gameInputRef.current.contains(event.target)) {
+      if (
+        gameInputRef.current &&
+        !gameInputRef.current.contains(event.target)
+      ) {
         setShowGameDropdown(false);
       }
-      if (benchmarkCpuInputRef.current && !benchmarkCpuInputRef.current.contains(event.target)) {
+      if (
+        benchmarkCpuInputRef.current &&
+        !benchmarkCpuInputRef.current.contains(event.target)
+      ) {
         setShowBenchmarkCpuDropdown(false);
       }
-      if (benchmarkGpuInputRef.current && !benchmarkGpuInputRef.current.contains(event.target)) {
+      if (
+        benchmarkGpuInputRef.current &&
+        !benchmarkGpuInputRef.current.contains(event.target)
+      ) {
         setShowBenchmarkGpuDropdown(false);
       }
     };
@@ -403,12 +420,13 @@ const ProfilePage = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Redirect if not logged in
+  // Redirect to home if not authenticated
   if (!currentUser) {
     navigate("/");
     return null;
   }
 
+  // Show loading spinner while fetching data
   if (loading) {
     return (
       <div className="profile-page">
@@ -434,6 +452,7 @@ const ProfilePage = () => {
         <div className="shape shape-3"></div>
       </div>
       <div className="container">
+        {/* Tab navigation buttons */}
         <div className="button-container">
           <button
             className={`btn ${activeTab === "profile" ? "active" : ""}`}
@@ -452,7 +471,7 @@ const ProfilePage = () => {
           </button>
         </div>
 
-        {/* Profile Tab Content */}
+        {/* Profile tab: user info and hardware specs */}
         {activeTab === "profile" && (
           <div className="profile-info">
             <div className="user-info">
@@ -477,7 +496,6 @@ const ProfilePage = () => {
             </div>
             <div className="specs-container">
               <div className="specs-info">
-                {/* CPU Input with Autocomplete */}
                 <div className="specs-item" ref={cpuInputRef}>
                   <label>CPU:</label>
                   <input
@@ -500,7 +518,6 @@ const ProfilePage = () => {
                     </div>
                   )}
                 </div>
-                {/* GPU Input with Autocomplete */}
                 <div className="specs-item" ref={gpuInputRef}>
                   <label>GPU:</label>
                   <input
@@ -523,7 +540,6 @@ const ProfilePage = () => {
                     </div>
                   )}
                 </div>
-                {/* RAM Dropdown */}
                 <div className="specs-item">
                   <label>RAM:</label>
                   <select
@@ -540,7 +556,6 @@ const ProfilePage = () => {
                     ))}
                   </select>
                 </div>
-                {/* Resolution Dropdown */}
                 <div className="specs-item">
                   <label>Resolution:</label>
                   <select
@@ -572,24 +587,25 @@ const ProfilePage = () => {
           </div>
         )}
 
-        {/* Options Tab Content */}
+        {/* Options tab: benchmarker application or benchmark submission */}
         {activeTab === "options" && (
           <div className="options-container">
-            {/* Show Application Section only if NOT a benchmarker */}
+            {/* Benchmarker application - shown only to non-benchmarkers */}
             {!isBenchmarker && (
               <div className="options-item">
                 <label>Join as a Game Benchmarker</label>
                 <p>
                   Join our community of game enthusiasts who help us test and
-                  improve our AI-powered tool. By applying to be a game benchmarker,
-                  your submitted data will be used to improve the tool and you will be
-                  rewarded with a rank among users. Your rank will be based on the number
-                  of games you have benchmarked and the accuracy of your benchmarks.
-                  All user-submitted benchmarks will be publicly available and will be
-                  reviewed for accuracy before being added to the database.
+                  improve our AI-powered tool. By applying to be a game
+                  benchmarker, your submitted data will be used to improve the
+                  tool and you will be rewarded with a rank among users. Your
+                  rank will be based on the number of games you have benchmarked
+                  and the accuracy of your benchmarks. All user-submitted
+                  benchmarks will be publicly available and will be reviewed for
+                  accuracy before being added to the database.
                 </p>
-                <button 
-                  className="btn-specs" 
+                <button
+                  className="btn-specs"
                   onClick={handleApplyBenchmarker}
                   disabled={applyingBenchmarker}
                 >
@@ -598,7 +614,7 @@ const ProfilePage = () => {
               </div>
             )}
 
-            {/* Show Benchmark Form only if IS a benchmarker */}
+            {/* Benchmark submission form - shown only to approved benchmarkers */}
             {isBenchmarker && (
               <div className="options-item">
                 <div className="benchmark-form">
@@ -633,7 +649,9 @@ const ProfilePage = () => {
                         step="0.1"
                         placeholder="e.g., 40.9"
                         value={benchmarkData.FPS}
-                        onChange={(e) => handleBenchmarkChange('FPS', e.target.value)}
+                        onChange={(e) =>
+                          handleBenchmarkChange("FPS", e.target.value)
+                        }
                       />
                     </div>
                   </div>
@@ -645,21 +663,24 @@ const ProfilePage = () => {
                         type="text"
                         placeholder="Start typing CPU name..."
                         value={benchmarkData.CPU}
-                        onChange={(e) => handleBenchmarkCpuChange(e.target.value)}
+                        onChange={(e) =>
+                          handleBenchmarkCpuChange(e.target.value)
+                        }
                       />
-                      {showBenchmarkCpuDropdown && filteredBenchmarkCpus.length > 0 && (
-                        <div className="dropdown">
-                          {filteredBenchmarkCpus.map((cpu, index) => (
-                            <div
-                              key={index}
-                              className="dropdown-item"
-                              onClick={() => selectBenchmarkCpu(cpu)}
-                            >
-                              {cpu}
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      {showBenchmarkCpuDropdown &&
+                        filteredBenchmarkCpus.length > 0 && (
+                          <div className="dropdown">
+                            {filteredBenchmarkCpus.map((cpu, index) => (
+                              <div
+                                key={index}
+                                className="dropdown-item"
+                                onClick={() => selectBenchmarkCpu(cpu)}
+                              >
+                                {cpu}
+                              </div>
+                            ))}
+                          </div>
+                        )}
                     </div>
                     <div className="benchmark-field" ref={benchmarkGpuInputRef}>
                       <label>GPU:</label>
@@ -667,21 +688,24 @@ const ProfilePage = () => {
                         type="text"
                         placeholder="Start typing GPU name..."
                         value={benchmarkData.GPU}
-                        onChange={(e) => handleBenchmarkGpuChange(e.target.value)}
+                        onChange={(e) =>
+                          handleBenchmarkGpuChange(e.target.value)
+                        }
                       />
-                      {showBenchmarkGpuDropdown && filteredBenchmarkGpus.length > 0 && (
-                        <div className="dropdown">
-                          {filteredBenchmarkGpus.map((gpu, index) => (
-                            <div
-                              key={index}
-                              className="dropdown-item"
-                              onClick={() => selectBenchmarkGpu(gpu)}
-                            >
-                              {gpu.name} ({gpu.vram}GB VRAM)
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      {showBenchmarkGpuDropdown &&
+                        filteredBenchmarkGpus.length > 0 && (
+                          <div className="dropdown">
+                            {filteredBenchmarkGpus.map((gpu, index) => (
+                              <div
+                                key={index}
+                                className="dropdown-item"
+                                onClick={() => selectBenchmarkGpu(gpu)}
+                              >
+                                {gpu.name} ({gpu.vram}GB VRAM)
+                              </div>
+                            ))}
+                          </div>
+                        )}
                     </div>
                   </div>
 
@@ -692,7 +716,9 @@ const ProfilePage = () => {
                         type="number"
                         placeholder="e.g., 32"
                         value={benchmarkData.RAM}
-                        onChange={(e) => handleBenchmarkChange('RAM', e.target.value)}
+                        onChange={(e) =>
+                          handleBenchmarkChange("RAM", e.target.value)
+                        }
                       />
                     </div>
                     <div className="benchmark-field">
@@ -704,8 +730,8 @@ const ProfilePage = () => {
                         readOnly
                         disabled
                         style={{
-                          backgroundColor: '#f5f5f5',
-                          cursor: 'not-allowed'
+                          backgroundColor: "#f5f5f5",
+                          cursor: "not-allowed",
                         }}
                       />
                     </div>
@@ -716,7 +742,9 @@ const ProfilePage = () => {
                       <label>Resolution:</label>
                       <select
                         value={benchmarkData.Resolution}
-                        onChange={(e) => handleBenchmarkChange('Resolution', e.target.value)}
+                        onChange={(e) =>
+                          handleBenchmarkChange("Resolution", e.target.value)
+                        }
                       >
                         <option value="">Select Resolution</option>
                         <option value="1920x1080">1920x1080</option>
@@ -728,7 +756,9 @@ const ProfilePage = () => {
                       <label>Graphics Mode:</label>
                       <select
                         value={benchmarkData.Mode}
-                        onChange={(e) => handleBenchmarkChange('Mode', e.target.value)}
+                        onChange={(e) =>
+                          handleBenchmarkChange("Mode", e.target.value)
+                        }
                       >
                         <option value="">Select Mode</option>
                         {gameModeOptions.map((mode) => (

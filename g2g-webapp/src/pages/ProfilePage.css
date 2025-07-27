@@ -1,4 +1,5 @@
 
+/* Main profile page layout */
 .profile-page {
   position: fixed;
   top: 100px;
@@ -9,7 +10,8 @@
   justify-content: center;
   align-items: center;
 }
-/* Background Shapes */
+
+/* Animated background shapes */
 .hero-bg-shapes {
   position: absolute;
   top: 0;
@@ -65,6 +67,7 @@
   }
 }
 
+/* Tab navigation buttons */
 .container .button-container {
   position: absolute;
   top: 50px;
@@ -76,6 +79,7 @@
   align-items: center;
 }
 
+/* Button styling */
 .btn {
   width: 120px;
   padding: 15px;
@@ -88,6 +92,7 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 .btn-red {
   width: 120px;
   padding: 15px;
@@ -100,13 +105,16 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 .btn-red:hover {
   background: #e45050;
 }
+
 .profile-page .button-container .btn:hover {
   background: #5a7a7e;
 }
 
+/* Main content container */
 .container {
   position: absolute;
   top: 50px;
@@ -115,11 +123,14 @@
   border-radius: 10px;
   padding: 20px;
 }
+
+/* Profile tab content */
 .container .profile-info {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .container .profile-info .user-info {
   margin-left: 150px;
   display: flex;
@@ -130,12 +141,14 @@
   padding: 20px;
   width: 500px;
 }
+
 .container .profile-info .info-item {
   display: flex;
   flex-direction: row;
   gap: 5px;
 }
 
+/* User specs form container */
 .specs-container {
   display: flex;
   margin-left: 150px;
@@ -146,7 +159,8 @@
   padding: 20px;
   width: 500px;
 }
-.specs-container button{
+
+.specs-container button {
   width: 120px;
   padding: 10px;
   font-size: 18px;
@@ -158,23 +172,28 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 .specs-container button:hover {
   background: #5a7a7e;
 }
+
 .specs-container .specs-info {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .specs-container .specs-info .specs-item {
   display: flex;
   flex-direction: row;
   gap: 10px;
 }
+
 .specs-container .specs-info .specs-item label {
   font-size: 18px;
   font-weight: 300;
 }
+
 .specs-container .specs-info .specs-item input {
   width: 100%;
   padding: 10px;
@@ -185,7 +204,7 @@
   background: #fff;
 }
 
-/* Autocomplete dropdown styles */
+/* Profile specs autocomplete dropdowns */
 .specs-item {
   position: relative;
   margin-bottom: 15px;
@@ -203,7 +222,7 @@
   width: 400px;
   overflow-y: auto;
   z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-item {
@@ -245,13 +264,8 @@
   font-size: 18px;
 }
 
-/* Disabled button state */
-.btn-specs:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.container .options-container{
+/* Options tab container */
+.container .options-container {
   margin-left: 150px;
   display: flex;
   flex-direction: column;
@@ -261,20 +275,24 @@
   padding: 20px;
   width: 610px;
 }
-.options-container .options-item{
+
+.options-container .options-item {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.options-container .options-item label{
+
+.options-container .options-item label {
   font-size: 18px;
   font-weight: 300;
 }
-.options-container .options-item p{
+
+.options-container .options-item p {
   font-size: 14px;
   font-weight: 300;
 }
-.options-container .btn-specs{
+
+.options-container .btn-specs {
   width: 120px;
   padding: 10px;
   font-size: 18px;
@@ -286,11 +304,12 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 .options-container .btn-specs:hover {
   background: #5a7a7e;
 }
 
-/* Benchmark form styling */
+/* Benchmark submission form */
 .benchmark-form {
   margin-top: 15px;
 }
@@ -306,6 +325,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  position: relative;
 }
 
 .benchmark-field label {
@@ -328,17 +348,7 @@
   border-color: #007bff;
 }
 
-/* Disabled button styling */
-.btn-specs:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Benchmark form dropdown styles */
-.benchmark-field {
-  position: relative;
-}
-
+/* Benchmark form autocomplete dropdowns */
 .benchmark-field .dropdown {
   position: absolute;
   top: 75px;
@@ -350,7 +360,7 @@
   max-height: 185px;
   overflow-y: auto;
   z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .benchmark-field .dropdown-item {
@@ -366,4 +376,10 @@
 
 .benchmark-field .dropdown-item:last-child {
   border-bottom: none;
+}
+
+/* Disabled button states */
+.btn-specs:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
