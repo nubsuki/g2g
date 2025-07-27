@@ -16,6 +16,7 @@ const Navbar = ({ onLoginClick }) => {
       <Link to="/" className='logo'>G2G</Link>
       <nav className='navbar'>
         <Link to="/">Home</Link>
+        {currentUser && <Link to="/fps">FPS</Link>}
         {currentUser ? (
           <Link to="/profile" className='username-link'>
             {userProfile?.username || 'User'}

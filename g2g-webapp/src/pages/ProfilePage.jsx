@@ -37,7 +37,7 @@ const ProfilePage = () => {
   const cpuInputRef = useRef(null);
   const gpuInputRef = useRef(null);
   
-  // RAM options (8GB to 64GB)
+  // RAM options
   const ramOptions = ["8GB", "16GB", "32GB", "64GB"];
   
   // Resolution options

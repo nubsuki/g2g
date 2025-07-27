@@ -4,6 +4,7 @@ import Navbar from './Components/Navbar'
 import LoginForm from './Components/LoginForm'
 import Home from './pages/Home'
 import ProfilePage from './pages/ProfilePage'
+import Fps from './pages/Fps'
 import { AuthProvider } from './contexts/AuthContext'
 
 const App = () => {
@@ -23,8 +24,9 @@ const App = () => {
         <div>
           <Navbar onLoginClick={toggleLoginForm} />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home onLoginClick={toggleLoginForm} />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/fps" element={<Fps />} />
           </Routes>
           {showLoginForm && <LoginForm onClose={closeLoginForm}/>}
         </div>

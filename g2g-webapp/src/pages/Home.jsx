@@ -1,10 +1,25 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import "./Home.css";
 import { FaGithubAlt, FaRobot, FaLinux, FaUsers, FaMicrochip } from "react-icons/fa";
 import geekbenchLogo from "../assets/geekbench.png";
 import techpowerupLogo from "../assets/techpowerup.png";
 
-const Home = () => {
+const Home = ({ onLoginClick }) => {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    if (currentUser) {
+      // User is logged in, redirect to FPS page
+      navigate('/fps');
+    } else {
+      // User is not logged in, show login form
+      onLoginClick();
+    }
+  };
+
   return (
     <div className="home-page">
       <div className="hero-section">
@@ -15,7 +30,9 @@ const Home = () => {
             Planning to buy a game? Test how well it will perform on your PC
             with our AI-powered tool.
           </p>
-          <button className="cta-button">Get Started</button>
+          <button className="cta-button" onClick={handleGetStarted}>
+            Get Started
+          </button>
         </div>
         <div className="hero-bg-shapes">
           <div className="shape shape-1"></div>
