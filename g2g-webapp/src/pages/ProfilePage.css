@@ -9,11 +9,66 @@
   justify-content: center;
   align-items: center;
 }
+/* Background Shapes */
+.hero-bg-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -10;
+}
 
-.profile-page .button-container {
+.shape {
+  position: absolute;
+  background: linear-gradient(
+    45deg,
+    rgba(154, 121, 255, 0.1),
+    rgba(200, 182, 255, 0.05)
+  );
+  border-radius: 50%;
+  animation: float-shapes 6s ease-in-out infinite;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: -10%;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 200px;
+  height: 200px;
+  top: 60%;
+  right: -5%;
+  animation-delay: 2s;
+}
+
+.shape-3 {
+  width: 150px;
+  height: 150px;
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 4s;
+}
+
+@keyframes float-shapes {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(10deg);
+  }
+}
+
+.container .button-container {
   position: absolute;
   top: 50px;
-  left: 420px;
+  left: 0;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -57,7 +112,6 @@
   top: 50px;
   left: 50%;
   transform: translateX(-50%);
-  background: #666;
   border-radius: 10px;
   padding: 20px;
 }
@@ -68,6 +122,7 @@
   padding: 20px;
 }
 .container .profile-info .user-info {
+  margin-left: 150px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -84,6 +139,7 @@
 
 .specs-container {
   display: flex;
+  margin-left: 150px;
   flex-direction: column;
   gap: 10px;
   background: #ffffff91;

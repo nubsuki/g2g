@@ -1,6 +1,5 @@
 .home-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   color: white;
   overflow-x: hidden;
   display: flex;
@@ -272,4 +271,25 @@
 .github-icon {
   font-size: 1.1rem;
   vertical-align: middle;
+}
+
+.data-sources-inline {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.inline-source-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  background: white;
+  padding: 5px;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.inline-source-logo:hover {
+  transform: scale(1.1);
 }

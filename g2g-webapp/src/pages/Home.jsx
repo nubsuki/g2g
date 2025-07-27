@@ -1,7 +1,8 @@
 import React from "react";
 import "./Home.css";
 import { FaGithubAlt, FaRobot, FaLinux, FaUsers, FaMicrochip } from "react-icons/fa";
-import logo from "../assets/g2glogo.png";
+import geekbenchLogo from "../assets/geekbench.png";
+import techpowerupLogo from "../assets/techpowerup.png";
 
 const Home = () => {
   return (
@@ -30,7 +31,7 @@ const Home = () => {
               <FaRobot />
             </div>
             <h3>
-              AI Trained on benchmarks We use massive benchmark datasets to
+              AI Trained on benchmarks - We use massive benchmark datasets to
               predict FPS and performance tailored to your hardware
             </h3>
           </div>
@@ -38,7 +39,7 @@ const Home = () => {
             <div className="feature-icon">
               <FaLinux />
             </div>
-            <h3>Linux Compatibility via ProtonDB compatibility layers</h3>
+            <h3>Linux Compatibility via ProtonDB compatibility layer.</h3>
           </div>
           <div className="feature-card">
             <div className="feature-icon">
@@ -54,6 +55,10 @@ const Home = () => {
               <FaMicrochip />
             </div>
             <h3>Comprehensive benchmark database with performance data from multiple sources.</h3>
+            <div className="data-sources-inline">
+              <img src={geekbenchLogo} alt="Geekbench" className="inline-source-logo" />
+              <img src={techpowerupLogo} alt="TechPowerUp" className="inline-source-logo" />
+            </div>
           </div>
         </div>
       </div>

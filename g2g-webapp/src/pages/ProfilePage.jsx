@@ -204,13 +204,18 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
+        <div className="hero-bg-shapes">
+          <div className="shape shape-1"></div>
+          <div className="shape shape-2"></div>
+          <div className="shape shape-3"></div>
+        </div>
+      <div className="container">
       <div className="button-container">
         <button className="btn">Profile</button>
         <button className="btn-red" onClick={handleLogout}>
           Logout
         </button>
       </div>
-      <div className="container">
         <div className="profile-info">
           <div className="user-info">
             <div className="info-item">
