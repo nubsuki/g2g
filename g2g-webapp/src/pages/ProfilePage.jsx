@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import Loading from "../Components/Loading";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, setDoc, updateDoc, collection } from "firebase/firestore";
@@ -194,7 +195,9 @@ const ProfilePage = () => {
   if (loading) {
     return (
       <div className="profile-page">
-        <div className="loading">Loading...</div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+          <Loading />
+        </div>
       </div>
     );
   }

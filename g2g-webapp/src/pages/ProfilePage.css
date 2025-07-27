@@ -13,7 +13,7 @@
 .profile-page .button-container {
   position: absolute;
   top: 50px;
-  left: 100px;
+  left: 420px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -54,8 +54,6 @@
 
 .container {
   position: absolute;
-  width: 1200px;
-  height: 700px;
   top: 50px;
   left: 50%;
   transform: translateX(-50%);
