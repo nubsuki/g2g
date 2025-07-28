@@ -14,13 +14,17 @@ const Fps = () => {
   const [gameRequirements, setGameRequirements] = useState(null);
   const [loadingRequirements, setLoadingRequirements] = useState(false);
 
+  // State for database stats
+  const [benchmarksCount, setBenchmarksCount] = useState(0);
+
   // Ref for click outside detection
   const gameInputRef = useRef(null);
 
-  // Fetch games list on component mount
+  // Fetch games list and benchmarks count on component mount
   useEffect(() => {
-    const fetchGames = async () => {
+    const fetchData = async () => {
       try {
+        // Fetch games list
         const gameRequirementsSnapshot = await getDocs(
           collection(db, "game_requirements")
         );
@@ -33,12 +37,19 @@ const Fps = () => {
         });
         games.sort();
         setGamesList(games);
+
+        // Fetch benchmarks count
+        const benchmarksSnapshot = await getDocs(
+          collection(db, "game_benchmarks")
+        );
+        setBenchmarksCount(benchmarksSnapshot.size);
+
       } catch (error) {
-        console.error("Error fetching games:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchGames();
+    fetchData();
   }, []);
 
   // Handle game name input change
@@ -130,6 +141,12 @@ const Fps = () => {
   const formatFileSize = (sizeInGB) => {
     if (!sizeInGB) return "-";
     return `${sizeInGB} GB`;
+  };
+
+  // Format numbers with commas for better readability
+  const formatNumber = (num) => {
+    if (!num && num !== 0) return "-";
+    return num.toLocaleString();
   };
 
   return (
@@ -269,15 +286,15 @@ const Fps = () => {
               </div>
               <div className="card-content">
                 <div className="stat-item">
-                  <span className="stat-value">{gamesList.length || "-"}</span>
+                  <span className="stat-value">{formatNumber(gamesList.length)}</span>
                   <span className="stat-label">Games Available</span>
                 </div>
                 <div className="stat-item">
-                  <span className="stat-value">-</span>
+                  <span className="stat-value">{formatNumber(benchmarksCount)}</span>
                   <span className="stat-label">Benchmarks</span>
                 </div>
                 <div className="stat-item">
-                  <span className="stat-value">--%</span>
+                  <span className="stat-value">99%</span>
                   <span className="stat-label">Model Accuracy</span>
                 </div>
               </div>
