@@ -1,0 +1,1848 @@
+Processor,GHz,Cores,Test_Type,Score
+AMD Ryzen 9 9950X3D,4.3,16,Multi-core,22550
+AMD EPYC 9654P,2.4,96,Multi-core,22141
+AMD Ryzen 9 9950X,4.3,16,Multi-core,21483
+Intel Core i9-13900KS,3.2,24,Multi-core,21427
+Intel Xeon Platinum 8462Y+,2.8,32,Multi-core,20762
+Intel Core i9-14900KF,3.2,24,Multi-core,20597
+AMD Ryzen 9 9900X3D,4.4,12,Multi-core,20531
+Intel Core i9-14900K,3.2,24,Multi-core,20397
+Intel Core i9-13900K,3.0,24,Multi-core,20054
+AMD Ryzen 9 9900X,4.4,12,Multi-core,19855
+AMD EPYC 9454P,2.8,48,Multi-core,19832
+AMD Ryzen 9 7950X3D,4.2,16,Multi-core,19655
+Intel Core i9-13900KF,3.0,24,Multi-core,19582
+AMD Ryzen 9 7950X,4.5,16,Multi-core,19373
+Intel Core i7-14700KF,3.4,20,Multi-core,19309
+Intel Core i7-14700K,3.4,20,Multi-core,18922
+AMD EPYC 9654,2.4,96,Multi-core,18836
+Intel Xeon w9-3495X,1.9,56,Multi-core,18447
+AMD Ryzen 7 9800X3D,4.7,8,Multi-core,18426
+AMD EPYC 9554,3.1,64,Multi-core,18379
+Intel Core i9-14900F,2.0,24,Multi-core,18364
+AMD EPYC 9374F,3.8,32,Multi-core,18263
+AMD EPYC 9554P,3.1,64,Multi-core,17978
+AMD Ryzen 9 7900X,4.7,12,Multi-core,17836
+AMD Ryzen AI Max+ 395,3.0,16,Multi-core,17812
+Intel Core i7-13700K,3.4,16,Multi-core,17741
+Intel Xeon W-3375,2.5,38,Multi-core,17713
+AMD Ryzen 9 7900X3D,4.4,12,Multi-core,17544
+Intel Core i7-13700KF,3.4,16,Multi-core,17509
+AMD EPYC 9254,2.9,24,Multi-core,17488
+AMD EPYC 9334,2.7,32,Multi-core,17436
+AMD EPYC 9174F,4.1,16,Multi-core,17363
+Intel Core i9-13900F,2.0,24,Multi-core,17328
+Intel Xeon Gold 6442Y,2.6,24,Multi-core,17199
+AMD Ryzen 7 9700X,3.8,8,Multi-core,17015
+Intel Core i9-14900,2.0,24,Multi-core,17008
+AMD Ryzen AI Max 390,3.2,12,Multi-core,16990
+AMD Ryzen 9 7900,3.7,12,Multi-core,16837
+AMD Ryzen 9 7945HX3D,2.3,16,Multi-core,16757
+AMD Ryzen 9 PRO 7945,3.7,12,Multi-core,16698
+Intel Core i7-14700F,2.1,20,Multi-core,16620
+AMD Ryzen Threadripper PRO 5995WX,2.7,64,Multi-core,16485
+Intel Core i9-13900,2.0,24,Multi-core,16371
+Intel Xeon w7-2495X,2.5,24,Multi-core,16239
+Intel Xeon w7-3465X,2.5,28,Multi-core,16227
+AMD Ryzen Threadripper PRO 5975WX,3.6,32,Multi-core,16190
+AMD Ryzen 9 7945HX,2.5,16,Multi-core,16162
+Intel Xeon Gold 6444Y,3.6,16,Multi-core,16065
+Intel Core i9-12900KS,3.4,16,Multi-core,15968
+Intel Core i7-14700,2.1,20,Multi-core,15919
+Intel Core i7-13700F,2.1,16,Multi-core,15872
+Intel Core i5-14600K,3.5,14,Multi-core,15864
+AMD Ryzen Threadripper PRO 5955WX,4.0,16,Multi-core,15834
+Intel Core i9-14900HX,2.2,24,Multi-core,15696
+Intel Xeon w5-3435X,3.1,16,Multi-core,15669
+AMD EPYC 9684X,2.6,96,Multi-core,15668
+Intel Core i5-14600KF,3.5,14,Multi-core,15646
+Intel Core i5-13600KF,3.5,14,Multi-core,15557
+AMD EPYC 7773X,2.2,64,Multi-core,15554
+AMD EPYC 9754,2.2,128,Multi-core,15552
+AMD Ryzen 7 7700X,4.5,8,Multi-core,15549
+Intel Core i9-12900K,3.2,16,Multi-core,15537
+Intel Xeon w9-3475X,2.2,36,Multi-core,15436
+AMD EPYC 9534,2.4,64,Multi-core,15433
+Intel Xeon w7-2475X,2.6,20,Multi-core,15311
+Intel Xeon Platinum 8351N,2.4,36,Multi-core,15233
+AMD Ryzen 5 9600X,3.9,6,Multi-core,15230
+AMD Ryzen 7 7800X3D,4.2,8,Multi-core,15102
+Intel Xeon w7-3445,2.6,20,Multi-core,15085
+AMD EPYC 75F3,3.0,32,Multi-core,15056
+AMD Ryzen Threadripper PRO 5965WX,3.8,24,Multi-core,15034
+Intel Core i5-13600K,3.5,14,Multi-core,15033
+AMD Ryzen 7 7700,3.8,8,Multi-core,14928
+Intel Core i9-12900KF,3.2,16,Multi-core,14901
+AMD Ryzen 5 9600,3.8,6,Multi-core,14858
+AMD Ryzen Threadripper PRO 3975WX,3.5,32,Multi-core,14828
+Intel Xeon Gold 6348,2.6,28,Multi-core,14816
+Intel Core i7-13700,2.1,16,Multi-core,14612
+Intel Xeon w5-2465X,3.1,16,Multi-core,14534
+AMD EPYC 7713,2.0,64,Multi-core,14401
+Intel Xeon W-3175X,3.1,28,Multi-core,14191
+AMD Ryzen Threadripper PRO 3995WX,2.7,64,Multi-core,14168
+AMD Ryzen AI 9 HX 375,2.0,12,Multi-core,14026
+Intel Core i5-14600,2.7,14,Multi-core,13994
+AMD Ryzen Threadripper 3990X,2.9,64,Multi-core,13966
+Intel Core i7-12700K,3.6,12,Multi-core,13895
+AMD Ryzen 9 7845HX,3.0,12,Multi-core,13865
+Intel Core i9-12900F,2.4,16,Multi-core,13813
+AMD EPYC 9354P,3.2,32,Multi-core,13733
+AMD Ryzen Threadripper 3970X,3.7,32,Multi-core,13726
+Intel Core i7-12700KF,3.6,12,Multi-core,13623
+AMD Ryzen 7 8700G,4.2,8,Multi-core,13620
+Intel Xeon w5-2455X,3.2,12,Multi-core,13557
+Intel Core i7-14700HX,2.1,20,Multi-core,13554
+AMD EPYC 7543,2.8,32,Multi-core,13502
+Intel Xeon w7-3455,2.5,24,Multi-core,13472
+AMD EPYC 7443P,2.8,24,Multi-core,13400
+AMD Ryzen Threadripper PRO 5945WX,4.1,12,Multi-core,13344
+AMD Ryzen Threadripper 3960X,3.8,24,Multi-core,13330
+AMD Ryzen 7 PRO 7745,3.8,8,Multi-core,13312
+Intel Core i7-14650HX,2.2,16,Multi-core,13292
+AMD Ryzen AI 9 HX 370,2.0,12,Multi-core,13286
+Intel Xeon Gold 6426Y,2.5,16,Multi-core,13235
+Intel Core i9-12900,2.4,16,Multi-core,13146
+Intel Xeon Silver 4416+,2.0,20,Multi-core,13121
+Intel Xeon W-3345,3.0,24,Multi-core,13107
+Intel Core i5-14500,2.6,14,Multi-core,13024
+AMD Ryzen 5 7600X,4.7,6,Multi-core,12912
+AMD EPYC 9354,3.2,32,Multi-core,12856
+Intel Core i5-14600T,1.8,14,Multi-core,12852
+AMD Ryzen 7 7745HX,3.6,8,Multi-core,12840
+Intel Core i7-13700E,1.9,16,Multi-core,12728
+AMD EPYC 74F3,3.2,24,Multi-core,12689
+AMD Ryzen 5 7500F,3.7,6,Multi-core,12686
+AMD Ryzen AI 9 365,2.0,10,Multi-core,12573
+AMD Ryzen Threadripper PRO 3955WX,3.9,16,Multi-core,12523
+Intel Xeon Gold 6346,3.1,16,Multi-core,12473
+AMD EPYC 9124,3.0,16,Multi-core,12447
+Intel Xeon W-3265,2.7,24,Multi-core,12398
+Intel Core i5-13600,2.7,14,Multi-core,12379
+Intel Core i5-12600KF,3.7,10,Multi-core,12361
+Intel Core i5-14500HX,2.6,14,Multi-core,12308
+Intel Xeon Gold 5416S,2.0,16,Multi-core,12304
+Intel Xeon w5-3425,3.2,12,Multi-core,12272
+Intel Core i5-13500,2.5,14,Multi-core,12237
+AMD Ryzen 5 7600,3.8,6,Multi-core,12224
+AMD EPYC 7643,2.3,48,Multi-core,12182
+AMD EPYC 7742,2.2,64,Multi-core,12161
+Intel Core i9-10980XE,3.0,18,Multi-core,12143
+AMD Ryzen 9 5950X,3.4,16,Multi-core,12088
+Intel Xeon W-3275M,2.5,28,Multi-core,12077
+Intel Xeon Gold 6438Y+,2.0,32,Multi-core,12068
+Intel Core Ultra 9 185H,2.3,16,Multi-core,11959
+Intel Xeon W-3245M,3.2,16,Multi-core,11956
+Intel Xeon Gold 5418Y,2.0,24,Multi-core,11943
+AMD EPYC 7343,3.2,16,Multi-core,11934
+AMD Ryzen 9 5900X,3.7,12,Multi-core,11881
+AMD EPYC 7402,2.8,24,Multi-core,11865
+Intel Core i5-12600K,3.7,10,Multi-core,11856
+Intel Core i7-12700F,2.1,12,Multi-core,11821
+AMD Ryzen 9 8945HS,4.0,8,Multi-core,11614
+Intel Core i9-12900T,1.4,16,Multi-core,11606
+AMD Ryzen AI 7 350,2.0,8,Multi-core,11587
+AMD Ryzen 5 7645HX,4.0,6,Multi-core,11586
+Intel Core i7-13700T,1.4,16,Multi-core,11553
+Intel Xeon Gold 6248R,3.0,24,Multi-core,11535
+AMD Ryzen 9 7940HS,4.0,8,Multi-core,11530
+Intel Xeon W-3245,3.2,16,Multi-core,11512
+AMD EPYC 7702,2.0,64,Multi-core,11451
+AMD EPYC 7313,3.0,16,Multi-core,11288
+AMD Ryzen 5 PRO 7645,3.8,6,Multi-core,11286
+AMD EPYC 7F72,3.2,24,Multi-core,11274
+Intel Core i9-9980XE,3.0,18,Multi-core,11268
+Intel Xeon Platinum 8180,2.5,28,Multi-core,11241
+Intel Core i5-14400F,2.5,10,Multi-core,11240
+Intel Xeon Gold 6430,2.1,32,Multi-core,11212
+Intel Core i9-7980XE,2.6,18,Multi-core,11201
+Intel Core i9-10920X,3.5,12,Multi-core,11152
+Intel Core i7-12700,2.1,8,Multi-core,11128
+Intel Xeon W-2295,3.0,18,Multi-core,11092
+Intel Xeon Platinum 8124M,3.0,18,Multi-core,11088
+AMD Ryzen 7 5800X3D,3.4,8,Multi-core,11066
+AMD Ryzen 9 PRO 7940HS,4.0,8,Multi-core,11018
+AMD Ryzen 7 8845HS,3.8,8,Multi-core,11017
+AMD Ryzen 7 7840HS,3.8,8,Multi-core,10998
+Intel Core i5-13400F,2.5,10,Multi-core,10985
+Intel Xeon w5-2445,3.1,10,Multi-core,10984
+Intel Core i9-11900K,3.5,8,Multi-core,10916
+AMD Ryzen Threadripper PRO 3945WX,4.0,12,Multi-core,10881
+Intel Core i5-14400,2.5,10,Multi-core,10868
+AMD Ryzen 5 8600G,4.3,6,Multi-core,10850
+Intel Core i5-13600T,1.8,14,Multi-core,10799
+AMD Ryzen 9 5900,3.0,12,Multi-core,10730
+AMD Ryzen 9 3950X,3.5,16,Multi-core,10716
+Intel Core i7-12700E,2.1,12,Multi-core,10676
+AMD EPYC 7313P,3.0,16,Multi-core,10636
+AMD EPYC 7F52,3.5,16,Multi-core,10634
+Intel Xeon Gold 6254,3.1,18,Multi-core,10612
+AMD Ryzen 7 PRO 7840HS,3.8,8,Multi-core,10598
+Intel Xeon Platinum 8168,2.7,24,Multi-core,10523
+Intel Xeon Gold 6242,2.8,16,Multi-core,10522
+Intel Core i9-7940X,3.1,14,Multi-core,10519
+Intel Core i9-9960X,3.1,16,Multi-core,10512
+Intel Xeon W-3235,3.3,12,Multi-core,10511
+Intel Xeon Gold 6248,2.5,20,Multi-core,10491
+AMD EPYC 7763,2.4,64,Multi-core,10481
+AMD EPYC 7402P,2.8,24,Multi-core,10476
+Intel Core i9-10940X,3.3,14,Multi-core,10464
+Intel Core i9-9940X,3.3,14,Multi-core,10454
+Intel Xeon W-2275,3.3,14,Multi-core,10454
+AMD Ryzen 7 7840U,3.3,8,Multi-core,10357
+Intel Xeon w3-2435,3.1,8,Multi-core,10356
+Intel Core i9-7960X,2.8,16,Multi-core,10307
+Intel Core i9-12900E,2.3,16,Multi-core,10280
+Intel Core i7-11700KF,3.6,8,Multi-core,10266
+AMD Ryzen 7 5800X,3.8,8,Multi-core,10224
+Intel Xeon Gold 6154,3.0,18,Multi-core,10128
+AMD Ryzen 7 5700X3D,3.0,8,Multi-core,10114
+AMD Ryzen AI 5 340 w/ Radeon 840M,2.0,6,Multi-core,10112
+Intel Core i5-13400,2.5,10,Multi-core,10111
+Intel Xeon Gold 6334,3.6,8,Multi-core,10085
+Intel Core i9-11900KF,3.5,8,Multi-core,10015
+Intel Xeon W-2265,3.5,12,Multi-core,9989
+Intel Xeon Gold 5220R,2.2,24,Multi-core,9982
+AMD Ryzen 9 3900XT,3.8,12,Multi-core,9960
+AMD Ryzen 9 3900X,3.8,12,Multi-core,9922
+Intel Core i7-11700K,3.6,8,Multi-core,9910
+Intel Xeon Gold 6226R,2.9,16,Multi-core,9902
+AMD EPYC 7642,2.3,48,Multi-core,9849
+AMD Ryzen 7 5700X,3.4,8,Multi-core,9715
+Intel Xeon Silver 4410Y,2.0,12,Multi-core,9713
+Intel Xeon E-2388G,3.2,8,Multi-core,9704
+Intel Core i5-12600,3.3,6,Multi-core,9630
+AMD Ryzen Z1 Extreme,3.3,8,Multi-core,9623
+Intel Xeon W-2191B,2.3,18,Multi-core,9614
+Intel Xeon E5-2679 v9,2.5,20,Multi-core,9602
+AMD EPYC 7532,2.4,32,Multi-core,9579
+Intel Xeon W-2195,2.3,18,Multi-core,9573
+AMD Ryzen 9 PRO 6950H,3.3,8,Multi-core,9573
+Intel Xeon E5-2699A v4,2.4,22,Multi-core,9570
+Intel Xeon Silver 4314,2.4,16,Multi-core,9566
+Intel Core i9-10900X,3.7,10,Multi-core,9558
+Intel Core i7-12700T,1.4,12,Multi-core,9557
+AMD EPYC 7542,2.9,32,Multi-core,9536
+AMD Ryzen 9 6900HX,3.3,8,Multi-core,9506
+AMD Ryzen 9 3900,3.1,12,Multi-core,9497
+Intel Core i5-14500T,1.7,14,Multi-core,9494
+AMD Ryzen 7 PRO 5845,3.4,8,Multi-core,9464
+AMD Ryzen 5 8500G,3.5,6,Multi-core,9444
+AMD Ryzen 7 PRO 7840U,3.3,8,Multi-core,9435
+Intel Xeon W-2255,3.7,10,Multi-core,9425
+Intel Core i9-9920X,3.5,12,Multi-core,9422
+Intel Core i9-11900F,2.5,8,Multi-core,9418
+AMD Ryzen 5 5600X3D,3.3,6,Multi-core,9384
+AMD Ryzen 7 8840U,3.3,8,Multi-core,9352
+Intel Core i9-7920X,2.9,12,Multi-core,9311
+AMD Ryzen 5 PRO 7640HS,4.3,6,Multi-core,9285
+Intel Xeon Gold 6230R,2.1,26,Multi-core,9267
+AMD Ryzen 5 7640HS,4.3,6,Multi-core,9186
+Intel Core i9-11900,2.5,8,Multi-core,9180
+Intel Xeon Gold 6150,2.7,18,Multi-core,9176
+Intel Core i5-12400F,2.5,6,Multi-core,9139
+Intel Core i9-9900X,3.5,10,Multi-core,9134
+Intel Xeon Gold 5218R,2.1,20,Multi-core,9133
+Intel Core i9-10900K,3.7,10,Multi-core,9131
+AMD Ryzen 9 PRO 5945,3.0,12,Multi-core,9128
+AMD Ryzen 9 PRO 3900,3.1,12,Multi-core,9122
+AMD Ryzen 7 7840U,3.3,8,Multi-core,9113
+Intel Xeon W-1370,2.9,8,Multi-core,9090
+Intel Core i9-10900KF,3.7,10,Multi-core,9061
+AMD Ryzen 7 8840HS,3.3,8,Multi-core,9046
+Intel Xeon Gold 6136,3.0,12,Multi-core,9045
+Intel Core i5-12500,3.0,6,Multi-core,9039
+Intel Xeon Gold 5317,3.0,12,Multi-core,9034
+Intel Core i9-10850K,3.6,10,Multi-core,9026
+AMD Ryzen 7 7735HS,3.2,8,Multi-core,8999
+AMD Ryzen 7 5700G,3.8,8,Multi-core,8967
+Intel Xeon Gold 6132,2.6,14,Multi-core,8966
+AMD EPYC 7452,2.4,32,Multi-core,8946
+Intel Xeon E5-2690 v4,2.6,14,Multi-core,8934
+Intel Core i5-13500T,1.6,14,Multi-core,8920
+AMD Ryzen 7 6800H,3.2,8,Multi-core,8911
+Intel Xeon E5-2696 v4,2.2,22,Multi-core,8869
+Intel Core i5-12400,2.5,6,Multi-core,8869
+Intel Xeon Gold 6146,3.2,12,Multi-core,8856
+Intel Xeon W-1290P,3.7,10,Multi-core,8852
+AMD EPYC 7H12,2.6,64,Multi-core,8850
+Intel Core i9-7900X,3.3,10,Multi-core,8842
+AMD Ryzen 7 5700,3.7,8,Multi-core,8829
+Intel Xeon W-2175,2.5,14,Multi-core,8807
+AMD Ryzen 9 6900HS,3.3,8,Multi-core,8802
+Intel Xeon W-1290,3.2,10,Multi-core,8772
+AMD Ryzen 7 7840U,3.3,8,Multi-core,8763
+Intel Xeon W-2155,3.3,10,Multi-core,8762
+AMD Ryzen 9 PRO 6950HS,3.3,8,Multi-core,8756
+AMD Ryzen 7 5800,3.4,8,Multi-core,8755
+AMD Ryzen 7 PRO 6850H,3.2,8,Multi-core,8740
+Intel Xeon W-11955M,2.6,8,Multi-core,8712
+Intel Core i7-6950X,3.0,10,Multi-core,8711
+Intel Xeon Gold 6142,2.6,16,Multi-core,8703
+Intel Core i7-11700F,2.5,8,Multi-core,8689
+AMD Ryzen 5 5600X,3.7,6,Multi-core,8677
+AMD EPYC 7302,3.0,16,Multi-core,8664
+AMD Ryzen 5 7640U,3.5,6,Multi-core,8664
+AMD Ryzen 7 6800HS,3.2,8,Multi-core,8663
+Intel Core i9-9900KS,4.0,8,Multi-core,8650
+Intel Core i5-11600KF,3.9,6,Multi-core,8643
+Intel Core i7-11700,2.5,8,Multi-core,8636
+Intel Xeon Gold 6140,2.3,18,Multi-core,8630
+AMD Ryzen 5 5600,3.5,6,Multi-core,8616
+Intel Xeon W-1270P,3.8,8,Multi-core,8589
+AMD Ryzen 7 3800XT,3.9,8,Multi-core,8581
+Intel Core i7-11850HE,2.6,8,Multi-core,8576
+Intel Xeon Silver 4310T,2.3,10,Multi-core,8557
+Intel Xeon Gold 6230,2.1,20,Multi-core,8550
+Intel Xeon Gold 6234,3.3,8,Multi-core,8546
+Intel Core i5-13400T,1.3,10,Multi-core,8545
+Intel Core i5-11600K,3.9,6,Multi-core,8543
+Intel Xeon W-2245,3.9,8,Multi-core,8542
+AMD Ryzen Threadripper 2950X,3.5,16,Multi-core,8508
+Intel Core i5-12500E,2.9,6,Multi-core,8507
+Intel Xeon W-2150B,3.0,10,Multi-core,8481
+Intel Core i9-10900F,2.8,10,Multi-core,8451
+Intel Xeon E5-2699 v4,2.2,22,Multi-core,8434
+AMD Ryzen 7 PRO 6850HS,3.2,8,Multi-core,8429
+Intel Core i9-10910,3.6,10,Multi-core,8396
+Intel Core i9-10900,2.8,10,Multi-core,8375
+Intel Xeon Gold 6144,3.5,8,Multi-core,8361
+Intel Core i9-13900E,1.8,24,Multi-core,8337
+Intel Xeon Gold 6244,3.6,8,Multi-core,8328
+AMD Ryzen Z1,3.2,6,Multi-core,8274
+Intel Xeon w3-2425,3.0,6,Multi-core,8264
+AMD Ryzen 7 3800X,3.9,8,Multi-core,8243
+Intel Xeon E5-2697A v4,2.6,16,Multi-core,8229
+AMD Ryzen 5 7540U,3.2,6,Multi-core,8214
+Intel Xeon E5-2696 v3,2.3,18,Multi-core,8208
+AMD Ryzen 5 8640U,3.5,6,Multi-core,8201
+AMD EPYC 7282,2.8,16,Multi-core,8185
+Intel Core i7-10700KF,3.8,8,Multi-core,8173
+Intel Core i9-10900E,2.8,10,Multi-core,8162
+AMD Ryzen 5 8640HS,3.5,6,Multi-core,8161
+Intel Core i7-10700K,3.8,8,Multi-core,8149
+Intel Xeon Gold 5315Y,3.2,8,Multi-core,8127
+Intel Xeon W-1350,3.3,6,Multi-core,8126
+Intel Core i3-14100F,3.5,4,Multi-core,8122
+Intel Xeon Gold 6138,2.0,20,Multi-core,8114
+Intel Xeon Gold 5218,2.3,16,Multi-core,8111
+Intel Xeon W-1350P,4.0,6,Multi-core,8105
+AMD Ryzen 7 3700X,3.6,8,Multi-core,8085
+Intel Core i9-9900KF,3.6,8,Multi-core,8077
+Intel Xeon W-11865MRE,2.6,8,Multi-core,8075
+Intel Core i9-9900K,3.6,8,Multi-core,8045
+Intel Core i9-11900T,1.5,8,Multi-core,8038
+Intel Xeon W-3223,3.5,8,Multi-core,8022
+AMD Ryzen 7 PRO 5750G,3.8,8,Multi-core,8007
+Intel Xeon E5-2697 v4,2.3,18,Multi-core,7995
+Intel Xeon W-1270,3.4,8,Multi-core,7994
+Intel Xeon Gold 6148,2.4,20,Multi-core,7993
+AMD Ryzen 5 5600GT,3.6,6,Multi-core,7987
+AMD Ryzen Threadripper 1950X,3.4,16,Multi-core,7983
+Intel Xeon E5-2698 v4,2.2,20,Multi-core,7961
+AMD Ryzen 5 7540U,3.2,6,Multi-core,7956
+Intel Core i7-11850H,2.5,8,Multi-core,7938
+Intel Xeon W-2145,3.7,8,Multi-core,7919
+Intel Core i5-11600,2.8,6,Multi-core,7918
+AMD Ryzen 7 PRO 3700,3.6,8,Multi-core,7898
+Intel Xeon E5-2687W v4,3.0,12,Multi-core,7884
+Intel Core Ultra 5 134U,,,Multi-core,7859
+Intel Core i7-7820X,3.6,8,Multi-core,7849
+AMD EPYC 7502P,2.5,32,Multi-core,7822
+Intel Core i7-11800H,2.3,8,Multi-core,7820
+Intel Xeon Silver 4310,2.1,12,Multi-core,7793
+Intel Core i5-12500TE,1.9,6,Multi-core,7781
+Intel Xeon W-11855M,3.2,6,Multi-core,7780
+Intel Xeon E-2336,2.9,6,Multi-core,7772
+AMD Ryzen 9 5980HX,3.3,8,Multi-core,7732
+Intel Xeon Silver 4216,2.1,16,Multi-core,7721
+Intel Core i3-14100,3.5,4,Multi-core,7719
+Intel Core i3-12100E,3.2,4,Multi-core,7709
+Intel Xeon E-2378,2.6,8,Multi-core,7704
+AMD Ryzen 5 5600G,3.9,6,Multi-core,7698
+Intel Xeon Silver 4214R,2.4,12,Multi-core,7696
+AMD Ryzen 5 5500,3.6,6,Multi-core,7679
+AMD Ryzen 7 7735U,2.7,8,Multi-core,7676
+Intel Core i3-13100F,3.4,4,Multi-core,7646
+Intel Xeon E-2288G,3.7,8,Multi-core,7639
+AMD Ryzen Threadripper 2990WX,3.0,32,Multi-core,7621
+AMD Ryzen 5 PRO 7540U,3.2,6,Multi-core,7606
+AMD Ryzen 9 5900HX,3.3,8,Multi-core,7587
+Intel Core i5-11400F,2.6,6,Multi-core,7585
+AMD Ryzen 7 PRO 4750G,3.6,8,Multi-core,7540
+Intel Xeon Gold 6152,2.1,22,Multi-core,7533
+AMD Ryzen 5 6600H,3.3,6,Multi-core,7519
+Intel Core i5-12500T,2.0,6,Multi-core,7512
+AMD Ryzen 7 7736U,2.7,8,Multi-core,7489
+Intel Core i7-9800X,3.8,8,Multi-core,7471
+AMD EPYC 7302P,3.0,16,Multi-core,7462
+AMD Ryzen Threadripper 2920X,3.5,12,Multi-core,7460
+Intel Xeon E5-2690 v4,2.6,14,Multi-core,7450
+Intel Core i7-5960X,3.0,8,Multi-core,7432
+Intel Xeon E5-2698 v3,2.3,16,Multi-core,7421
+Intel Core i3-12100F,3.3,4,Multi-core,7416
+Intel Core 7 150U,1.8,10,Multi-core,7416
+AMD Ryzen 7 PRO 6850U,2.7,8,Multi-core,7411
+Intel Xeon E5-2697 v3,2.6,14,Multi-core,7397
+AMD Ryzen 7 6800U,2.7,8,Multi-core,7384
+Intel Xeon W-2140B,3.2,8,Multi-core,7381
+Intel Core i5-12600T,2.1,6,Multi-core,7374
+Intel Xeon E-2278G,3.4,8,Multi-core,7354
+Intel Xeon E5-2673 v4,2.3,20,Multi-core,7337
+Intel Core i3-12300,3.5,4,Multi-core,7301
+Intel Core i7-6900K,3.2,8,Multi-core,7291
+Intel Core i5-11400,2.6,6,Multi-core,7287
+Intel Core i3-13100,3.4,4,Multi-core,7283
+Intel Xeon E5-2695 v4,2.1,18,Multi-core,7281
+Intel Core i5-11500,2.7,6,Multi-core,7254
+Intel Core i7-10700F,2.9,8,Multi-core,7253
+Intel Core i9-9900,3.1,8,Multi-core,7245
+Intel Core i7-9700K,3.6,8,Multi-core,7238
+Intel Xeon Processor E5-1680 v3,3.2,8,Multi-core,7219
+Intel Core i7-12700TE,1.4,12,Multi-core,7217
+Intel Xeon E-2356G,3.2,6,Multi-core,7213
+AMD Ryzen 7 5800H,3.2,8,Multi-core,7210
+AMD Ryzen 5 3600XT,3.8,6,Multi-core,7197
+AMD Ryzen Threadripper 2970WX,3.0,24,Multi-core,7195
+AMD Ryzen 5 PRO 5650G,3.9,6,Multi-core,7183
+Intel Xeon w3-2423,2.1,6,Multi-core,7174
+AMD Ryzen Threadripper 1920X,3.5,12,Multi-core,7168
+Intel Core i7-9700KF,3.6,8,Multi-core,7164
+Intel Core i7-10700TE,2.0,8,Multi-core,7140
+Intel Core i7-10700,2.9,8,Multi-core,7135
+Intel Core i5-12400T,1.8,6,Multi-core,7128
+AMD Ryzen 7 5700GE,3.2,8,Multi-core,7095
+AMD Ryzen 5 3600X,3.8,6,Multi-core,7092
+Intel Xeon E5-2690 v3,2.6,12,Multi-core,7091
+Intel Xeon Silver 4309Y,2.8,8,Multi-core,7055
+Intel Xeon W-2235,3.8,6,Multi-core,7042
+Intel Xeon E5-2683 v4,2.1,16,Multi-core,7035
+Intel Xeon E5-2689 v4,3.1,10,Multi-core,7027
+Intel Core i3-13100E,3.3,4,Multi-core,7025
+AMD Ryzen 5 7535HS,3.3,6,Multi-core,7010
+AMD Ryzen 5 PRO 5650GE,3.4,6,Multi-core,6982
+Intel Xeon Silver 4215R,3.2,8,Multi-core,6969
+Intel Xeon E5-1660 v3,3.0,8,Multi-core,6960
+Intel Core i7-8086K,4.0,6,Multi-core,6951
+Intel Xeon W-10885M,2.4,8,Multi-core,6949
+AMD Ryzen 7 5800U,1.9,8,Multi-core,6922
+Intel Core i5-10600K,4.1,6,Multi-core,6919
+AMD Ryzen 5 3600,3.6,6,Multi-core,6913
+AMD Ryzen 7 PRO 5750GE,3.2,8,Multi-core,6907
+AMD Ryzen 5 PRO 6650H,3.3,6,Multi-core,6903
+Intel Xeon Gold 6130,2.1,16,Multi-core,6876
+Intel Xeon E5-2680 v4,2.4,14,Multi-core,6875
+Intel Core i5-10600KF,4.1,6,Multi-core,6809
+Intel Core i3-12100,3.3,4,Multi-core,6799
+Intel Core i3-12300T,2.3,4,Multi-core,6782
+Intel Xeon E5-2687W v3,3.1,10,Multi-core,6762
+Intel Xeon Gold 6134,3.2,8,Multi-core,6756
+Intel Xeon Gold 5118,2.3,12,Multi-core,6756
+Intel Xeon E-2286M,2.4,8,Multi-core,6753
+Intel Xeon E5-1680 v4,3.4,8,Multi-core,6747
+AMD Ryzen 9 4900H,3.3,8,Multi-core,6744
+Intel Xeon E5-2678 v3,2.5,12,Multi-core,6732
+Intel Xeon W-1250P,4.1,6,Multi-core,6709
+Intel Core i5-11600T,1.7,6,Multi-core,6653
+Intel Xeon E-2286G,4.0,6,Multi-core,6651
+Intel Xeon E5-2667 v4,3.2,8,Multi-core,6631
+Intel Core i7-11700T,1.4,8,Multi-core,6621
+AMD Ryzen 5 PRO 6650U,2.9,6,Multi-core,6619
+Intel Xeon Silver 4215,2.5,8,Multi-core,6610
+Intel Core i7-10875H,2.3,8,Multi-core,6608
+AMD Ryzen 5 PRO 3600,3.6,6,Multi-core,6608
+Intel Core i9-9900T,2.1,8,Multi-core,6595
+AMD Ryzen 5 7535U,2.9,6,Multi-core,6592
+Intel Xeon Gold 5215,2.5,10,Multi-core,6573
+AMD Ryzen 5 6600U,2.9,6,Multi-core,6568
+Intel Core i7-11600H,2.9,6,Multi-core,6563
+Intel Core i9-10900T,1.9,10,Multi-core,6551
+Intel Xeon E-2276G,3.8,6,Multi-core,6551
+Intel Core i7-8700K,3.7,6,Multi-core,6533
+Intel Xeon W-2135,3.7,6,Multi-core,6521
+AMD Ryzen 7 PRO 4750GE,3.1,8,Multi-core,6430
+AMD Ryzen 7 PRO 6860Z,2.7,8,Multi-core,6426
+Intel Xeon Silver 4214,2.2,12,Multi-core,6424
+AMD Ryzen 7 5825U,2.0,8,Multi-core,6415
+Intel Core i5-11400H,2.7,6,Multi-core,6409
+Intel Xeon E5-1660 v4,3.2,8,Multi-core,6398
+AMD Ryzen 7 4800HS,2.9,8,Multi-core,6395
+Intel Core i7-9700F,3.0,8,Multi-core,6385
+Intel Xeon E5-2660 v4,2.0,14,Multi-core,6379
+Intel Xeon E5-2680 v3,2.5,12,Multi-core,6373
+Intel Core i5-1345URE,1.4,10,Multi-core,6363
+AMD Ryzen 9 4900HS,3.0,8,Multi-core,6351
+Intel Core i9-10885H,2.4,8,Multi-core,6325
+Intel Core i7-1260U,1.1,10,Multi-core,6320
+AMD Ryzen 5 5560U,2.3,6,Multi-core,6316
+Intel Xeon E-2236,3.4,6,Multi-core,6310
+AMD Ryzen 5 5600GE,3.4,6,Multi-core,6302
+Intel Xeon E-2176G,3.7,6,Multi-core,6297
+Intel Core i7-1265U,1.8,10,Multi-core,6296
+AMD EPYC 7551P,2.0,32,Multi-core,6296
+AMD Ryzen 7 7730U,2.0,8,Multi-core,6295
+Intel Core i9-9980HK,2.4,8,Multi-core,6289
+Intel Core i5-9600K,3.7,6,Multi-core,6270
+Intel Xeon E-2146G,3.5,6,Multi-core,6258
+Intel Xeon E-2136,3.3,6,Multi-core,6252
+Intel Core i7-9700,3.0,8,Multi-core,6239
+AMD Ryzen 7 PRO 2700X,3.6,8,Multi-core,6239
+Intel Core i5-11500H,2.9,6,Multi-core,6235
+AMD Ryzen 5 4500,3.6,6,Multi-core,6234
+Intel Core i5-10600,3.3,6,Multi-core,6220
+Intel Xeon E-2186G,3.8,6,Multi-core,6204
+AMD Ryzen 7 PRO 5850U,1.9,8,Multi-core,6196
+Intel Core i7-7800X,3.5,6,Multi-core,6145
+Intel Core i7-10870H,2.2,8,Multi-core,6137
+Intel Xeon W-1250,3.3,6,Multi-core,6117
+Intel Xeon Silver 4210R,2.4,10,Multi-core,6116
+AMD Ryzen 5 PRO 4650G,3.7,6,Multi-core,6108
+AMD Ryzen 7 2700X,3.7,8,Multi-core,6105
+AMD Ryzen 5 4600G,3.7,6,Multi-core,6094
+Intel Xeon E5-4627 v4,2.6,10,Multi-core,6088
+Intel Core i9-9880H,2.3,8,Multi-core,6079
+AMD Ryzen 7 4800H,2.9,8,Multi-core,6076
+Intel Core i5-11260H,2.6,6,Multi-core,6070
+Intel Xeon E5-2618L v3,2.3,8,Multi-core,6055
+Intel Core i3-12100T,2.2,4,Multi-core,6045
+Intel Xeon E5-2683 v3,2.0,14,Multi-core,6008
+Intel Xeon E-2246G,3.6,6,Multi-core,5988
+Intel Xeon E5-2670 v3,2.3,12,Multi-core,5977
+Intel Core i7-8700,3.2,6,Multi-core,5966
+Intel Xeon Gold 6128,3.4,6,Multi-core,5960
+Intel Xeon E5-2660 v3,2.6,10,Multi-core,5954
+AMD Ryzen Threadripper 1900X,3.8,8,Multi-core,5928
+AMD Ryzen 5 3500X,3.6,6,Multi-core,5917
+Intel Core i5-9600KF,3.7,6,Multi-core,5916
+Intel Xeon Gold 5120,2.2,14,Multi-core,5913
+AMD Ryzen 5 PRO 7530U,2.0,6,Multi-core,5904
+AMD Ryzen 3 3300X,3.8,4,Multi-core,5894
+Intel Xeon Silver 4116,2.1,12,Multi-core,5860
+Intel Xeon E5-2643 v4,3.4,6,Multi-core,5850
+Intel Xeon W-2133,3.6,6,Multi-core,5826
+Intel Core i7-6850K,3.6,6,Multi-core,5815
+AMD Ryzen 3 7440U,3.0,4,Multi-core,5806
+Intel Core i7-1250U,1.1,10,Multi-core,5781
+Intel Core i5-10400F,2.9,6,Multi-core,5780
+AMD Ryzen 5 5600U,2.3,6,Multi-core,5756
+Intel Core i5-11500T,1.5,6,Multi-core,5748
+Intel Xeon E-2126G,3.3,6,Multi-core,5743
+Intel Xeon W-10855M,2.8,6,Multi-core,5742
+Intel Core i7-8700B,3.2,6,Multi-core,5740
+Intel Core i5-8600K,3.6,6,Multi-core,5737
+Intel Core i7-5930K,3.5,6,Multi-core,5720
+AMD Ryzen 5 PRO 4650GE,3.3,6,Multi-core,5714
+Intel Core i3-10325,3.9,4,Multi-core,5712
+Intel Core i3-13100TE,2.4,4,Multi-core,5703
+Intel Core i7-10700T,2.0,8,Multi-core,5699
+Intel Core i7-6800K,3.4,6,Multi-core,5688
+Intel Xeon Silver 4210,2.2,10,Multi-core,5676
+AMD Ryzen 5 5600H,3.3,6,Multi-core,5663
+Intel Core i5-1235U,1.3,10,Multi-core,5661
+Intel Core i7-9700E,2.6,8,Multi-core,5661
+AMD Ryzen 7 1800X,3.6,8,Multi-core,5660
+AMD Ryzen 5 7530U,2.0,6,Multi-core,5659
+AMD Ryzen 7 PRO 7730U,2.0,8,Multi-core,5656
+AMD Ryzen 7 PRO 5875U,2.0,8,Multi-core,5653
+Intel Xeon E5-2640 v4,2.4,10,Multi-core,5643
+AMD EPYC 7551,2.0,32,Multi-core,5634
+AMD Ryzen 7 4800U,1.8,8,Multi-core,5630
+Intel Core i5-10500E,3.1,6,Multi-core,5598
+AMD Ryzen 7 1700X,3.4,8,Multi-core,5590
+Intel Core i5-1230U,1.0,10,Multi-core,5556
+Intel Core i5-11400T,1.3,6,Multi-core,5549
+AMD Ryzen 5 PRO 5650U,2.3,6,Multi-core,5545
+Intel Core i5-10400,2.9,6,Multi-core,5541
+Intel Core i5-10500,3.1,6,Multi-core,5523
+AMD Ryzen 7 2700,3.2,8,Multi-core,5521
+Intel Core i7-11370H,3.3,4,Multi-core,5519
+Intel Xeon E5-1650 v3,3.5,6,Multi-core,5514
+AMD Ryzen 5 5625U,2.3,6,Multi-core,5501
+AMD Ryzen 5 PRO 5675U,2.3,6,Multi-core,5481
+Intel Core i7-11390H,3.4,4,Multi-core,5480
+Intel Core i7-5820K,3.3,6,Multi-core,5463
+Intel Core i7-1185G7E,2.8,4,Multi-core,5459
+Intel Xeon E5-1650 v4,3.6,6,Multi-core,5452
+AMD Ryzen 3 5300G,4.0,4,Multi-core,5450
+Intel Xeon E5-2640 v3,2.6,8,Multi-core,5427
+AMD Ryzen 5 3500,3.6,6,Multi-core,5418
+AMD Ryzen 7 5700U,1.8,8,Multi-core,5414
+Intel Xeon E5-2650 v3,2.3,10,Multi-core,5413
+Intel Core i7-10850H,2.7,6,Multi-core,5397
+Intel Core i5-10505,3.2,6,Multi-core,5381
+Intel Core i7-10750H,2.6,6,Multi-core,5379
+Intel Core i7-11375H,3.3,4,Multi-core,5378
+Intel Xeon W-2225,4.1,4,Multi-core,5371
+AMD Ryzen 7 PRO 1700X,3.4,8,Multi-core,5355
+AMD Ryzen 7 PRO 2700,3.2,8,Multi-core,5355
+AMD Ryzen 3 PRO 5350G,4.0,4,Multi-core,5351
+Intel Core i5-11320H,3.2,4,Multi-core,5350
+Intel Xeon E-2186M,2.9,6,Multi-core,5335
+Intel Core i7-1068NG7,2.3,4,Multi-core,5327
+AMD Ryzen 3 PRO 5350GE,3.6,4,Multi-core,5318
+Intel Xeon Silver 4114,2.2,10,Multi-core,5313
+AMD Ryzen 5 2600X,3.6,6,Multi-core,5260
+Intel Xeon E5-2630 v4,2.2,10,Multi-core,5260
+Intel Core i7-1185G7,3.0,4,Multi-core,5259
+Intel Core i7-7740X,4.3,4,Multi-core,5259
+Intel Xeon E-2324G,3.1,4,Multi-core,5257
+Intel Core i9-8950HK,2.9,6,Multi-core,5242
+AMD Ryzen 7 PRO 1700,3.0,8,Multi-core,5214
+Intel Core i7-9700T,2.0,8,Multi-core,5210
+AMD Ryzen 7 1700,3.0,8,Multi-core,5194
+Intel Core i7-1195G7,2.9,4,Multi-core,5190
+Intel Xeon E-2274G,4.0,4,Multi-core,5174
+Intel Xeon E-2276M,2.8,6,Multi-core,5170
+Intel Core i5-9500F,3.0,6,Multi-core,5170
+AMD Ryzen 7 PRO 4750U,1.7,8,Multi-core,5157
+Intel Core i7-7700K,4.2,4,Multi-core,5156
+AMD Ryzen 5 4600H,3.0,6,Multi-core,5141
+Intel Core i5-7640X,4.0,4,Multi-core,5137
+AMD Ryzen 5 4600HS,3.0,6,Multi-core,5135
+Intel Xeon E-2334,3.4,4,Multi-core,5132
+Intel Core i5-10500H,2.5,6,Multi-core,5105
+Intel Xeon E-2174G,3.8,4,Multi-core,5104
+AMD Ryzen 3 3100,3.6,4,Multi-core,5099
+Intel Core i5-9600,3.1,6,Multi-core,5082
+Intel Xeon E5-2630 v3,2.4,8,Multi-core,5065
+Intel Xeon E-2244G,3.8,4,Multi-core,5060
+Intel Core i7-9850H,2.6,6,Multi-core,5056
+Intel Core i5-8600,3.1,6,Multi-core,5047
+Intel Xeon E-2134,3.5,4,Multi-core,5023
+Intel U300E,1.1,5,Multi-core,5002
+Intel Xeon W-2125,4.0,4,Multi-core,4994
+Intel Core i3-13100T,2.5,4,Multi-core,4993
+Intel Core i5-8500B,3.0,6,Multi-core,4991
+Intel Core i7-5775C,3.3,4,Multi-core,4989
+Intel Core i7-9750H,2.6,6,Multi-core,4982
+Intel Core i5-10600T,2.4,6,Multi-core,4973
+AMD Ryzen 5 PRO 2600,3.4,6,Multi-core,4970
+Intel Core i5-9500,3.0,6,Multi-core,4958
+Intel Core i5-1038NG7,2.0,4,Multi-core,4948
+Intel Core i3-10300,3.7,4,Multi-core,4938
+Intel Core i5-9400F,2.9,6,Multi-core,4930
+Intel Core i7-6700K,4.0,4,Multi-core,4926
+AMD Ryzen 7 4700U,2.0,8,Multi-core,4923
+Intel Core i7-1165G7,2.8,4,Multi-core,4899
+AMD Ryzen 5 2600,3.4,6,Multi-core,4894
+Intel Xeon E3-1275 v6,3.8,4,Multi-core,4889
+Intel Core i5-11300H,3.1,4,Multi-core,4882
+Intel Xeon E-2144G,3.6,4,Multi-core,4869
+Intel Core i5-8500,3.0,6,Multi-core,4866
+AMD Ryzen 3 4100,3.8,4,Multi-core,4865
+Intel Core i3-1215U,1.2,6,Multi-core,4853
+Intel Core i5-1145G7,2.6,4,Multi-core,4852
+Intel Xeon Silver 4208,2.1,8,Multi-core,4848
+Intel Core i5-8400,2.8,6,Multi-core,4836
+Intel Core i7-9750HF,2.6,6,Multi-core,4831
+Intel Core i5-1155G7,2.5,4,Multi-core,4810
+Intel Core i5-9400,2.9,6,Multi-core,4807
+Intel Core i3-10320,3.8,4,Multi-core,4793
+AMD Ryzen 3 PRO 5450U,2.6,4,Multi-core,4791
+Intel Xeon E-2176M,2.7,6,Multi-core,4782
+AMD Ryzen 5 1600X,3.6,6,Multi-core,4765
+Intel Core i7-8700T,2.4,6,Multi-core,4735
+AMD Ryzen 5 4600U,2.1,6,Multi-core,4715
+Intel Core i7-8850H,2.6,6,Multi-core,4695
+Intel Xeon W-2223,3.6,4,Multi-core,4667
+AMD EPYC 7401P,2.0,24,Multi-core,4666
+Intel Core i7-8750H,2.2,6,Multi-core,4664
+Intel Core i7-8569U,2.8,4,Multi-core,4654
+Intel Core i3-10305,3.8,4,Multi-core,4654
+Intel Core i5-10500T,2.3,6,Multi-core,4653
+AMD Ryzen 5 1600,3.2,6,Multi-core,4640
+Intel Xeon E3-1280 v6,3.9,4,Multi-core,4634
+AMD Ryzen 3 PRO 4350G,3.8,4,Multi-core,4612
+AMD EPYC 7351P,2.4,16,Multi-core,4607
+Intel Core i7-5950HQ,2.9,4,Multi-core,4601
+Intel Core i7-8809G,3.1,4,Multi-core,4594
+AMD Ryzen 3 PRO 4350GE,3.5,4,Multi-core,4579
+Intel Xeon D-1541,2.1,8,Multi-core,4578
+Intel Xeon Gold 5122,3.6,4,Multi-core,4574
+Intel Core i3-10105F,3.7,4,Multi-core,4570
+Intel Xeon E3-1270 v6,3.8,4,Multi-core,4567
+Intel Xeon Silver 4110,2.1,8,Multi-core,4562
+AMD Ryzen 5 PRO 4650U,2.1,6,Multi-core,4561
+Intel Xeon E3-1245 v6,3.7,4,Multi-core,4552
+AMD Ryzen 3 PRO 7330U,2.3,4,Multi-core,4545
+AMD Ryzen 5 5500U,2.1,6,Multi-core,4538
+AMD Ryzen 3 PRO 5475U,2.7,4,Multi-core,4525
+Intel Xeon E5-2637 v3,3.5,4,Multi-core,4512
+Intel Xeon E5-2620 v4,2.1,8,Multi-core,4509
+Intel Core i5-1135G7,2.4,4,Multi-core,4506
+Intel Core i3-10100F,3.6,4,Multi-core,4505
+Intel Core i5-9500E,3.0,6,Multi-core,4485
+Intel Core i7-7700,3.6,4,Multi-core,4480
+Intel Xeon E3-1575M v5,3.0,4,Multi-core,4473
+Intel Xeon E3-1286 v3,3.7,4,Multi-core,4472
+Intel Xeon E3-1230 v6,3.5,4,Multi-core,4471
+Intel Xeon E3-1285 v4,3.5,4,Multi-core,4457
+Intel Xeon E3-1280 v5,3.7,4,Multi-core,4430
+Intel Core i5-9600T,2.3,6,Multi-core,4424
+Intel Xeon E3-1270 v5,3.6,4,Multi-core,4414
+Intel Core i7-4790K,4.0,4,Multi-core,4400
+Intel Xeon E3-1285L v4,3.4,4,Multi-core,4397
+AMD Ryzen 3 5400U,2.6,4,Multi-core,4370
+Intel Xeon E3-1275 v5,3.6,4,Multi-core,4367
+Intel Xeon E-2224G,3.5,4,Multi-core,4362
+Intel Xeon Silver 4108,1.8,8,Multi-core,4352
+Intel Core i3-8350K,4.0,4,Multi-core,4342
+Intel Xeon E3-1240 v6,3.7,4,Multi-core,4339
+Intel Xeon E5-2697 v2,2.7,12,Multi-core,4334
+Intel Xeon W-2123,3.6,4,Multi-core,4332
+Intel Core i3-10105,3.7,4,Multi-core,4325
+Intel Xeon E3-1240 v5,3.5,4,Multi-core,4316
+AMD Ryzen 3 5425U,2.7,4,Multi-core,4316
+Intel Xeon E5-2630L v3,1.8,8,Multi-core,4311
+Intel Xeon E3-1260L v5,2.9,4,Multi-core,4298
+Intel Core i7-8559U,2.7,4,Multi-core,4289
+Intel Core i5-10400T,2.0,6,Multi-core,4280
+Intel Core i5-8600T,2.3,6,Multi-core,4274
+Intel Core i5-7600K,3.8,4,Multi-core,4242
+Intel Core i5-9500T,2.2,6,Multi-core,4234
+Intel Core i3-10100,3.6,4,Multi-core,4233
+Intel Core i5-9400H,2.5,4,Multi-core,4230
+Intel Core i3-10300T,3.0,4,Multi-core,4218
+Intel Core i7-6700,3.4,4,Multi-core,4202
+Intel Xeon E3-1230 v5,3.4,4,Multi-core,4198
+Intel Xeon E5-1630 v4,3.7,4,Multi-core,4191
+Intel Xeon E5-1680 v2,3.0,8,Multi-core,4186
+Intel Core i7-7820HK,2.9,4,Multi-core,4182
+Intel Xeon E3-1245 v5,3.5,4,Multi-core,4179
+Intel Xeon E-2124G,3.4,4,Multi-core,4173
+AMD Ryzen 5 5500H,3.3,4,Multi-core,4169
+Intel Core i5-5675C,3.1,4,Multi-core,4159
+Intel Xeon E-2224,3.4,4,Multi-core,4156
+Intel Xeon E5-2637 v4,3.5,4,Multi-core,4154
+Intel Xeon E5-2687W v2,3.4,8,Multi-core,4145
+Intel Core i5-8500T,2.1,6,Multi-core,4142
+Intel Pentium Gold G7400,3.7,2,Multi-core,4139
+AMD Ryzen 3 7330U,2.3,4,Multi-core,4131
+Intel Xeon E5-2620 v3,2.4,6,Multi-core,4126
+Intel Core i5-8259U,2.3,4,Multi-core,4120
+Intel Xeon E5-2690 v2,3.0,10,Multi-core,4118
+Intel Xeon E3-1281 v3,3.7,4,Multi-core,4098
+Intel Core i5-10200H,2.4,4,Multi-core,4098
+Intel Xeon E5-1630 v3,3.7,4,Multi-core,4097
+Intel Core i7-4770K,3.5,4,Multi-core,4085
+Intel Xeon E5-2696 v2,2.5,12,Multi-core,4073
+Intel Core i7-1185GRE,1.8,4,Multi-core,4060
+Intel Core i7-7920HQ,3.1,4,Multi-core,4056
+Intel Xeon E5-1620 v4,3.5,4,Multi-core,4053
+Intel Core i5-10300H,2.5,4,Multi-core,4043
+Intel Core i3-1125G4,2.0,4,Multi-core,4038
+Intel Core i5-6600K,3.5,4,Multi-core,4036
+Intel Xeon E5-2673 v2,3.3,8,Multi-core,4033
+Intel Xeon E5-2686 v4,2.3,8,Multi-core,4031
+Intel Xeon E5-2667 v3,3.2,8,Multi-core,4026
+Intel Xeon E3-1276 v3,3.6,4,Multi-core,4016
+Intel Core i5-10400H,2.6,4,Multi-core,4010
+Intel Core i3-9300,3.7,4,Multi-core,4000
+Intel Xeon E5-2667 v2,3.3,8,Multi-core,3997
+Intel Core i7-5775R,3.3,4,Multi-core,3996
+Intel Core i3-9350KF,4.0,4,Multi-core,3994
+Intel Core i7-8705G,3.1,4,Multi-core,3988
+Intel Core i7-6820HK,2.7,4,Multi-core,3977
+Intel Xeon E3-1545M v5,2.9,4,Multi-core,3977
+AMD Ryzen 3 PRO 4450U,2.5,4,Multi-core,3975
+Intel Core i5-9400T,1.8,6,Multi-core,3971
+Intel Core i7-7700T,2.9,4,Multi-core,3948
+Intel Core i5-8257U,1.4,4,Multi-core,3948
+Intel Xeon E-2124,3.3,4,Multi-core,3948
+Intel Core i7-6770HQ,2.6,4,Multi-core,3924
+Intel Core i5-8400T,1.7,6,Multi-core,3923
+Intel Xeon E3-1270 v3,3.5,4,Multi-core,3895
+Intel Xeon E3-1241 v3,3.5,4,Multi-core,3893
+Intel Core i7-4771,3.5,4,Multi-core,3890
+Intel Core i7-4790,3.6,4,Multi-core,3888
+Intel Xeon E5-2695 v2,2.4,12,Multi-core,3888
+Intel Core i7-4980HQ,2.8,4,Multi-core,3886
+Intel Xeon E5-1620 v3,3.5,4,Multi-core,3884
+Intel Xeon E3-1245 v3,3.4,4,Multi-core,3869
+Intel Core i7-4940MX,3.1,4,Multi-core,3869
+Intel Xeon E3-1275 v3,3.5,4,Multi-core,3861
+Intel Xeon E3-1280 v3,3.6,4,Multi-core,3857
+Intel Xeon E5-2680 v2,2.8,10,Multi-core,3854
+Intel Xeon E3-1271 v3,3.6,4,Multi-core,3853
+Intel Core i7-4770R,3.2,4,Multi-core,3851
+Intel Xeon E-2314,2.8,4,Multi-core,3837
+Intel Core i5-7600,3.5,4,Multi-core,3833
+AMD Ryzen 5 2500X,3.6,4,Multi-core,3813
+Intel Core i7-6920HQ,2.9,4,Multi-core,3812
+Intel Core i7-4770,3.4,4,Multi-core,3806
+Intel Xeon E3-1535M v6,3.1,4,Multi-core,3789
+Intel Xeon E3-1535M v5,2.9,4,Multi-core,3765
+Intel Core i5-8279U,2.4,4,Multi-core,3764
+Intel Xeon E3-1240 v3,3.4,4,Multi-core,3763
+Intel Xeon E3-1231 v3,3.4,4,Multi-core,3762
+Intel Core i7-4790S,3.2,4,Multi-core,3760
+Intel Core i3-9100F,3.6,4,Multi-core,3750
+Intel Core i5-9300H,2.4,4,Multi-core,3743
+AMD Ryzen 5 7520U,2.8,4,Multi-core,3736
+Intel Core i7-4870HQ,2.5,4,Multi-core,3726
+Intel Core i5-5675R,3.1,4,Multi-core,3724
+Intel Core i5-8300H,2.3,4,Multi-core,3722
+Intel Core i3-10100T,3.0,4,Multi-core,3721
+Intel Core i7-4960HQ,2.6,4,Multi-core,3715
+Intel Core i5-4670K,3.4,4,Multi-core,3702
+Intel Xeon E3-1230 v3,3.3,4,Multi-core,3694
+Intel Core i5-9300HF,2.4,4,Multi-core,3688
+AMD Ryzen 5 1500X,3.5,4,Multi-core,3684
+Intel Xeon E5-2623 v3,3.0,4,Multi-core,3675
+Intel Xeon E3-1246 v3,3.5,4,Multi-core,3673
+Intel Core i7-6820EQ,2.8,4,Multi-core,3673
+Intel Core i5-8400H,2.5,4,Multi-core,3661
+Intel Core i5-4690K,3.5,4,Multi-core,3660
+Intel Core i7-3970X,3.5,6,Multi-core,3656
+Intel Xeon E3-1505M v5,2.8,4,Multi-core,3648
+Intel Core i3-10105T,3.0,4,Multi-core,3648
+Intel Core i7-4770S,3.1,4,Multi-core,3647
+Intel Core i7-4930MX,3.0,4,Multi-core,3641
+AMD Ryzen 5 3400G,3.7,4,Multi-core,3634
+Intel Core i3-9100,3.6,4,Multi-core,3631
+Intel Core i3-8300,3.7,4,Multi-core,3630
+AMD Ryzen 3 5300U,2.6,4,Multi-core,3623
+Intel Core i7-7700HQ,2.8,4,Multi-core,3619
+AMD Ryzen 3 7320U,2.4,4,Multi-core,3613
+Intel Core i7-7820HQ,2.9,4,Multi-core,3595
+AMD Ryzen 5 PRO 1500,3.5,4,Multi-core,3580
+Intel Xeon E3-1225 v6,3.3,4,Multi-core,3573
+Intel Pentium Gold G7400T,3.1,2,Multi-core,3571
+Intel Core i7-6700T,2.8,4,Multi-core,3569
+Intel Core i5-6600,3.3,4,Multi-core,3568
+Intel Xeon Silver 4112,2.6,4,Multi-core,3544
+Intel Core i7-4770T,2.5,4,Multi-core,3538
+Intel Core i5-8305G,2.8,4,Multi-core,3536
+Intel Core i7-4860HQ,2.4,4,Multi-core,3527
+Intel Xeon E3-1505M v6,3.0,4,Multi-core,3525
+Intel Core i5-7500,3.4,4,Multi-core,3523
+Intel Core i7-1060NG7,1.2,4,Multi-core,3521
+Intel Core i7-4790T,2.7,4,Multi-core,3513
+Intel Xeon E3-1265L v3,2.5,4,Multi-core,3512
+Intel Core i3-8100B,3.6,4,Multi-core,3505
+Intel Xeon E3-1220 v6,3.0,4,Multi-core,3503
+Intel Xeon E5-2690,2.9,8,Multi-core,3493
+Intel Core i7-6820HQ,2.7,4,Multi-core,3490
+Intel Xeon E3-1275L v3,2.7,4,Multi-core,3474
+Intel Core i3-8100,3.6,4,Multi-core,3469
+Intel Xeon E3-1225 v5,3.3,4,Multi-core,3460
+Intel Core i7-4960X,3.6,6,Multi-core,3457
+Intel Core i3-10100E,3.2,4,Multi-core,3455
+Intel Core i5-7600T,2.8,4,Multi-core,3452
+Intel Xeon,2.2,4,Multi-core,3441
+Intel Core i7-6700HQ,2.6,4,Multi-core,3439
+Intel Xeon E5-2687W,3.1,8,Multi-core,3438
+Intel Core i3-8300T,3.2,4,Multi-core,3436
+Intel Core i7-4770HQ,2.2,4,Multi-core,3423
+Intel Xeon E3-1240L v5,2.1,4,Multi-core,3420
+Intel Xeon E5-2670 v2,2.5,10,Multi-core,3392
+Intel Xeon E5-2680,2.7,8,Multi-core,3377
+AMD Ryzen 3 4300U,2.7,4,Multi-core,3371
+Intel Core i7-4900MQ,2.8,4,Multi-core,3369
+Intel Core i7-4910MQ,2.9,4,Multi-core,3364
+AMD Ryzen 3 2300X,3.5,4,Multi-core,3364
+Intel Core i5-4690,3.5,4,Multi-core,3343
+Intel Core i7-4930K,3.4,6,Multi-core,3334
+AMD Ryzen 5 PRO 3400GE,3.3,4,Multi-core,3323
+Intel Xeon E3-1220 v5,3.0,4,Multi-core,3321
+Intel Core i5-1030NG7,1.1,4,Multi-core,3318
+Intel Xeon E5-1650 v2,3.5,6,Multi-core,3314
+Intel Core i5-4670S,3.1,4,Multi-core,3300
+Intel Xeon E3-1226 v3,3.3,4,Multi-core,3290
+Intel Core i5-7400,3.0,4,Multi-core,3287
+Intel Core i5-4670,3.4,4,Multi-core,3284
+Intel Xeon E5-1660 v2,3.7,6,Multi-core,3278
+Intel Core i5-6500,3.2,4,Multi-core,3277
+Intel Core i7-4750HQ,2.0,4,Multi-core,3261
+Intel Core i5-4690S,3.2,4,Multi-core,3251
+Intel Core i5-5575R,2.8,4,Multi-core,3247
+Intel Xeon E3-1220 v3,3.1,4,Multi-core,3228
+AMD Ryzen 5 2400G,3.6,4,Multi-core,3227
+Intel Xeon E5-1607 v3,3.1,4,Multi-core,3225
+Intel Core i3-9100TE,2.2,4,Multi-core,3214
+Intel Xeon E5-2643 v2,3.5,6,Multi-core,3212
+Intel Core i7-4810MQ,2.8,4,Multi-core,3204
+Intel Core i3-9100T,3.1,4,Multi-core,3202
+Intel Core i7-4850HQ,2.3,4,Multi-core,3200
+Intel Xeon E5-2660 v2,2.2,10,Multi-core,3200
+Intel Core i7-3960X,3.3,6,Multi-core,3193
+Intel Core i7-4800MQ,2.7,4,Multi-core,3188
+Intel Xeon E3-1225 v3,3.2,4,Multi-core,3174
+Intel Core i5-4590,3.3,4,Multi-core,3160
+Intel Core i3-8100T,3.1,4,Multi-core,3142
+Intel Xeon E5-2650 v2,2.6,8,Multi-core,3140
+Intel Core i7-5700HQ,2.7,4,Multi-core,3140
+AMD Ryzen 5 1400,3.2,4,Multi-core,3137
+Intel Xeon E5-2470 v2,2.4,10,Multi-core,3137
+Intel Xeon E5-1603 v4,2.8,4,Multi-core,3132
+Intel Core i7-4785T,2.2,4,Multi-core,3131
+AMD Ryzen 3 1300X,3.5,4,Multi-core,3130
+Intel Core i3-1115G4,3.0,2,Multi-core,3110
+Intel Core i5-6600T,2.7,4,Multi-core,3106
+Intel Core i5-4570,3.2,4,Multi-core,3105
+Intel Xeon D-1521,2.4,4,Multi-core,3103
+Intel Core i7-4710HQ,2.5,4,Multi-core,3088
+Intel Core i7-4720HQ,2.6,4,Multi-core,3081
+Intel Xeon E5-2450 v2,2.5,8,Multi-core,3073
+Intel Xeon E5-2670,2.6,8,Multi-core,3067
+AMD Ryzen 7 3750H,2.3,4,Multi-core,3067
+Intel Core i5-7500T,2.7,4,Multi-core,3066
+AMD Ryzen 3 3200G,3.6,4,Multi-core,3064
+Intel Core i7-4700MQ,2.4,4,Multi-core,3059
+Intel Core i5-10210U,1.6,4,Multi-core,3059
+Intel Core i7-4710MQ,2.5,4,Multi-core,3056
+Intel Xeon Bronze 3106,1.7,8,Multi-core,3054
+Intel Core i7-4700HQ,2.4,4,Multi-core,3045
+Intel Core i5-6400,2.7,4,Multi-core,3045
+Intel Xeon E5-1660,3.3,6,Multi-core,3043
+Intel Core i5-7440HQ,2.8,4,Multi-core,3043
+Intel Core i5-7300HQ,2.5,4,Multi-core,3041
+Intel Core i5-6402P,2.8,4,Multi-core,3032
+Intel Core i3-7350K,4.2,2,Multi-core,3018
+Intel Core i5-4590S,3.0,4,Multi-core,2996
+Intel Core i7-3930K,3.2,6,Multi-core,2984
+Intel Xeon E3-1268L v3,2.3,4,Multi-core,2982
+Intel Xeon E5-1607 v4,3.1,4,Multi-core,2982
+AMD Ryzen 7 PRO 3700U,2.3,4,Multi-core,2981
+Intel Core i7-6700TE,2.4,4,Multi-core,2980
+Intel Core i7-4765T,2.0,4,Multi-core,2979
+Intel Xeon E5-2623 v4,2.6,4,Multi-core,2976
+Intel Core i3-1115G4E,2.2,2,Multi-core,2972
+Intel Core i7-4702HQ,2.2,4,Multi-core,2962
+Intel Core i5-4460,3.2,4,Multi-core,2957
+Intel Core i7-4702MQ,2.2,4,Multi-core,2954
+Intel Core i5-6440HQ,2.6,4,Multi-core,2947
+Intel Core i5-4570S,2.9,4,Multi-core,2946
+Intel Core i5-4440,3.1,4,Multi-core,2932
+AMD Ryzen 3 PRO 3200GE,3.3,4,Multi-core,2916
+Intel Xeon E5-1650,3.2,6,Multi-core,2896
+Intel Core i5-4570R,2.7,4,Multi-core,2878
+AMD Ryzen 5 3550H,2.1,4,Multi-core,2877
+Intel Xeon Bronze 3204,1.9,6,Multi-core,2872
+Intel Core i7-4712MQ,2.3,4,Multi-core,2870
+Intel Core i4-4690T,2.5,4,Multi-core,2853
+Intel Core i5-4430,3.0,4,Multi-core,2850
+AMD Ryzen 3 1200,3.1,4,Multi-core,2849
+Intel Xeon E5-2665,2.4,8,Multi-core,2842
+AMD Ryzen 3 2200G,3.5,4,Multi-core,2839
+Intel Core i5-7400T,2.4,4,Multi-core,2836
+Intel Core i5-6500T,2.5,4,Multi-core,2827
+Intel Celeron G6900,3.4,2,Multi-core,2827
+Intel Core i5-6300HQ,2.3,4,Multi-core,2774
+Intel Core i5-4430S,2.7,4,Multi-core,2773
+Intel Xeon E5-2667,2.9,6,Multi-core,2763
+Intel Core i7-4712HQ,2.3,4,Multi-core,2760
+Intel Core i5-4460S,2.9,4,Multi-core,2749
+Intel Core i5-6500TE,2.3,4,Multi-core,2749
+Intel Xeon E5-2660,2.2,8,Multi-core,2744
+Intel Xeon E5-2609 v3,1.9,6,Multi-core,2743
+Intel Core i3-7300,4.0,2,Multi-core,2703
+Intel Celeron G6900E,3.0,2,Multi-core,2702
+AMD Ryzen 3 PRO 1300,3.5,4,Multi-core,2698
+AMD Ryzen 7 3700U,2.3,4,Multi-core,2672
+Intel Xeon E5-2637 v2,3.5,4,Multi-core,2667
+Intel Core i7-10510U,1.8,4,Multi-core,2648
+Intel Xeon E5-2603 v4,1.7,6,Multi-core,2620
+Intel Core i7-7567U,3.5,2,Multi-core,2618
+Intel Core i7-990X,3.5,6,Multi-core,2612
+Intel Xeon W3690,3.5,6,Multi-core,2607
+AMD Ryzen 5 PRO 3500U,2.1,4,Multi-core,2605
+Intel Core i3-7320,4.1,2,Multi-core,2602
+Intel Core i3-6320,3.9,2,Multi-core,2601
+AMD Ryzen 7 3780U Microsoft Surface Edition,2.3,4,Multi-core,2597
+Intel Pentium Gold 7505,2.0,2,Multi-core,2592
+AMD Ryzen 5 3580U Microsoft Surface Edition,2.1,4,Multi-core,2585
+AMD Ryzen 3 5125C,3.0,2,Multi-core,2566
+Intel Xeon E5-2650,2.0,8,Multi-core,2564
+Intel Core i5-6400T,2.2,4,Multi-core,2553
+AMD Ryzen 5 PRO 2500U,2.0,4,Multi-core,2542
+Intel Core i7-980X,3.3,6,Multi-core,2541
+Intel Core i5-4590T,2.0,4,Multi-core,2541
+Intel Xeon E5-2650L v2,1.7,10,Multi-core,2533
+AMD Ryzen 7 PRO 2700U,2.2,4,Multi-core,2525
+Intel Xeon X5690,3.5,6,Multi-core,2524
+Intel Core i7-4820K,3.7,4,Multi-core,2521
+Intel Core i5-4670T,2.3,4,Multi-core,2510
+Intel Xeon W3680,3.3,6,Multi-core,2507
+Intel Xeon E3-1290 v2,3.7,4,Multi-core,2502
+Intel Core i3-6300,3.8,2,Multi-core,2500
+Intel Core i7-3770K,3.5,4,Multi-core,2492
+Intel Xeon X5680,3.3,6,Multi-core,2490
+Intel Core i3-7100,3.9,2,Multi-core,2482
+AMD Ryzen 5 3500U,2.1,4,Multi-core,2482
+Intel Core i3-8109U,3.0,2,Multi-core,2460
+Intel Celeron G6900T,2.8,2,Multi-core,2460
+Intel Xeon X5675,3.1,6,Multi-core,2441
+Intel Xeon E5-2630 v2,2.6,6,Multi-core,2436
+AMD Ryzen 7 2700U,2.2,4,Multi-core,2411
+Intel Core i3-1005G1,1.2,2,Multi-core,2400
+AMD Ryzen 5 2500U,2.0,4,Multi-core,2392
+Intel Core i3-4370,3.8,2,Multi-core,2387
+Intel Xeon E5-1620 v2,3.7,4,Multi-core,2386
+Intel Xeon E5-2630,2.3,6,Multi-core,2383
+Intel Xeon E5-2640 v2,2.0,8,Multi-core,2377
+Intel Core i5-7267U,3.1,2,Multi-core,2375
+Intel Xeon E3-1280 V2,3.6,4,Multi-core,2372
+Intel Core i7-6567U,3.3,2,Multi-core,2370
+Intel Core i3-6100,3.7,2,Multi-core,2365
+Intel Core i3-8121U,2.2,2,Multi-core,2364
+Intel Core i5-7260U,2.2,2,Multi-core,2350
+Intel Xeon E3-1270 V2,3.5,4,Multi-core,2344
+Intel Xeon W3670,3.2,6,Multi-core,2341
+Intel Core i3-6300T,3.3,2,Multi-core,2339
+Intel Core i7-970,3.2,6,Multi-core,2313
+Intel Xeon X5670,2.9,6,Multi-core,2313
+Intel Core i7-3770,3.4,4,Multi-core,2313
+Intel Xeon E3-1240 v2,3.4,4,Multi-core,2303
+Intel Core i3-4360,3.7,2,Multi-core,2302
+Intel Core i7-3820,3.6,4,Multi-core,2297
+Intel Core i7-7660U,2.5,2,Multi-core,2296
+Intel Core i7-2700K,3.5,4,Multi-core,2293
+Intel Core i7-2600K,3.4,4,Multi-core,2287
+Intel Core i5-7360U,2.3,2,Multi-core,2287
+Intel Xeon E5-2640,2.5,6,Multi-core,2284
+Intel Xeon E3-1275 v2,3.5,4,Multi-core,2277
+Intel Xeon E3-1245 V2,3.4,4,Multi-core,2269
+Intel Xeon X5650,2.7,6,Multi-core,2257
+Intel Xeon E5-1620,3.6,4,Multi-core,2251
+Intel Core i3-1000NG4,1.1,2,Multi-core,2249
+AMD Ryzen 3 2300U,2.0,4,Multi-core,2245
+Intel Xeon E3-1230V2,3.3,4,Multi-core,2237
+Intel Core i3-7100T,3.4,2,Multi-core,2228
+Intel Core i7-3770S,3.1,4,Multi-core,2220
+Intel Xeon E5-2630L v2,2.4,6,Multi-core,2218
+Intel Pentium 6805,1.1,2,Multi-core,2212
+Intel Xeon E3-1280,3.5,4,Multi-core,2198
+Intel Core i5-6267U,2.9,2,Multi-core,2189
+Intel Xeon E5-2603 v3,1.6,6,Multi-core,2189
+Intel Pentium II/III,,,Multi-core,2187
+AMD Athlon Gold 7220U,2.4,2,Multi-core,2176
+Intel Core i7-6660U,2.4,2,Multi-core,2175
+Intel Core i5-4460T,1.9,4,Multi-core,2174
+Intel Core i3-4170,3.7,2,Multi-core,2168
+Intel Xeon X5660,2.8,6,Multi-core,2163
+AMD FX-9590,4.7,8,Multi-core,2153
+Intel Xeon E5-2420 v2,2.2,6,Multi-core,2148
+Intel Core i3-10110U,2.1,2,Multi-core,2143
+AMD Ryzen 3 PRO 1200,3.1,4,Multi-core,2139
+Intel Core i3-4350,3.6,2,Multi-core,2129
+Intel Core i3-6098P,3.6,2,Multi-core,2123
+Intel Core i7-6560U,2.2,2,Multi-core,2121
+Intel Xeon E5-2643,3.3,4,Multi-core,2113
+Intel Xeon E5-2620 v2,2.1,6,Multi-core,2112
+Intel Core i7-3840QM,2.8,4,Multi-core,2106
+Intel Core i7-5557U,3.1,2,Multi-core,2098
+Intel Core i3-4160,3.6,2,Multi-core,2089
+Intel Core i3-6100T,3.2,2,Multi-core,2088
+Intel Core i7-3940XM,3.0,4,Multi-core,2088
+Intel Core i3-4330,3.5,2,Multi-core,2084
+Intel Core i5-2550K,3.4,4,Multi-core,2077
+Intel Core i7-7560U,2.4,2,Multi-core,2076
+Intel Xeon E3-1270,3.4,4,Multi-core,2066
+Intel Core i5-3570K,3.4,4,Multi-core,2059
+Intel Xeon E3-1245,3.3,4,Multi-core,2059
+Intel Core i7-6650U,2.2,2,Multi-core,2052
+Intel Core i3-4150,3.5,2,Multi-core,2051
+Intel Core i7-2600,3.4,4,Multi-core,2047
+Intel Core i3-4340,3.6,2,Multi-core,2043
+Intel Core i7-3820QM,2.7,4,Multi-core,2041
+Intel Xeon E5-2430 v2,2.5,6,Multi-core,2041
+Intel Core i5-4570T,2.9,2,Multi-core,2017
+AMD FX-9370,4.4,8,Multi-core,2015
+Intel Core i7-3720QM,2.6,4,Multi-core,2008
+AMD FX-8370,4.0,8,Multi-core,2006
+Intel Core i5-5287U,2.9,2,Multi-core,2004
+Intel Core i3-4130,3.4,2,Multi-core,1998
+Intel Xeon E3-1235,3.2,4,Multi-core,1995
+Intel Core i7-3740QM,2.7,4,Multi-core,1988
+AMD FX-8350,4.0,8,Multi-core,1986
+AMD Athlon 3000G,3.5,2,Multi-core,1976
+Intel Xeon E3-1230,3.2,4,Multi-core,1975
+Intel Core i7-4558U,2.8,2,Multi-core,1973
+Intel Core i5-6260U,1.8,2,Multi-core,1965
+Intel Core i7-3610QE,2.3,4,Multi-core,1954
+Intel Core i7-4578U,3.0,2,Multi-core,1949
+Intel Core i3-4170T,3.2,2,Multi-core,1945
+Intel Xeon E5-2650L,1.8,8,Multi-core,1936
+Intel Core i5-4200H,2.8,2,Multi-core,1935
+Intel Xeon L5640,2.3,6,Multi-core,1934
+Intel Xeon E3-1240,3.3,4,Multi-core,1930
+Intel Core i7-4600M,2.9,2,Multi-core,1930
+Intel Core i7-7820EQ,3.0,4,Multi-core,1922
+Intel Core i5-2500K,3.3,4,Multi-core,1918
+Intel Core i5-4210H,2.9,2,Multi-core,1918
+Intel Core i5-3550,3.3,4,Multi-core,1917
+Intel Core i5-3570,3.4,4,Multi-core,1917
+Intel Core i7-3770T,2.5,4,Multi-core,1916
+AMD Athlon 200GE,3.2,2,Multi-core,1910
+Intel Xeon E5-2620,2.0,6,Multi-core,1909
+Intel Core i7-3615QM,2.3,4,Multi-core,1908
+Intel Core i7-4610M,3.0,2,Multi-core,1903
+Intel Core i7-3630QM,2.4,4,Multi-core,1901
+Intel Core i5-4310M,2.7,2,Multi-core,1897
+AMD Athlon PRO 300GE,3.4,2,Multi-core,1894
+Intel Xeon E3-1225 V2,3.2,4,Multi-core,1890
+Intel Core i7-975,3.3,4,Multi-core,1889
+AMD Athlon PRO 200GE,3.2,2,Multi-core,1887
+Intel Core i3-8130U,2.2,2,Multi-core,1886
+Intel Core i3-6100TE,2.7,2,Multi-core,1870
+Intel Core i5-4308U,2.8,2,Multi-core,1869
+Intel Core i5-4570TE,2.7,2,Multi-core,1857
+Intel Core i7-2960XM,2.7,4,Multi-core,1851
+Intel Core i7-5650U,2.2,2,Multi-core,1847
+Intel Core i5-4300M,2.6,2,Multi-core,1844
+AMD Phenom II X6 1100T Black Edition,3.7,6,Multi-core,1844
+Intel Core i5-3470,3.2,4,Multi-core,1841
+Intel Core i3-4160T,3.1,2,Multi-core,1841
+Intel Core i7-3610QM,2.3,4,Multi-core,1829
+Intel Xeon X5550,2.7,4,Multi-core,1822
+Intel Xeon E5-2420,1.9,6,Multi-core,1819
+Intel Xeon E5645,2.4,6,Multi-core,1810
+Intel Xeon X5570,2.9,4,Multi-core,1804
+Intel Core i5-2450P,3.2,4,Multi-core,1796
+AMD FX-8320,3.5,8,Multi-core,1795
+Intel Xeon E3-1220 v2,3.1,4,Multi-core,1794
+Intel Core i5-3570S,3.1,4,Multi-core,1794
+Intel Core i3-4130T,2.9,2,Multi-core,1788
+Intel Core i5-4340M,2.9,2,Multi-core,1783
+Intel Core i7-3635QM,2.4,4,Multi-core,1779
+Intel Core i5-3450,3.1,4,Multi-core,1775
+Intel Core i3-7130U,2.7,2,Multi-core,1774
+Intel Core i5-4278U,2.6,2,Multi-core,1772
+Intel Core i5-5257U,2.7,2,Multi-core,1769
+Intel Core i7-2600S,2.8,4,Multi-core,1768
+Intel Xeon E5-2430,2.2,6,Multi-core,1766
+Intel Core i5-4288U,2.6,2,Multi-core,1760
+AMD FX-8150,3.6,8,Multi-core,1757
+Intel Core i5-4210M,2.6,2,Multi-core,1755
+Intel Core i3-4150T,3.0,2,Multi-core,1755
+Intel Core i7-5600U,2.6,2,Multi-core,1749
+AMD FX-8310,3.4,4,Multi-core,1742
+Intel Xeon E5-1607 v2,3.0,4,Multi-core,1740
+Intel Core i5-3475S,2.9,4,Multi-core,1736
+Intel Xeon E3-1265L v2,2.5,4,Multi-core,1733
+Intel Core i5-3350P,3.1,4,Multi-core,1729
+Intel Core i5-3470S,2.9,4,Multi-core,1725
+AMD FX-8300,3.3,8,Multi-core,1725
+Intel Pentium Gold G6405,4.1,2,Multi-core,1718
+Intel Core i5-6360U,2.0,2,Multi-core,1716
+Intel Core i5-3550S,3.0,4,Multi-core,1716
+Intel Core i5-3450S,2.8,4,Multi-core,1712
+Intel Core i7-3632QM,2.2,4,Multi-core,1711
+Intel Core i5-3570T,2.3,4,Multi-core,1705
+Intel Xeon E7-4830,2.1,8,Multi-core,1703
+Intel Core i7-965,3.2,4,Multi-core,1702
+Intel Core i5-4200M,2.5,2,Multi-core,1697
+Intel Core i7-875K,2.9,4,Multi-core,1694
+Intel Core i7-3612QM,2.1,4,Multi-core,1690
+Intel Core i7-5500U,2.4,2,Multi-core,1687
+Intel Core i5-2500,3.3,4,Multi-core,1685
+AMD FX-8320E,3.2,8,Multi-core,1684
+AMD A12-9800,3.8,4,Multi-core,1682
+Intel Core i5-3340,3.1,4,Multi-core,1680
+Intel Xeon W3565,3.2,4,Multi-core,1680
+Intel Core i5-8210Y,1.6,2,Multi-core,1679
+Intel Core i7-880,3.1,4,Multi-core,1678
+Intel Core i7-2860QM,2.5,4,Multi-core,1677
+Intel Core i5-5350U,1.8,2,Multi-core,1670
+Intel Core i3-6157U,2.4,2,Multi-core,1669
+AMD Athlon Gold 3150U,2.4,2,Multi-core,1667
+Intel Core i5-4258U,2.4,2,Multi-core,1664
+Intel Core i7-4510U,2.0,2,Multi-core,1662
+Intel Core i3-6100H,2.7,2,Multi-core,1657
+Intel Core i7-960,3.2,4,Multi-core,1654
+Intel Pentium Gold G6400,4.0,2,Multi-core,1653
+Intel Core i5-3330,3.0,4,Multi-core,1652
+Intel Core i5-3335S,2.7,4,Multi-core,1647
+Intel Xeon E5-1607,3.0,4,Multi-core,1644
+Intel Xeon E3-1225,3.1,4,Multi-core,1637
+Intel Core i7-4600U,2.1,2,Multi-core,1634
+AMD Athlon Gold 3150C,2.4,2,Multi-core,1634
+Intel Core i7-2820QM,2.3,4,Multi-core,1628
+Intel Core i7-2760QM,2.4,4,Multi-core,1622
+Intel Core i5-3330S,2.7,4,Multi-core,1621
+Intel Pentium G5600,3.9,2,Multi-core,1621
+Intel Xeon W3540,2.9,4,Multi-core,1615
+AMD Athlon X4 845,3.5,2,Multi-core,1611
+AMD Athlon Silver 7120U,2.4,2,Multi-core,1607
+Intel Core i5-2400,3.1,4,Multi-core,1602
+Intel Xeon W3550,3.1,4,Multi-core,1602
+Intel Pentium Gold G5500,3.8,2,Multi-core,1601
+AMD Ryzen 3 2200U,2.5,2,Multi-core,1595
+Intel Pentium G4620,3.7,2,Multi-core,1592
+Intel Xeon E5530,2.4,8,Multi-core,1588
+Intel Core i5-5250U,1.6,2,Multi-core,1586
+Intel Core i5-5300U,2.3,2,Multi-core,1581
+AMD A10-9700,3.5,4,Multi-core,1577
+Intel Core i3-7100U,2.4,2,Multi-core,1569
+Intel Core i3-5157U,2.5,2,Multi-core,1568
+Intel Xeon E3-1220,3.1,4,Multi-core,1567
+Intel Core i5-3340S,2.8,4,Multi-core,1567
+Intel Core i7-4500U,1.8,2,Multi-core,1561
+Intel Core i5-4310U,2.0,2,Multi-core,1557
+Intel Core i7-870,2.9,4,Multi-core,1550
+Intel Core i5-2320,3.0,4,Multi-core,1548
+Intel Core i3-4100M,2.5,2,Multi-core,1548
+Intel Core i3-6100U,2.3,2,Multi-core,1546
+AMD Athlon X4 950,3.5,4,Multi-core,1544
+Intel Core i7-2720QM,2.2,4,Multi-core,1539
+Intel Xeon W3530,2.8,4,Multi-core,1529
+AMD FX-6350,3.9,6,Multi-core,1529
+Intel Pentium G4600,3.6,2,Multi-core,1528
+Intel Pentium Gold G5400,3.7,2,Multi-core,1523
+Intel Pentium Gold G5420,3.8,2,Multi-core,1522
+AMD A12-9800E,3.1,4,Multi-core,1521
+AMD FX-8120,3.1,8,Multi-core,1517
+Intel Core i5-5200U,2.2,2,Multi-core,1513
+Intel Core i5-2500S,2.7,4,Multi-core,1511
+AMD Ryzen 3 3200U,2.6,2,Multi-core,1511
+Intel Core i5-2300,2.8,4,Multi-core,1506
+Intel Core i7-950,3.1,4,Multi-core,1503
+Intel Core i5-2310,2.9,4,Multi-core,1502
+Intel Core i7-940,2.9,4,Multi-core,1500
+Intel Xeon E3-1260L,2.4,4,Multi-core,1498
+AMD A8-9600,3.1,4,Multi-core,1498
+Intel Xeon X3460,2.8,4,Multi-core,1498
+Intel Core i3-7020U,2.3,2,Multi-core,1496
+Intel Xeon E5640,2.7,4,Multi-core,1492
+Intel Core i7-4650U,1.7,2,Multi-core,1485
+Intel Core i7-860,2.8,4,Multi-core,1479
+Intel Xeon E5-1603,2.8,4,Multi-core,1478
+Intel Xeon E5520,2.3,4,Multi-core,1474
+Intel Xeon E5620,2.4,4,Multi-core,1471
+Intel Xeon X3450,2.7,4,Multi-core,1469
+Intel Core i5-4300U,1.9,2,Multi-core,1468
+Intel Core i5-4260U,1.4,2,Multi-core,1467
+Intel Pentium G4560,3.5,2,Multi-core,1463
+AMD FX-9830P,3.0,4,Multi-core,1463
+AMD Phenom II X6 1090T Black Edition,3.2,6,Multi-core,1461
+AMD Ryzen 3 3250U,2.6,2,Multi-core,1460
+Intel Core i5-4210U,1.7,2,Multi-core,1458
+Intel Core i7-2920XM,2.5,4,Multi-core,1452
+Intel Core i3-4000M,2.4,2,Multi-core,1445
+Intel Xeon W3520,2.7,4,Multi-core,1444
+Intel Core i7-2670QM,2.2,4,Multi-core,1439
+Intel Core i7-930,2.8,4,Multi-core,1435
+Intel Core i5-4250U,1.3,2,Multi-core,1434
+Intel Pentium Silver N6005,2.0,4,Multi-core,1432
+AMD PRO A10-9700E,3.0,4,Multi-core,1430
+Intel Core i7-920,2.7,4,Multi-core,1428
+AMD FX-6300,3.5,6,Multi-core,1426
+Intel Core i5-2405S,2.5,4,Multi-core,1425
+AMD Opteron 3280,2.4,8,Multi-core,1413
+Intel Pentium Gold G6400T,3.4,2,Multi-core,1406
+Intel Core i3-5015U,2.1,2,Multi-core,1405
+Intel Core i5-4200U,1.6,2,Multi-core,1404
+Intel Core i7-2630QM,2.0,4,Multi-core,1389
+Intel Pentium Gold G5420T,3.2,2,Multi-core,1388
+Intel Celeron 7305E,1.0,5,Multi-core,1383
+Intel Core i3-5020U,2.2,2,Multi-core,1378
+Intel Celeron 6305E,1.8,2,Multi-core,1377
+Intel Xeon E5540,2.5,4,Multi-core,1376
+Intel Core i7-2635QM,2.0,4,Multi-core,1371
+Intel Core i5-2400S,2.5,4,Multi-core,1358
+Intel Atom x6413E,1.5,4,Multi-core,1354
+AMD FX-6200,3.8,3,Multi-core,1350
+Intel Core i3-6006U,2.0,2,Multi-core,1343
+Intel Core i3-5010U,2.1,2,Multi-core,1342
+AMD Athlon Silver 3050U,2.3,2,Multi-core,1341
+Intel Celeron 4305U,2.2,2,Multi-core,1330
+AMD Opteron 3365,2.3,8,Multi-core,1327
+Intel Pentium Gold G5400T,3.1,2,Multi-core,1325
+Intel Pentium J6426,2.0,4,Multi-core,1322
+AMD Athlon Silver 3050e,1.4,2,Multi-core,1311
+Intel Core i7-2675QM,2.2,4,Multi-core,1301
+AMD PRO A10-8770E,2.8,4,Multi-core,1291
+Intel Xeon E5-2609,2.4,4,Multi-core,1290
+Intel Atom x6425E,2.0,4,Multi-core,1289
+AMD Athlon PRO 3045B,2.3,2,Multi-core,1287
+Intel Core i7-860S,2.5,4,Multi-core,1286
+Intel Celeron N5105,2.0,4,Multi-core,1268
+Intel Core i5-760,2.8,4,Multi-core,1267
+Intel Celeron G5925,3.6,2,Multi-core,1266
+Intel Celeron G5905,3.5,2,Multi-core,1260
+Intel Core 2 Extreme X9770,3.2,4,Multi-core,1259
+Intel Celeron 6305,1.8,2,Multi-core,1246
+Intel Celeron J6412,2.0,4,Multi-core,1244
+Intel Core i3-5005U,2.0,2,Multi-core,1242
+AMD FX-6100,3.3,6,Multi-core,1235
+Intel Celeron J6413,1.8,4,Multi-core,1235
+Intel Pentium G4560T,2.9,2,Multi-core,1233
+AMD FX-8800P,2.1,4,Multi-core,1229
+AMD Phenom II X4 980,3.7,4,Multi-core,1228
+AMD A10-7870K,3.9,2,Multi-core,1225
+Intel Core M-5Y10c,,,Multi-core,1219
+Intel Xeon E5-2609 v2,2.5,4,Multi-core,1214
+Intel Xeon X3440,2.5,4,Multi-core,1208
+AMD Athlon X4 870K,3.9,2,Multi-core,1205
+AMD A12-9720P,2.7,4,Multi-core,1198
+Intel Core i3-4025U,1.9,2,Multi-core,1198
+AMD FX-4170,4.2,2,Multi-core,1197
+AMD A10 PRO-7850B,3.7,4,Multi-core,1194
+Intel Core i5-L16G7,1.4,5,Multi-core,1191
+Intel Core i5-750,2.7,4,Multi-core,1182
+Intel Core i3-3250,3.5,2,Multi-core,1181
+Intel Core i3-4030U,1.9,2,Multi-core,1180
+Intel Core i3-3245,3.4,2,Multi-core,1177
+Intel Xeon X5460,3.2,4,Multi-core,1175
+Intel Pentium G4500,3.5,2,Multi-core,1172
+Intel Pentium G4400,3.3,2,Multi-core,1167
+AMD Phenom II X4 965 Black Edition,3.4,4,Multi-core,1165
+Intel Core i7-3540M,3.0,2,Multi-core,1158
+Intel Core i7-3520M,2.9,2,Multi-core,1156
+AMD A10-7700K,3.4,4,Multi-core,1155
+AMD Athlon X4 840,3.1,4,Multi-core,1151
+Intel Xeon E5-2407,2.2,4,Multi-core,1151
+AMD FX-4350,4.2,4,Multi-core,1147
+AMD PRO A12-8800B,2.1,4,Multi-core,1141
+AMD A10-7850K,3.7,4,Multi-core,1139
+Intel Core 2 Extreme X9650,3.0,4,Multi-core,1139
+AMD Athlon X4 860K,3.7,4,Multi-core,1136
+AMD A10-6800K,4.1,4,Multi-core,1136
+AMD PRO A12-9800B,2.7,4,Multi-core,1134
+Intel Core i3-3225,3.3,2,Multi-core,1132
+Intel Xeon D-2123IT,2.2,4,Multi-core,1131
+Intel Pentium Silver J5040,2.0,4,Multi-core,1129
+AMD A10-5800B,3.8,4,Multi-core,1128
+AMD FX-9800P,2.7,4,Multi-core,1127
+Intel Core M-5Y51,1.1,2,Multi-core,1125
+Intel Xeon X5450,3.0,4,Multi-core,1123
+Intel Xeon X3430,2.4,4,Multi-core,1115
+AMD A10-9620P,2.5,4,Multi-core,1111
+Intel Core i5-3360M,2.8,2,Multi-core,1109
+AMD FX-4300,3.8,4,Multi-core,1109
+Intel Core i3-3240,3.4,2,Multi-core,1105
+AMD A10-8700P,1.8,4,Multi-core,1105
+Intel Pentium Silver N6000,1.1,4,Multi-core,1104
+Intel Xeon E5450,3.0,4,Multi-core,1103
+AMD A10-5800K,3.8,2,Multi-core,1101
+Intel Core i5-3470T,2.9,2,Multi-core,1101
+AMD A10-7860K,3.6,4,Multi-core,1100
+AMD A10-6700,3.7,4,Multi-core,1100
+AMD Athlon X4 760K,3.8,4,Multi-core,1098
+Intel Core i3-3220,3.3,2,Multi-core,1091
+AMD A10-7800,3.5,4,Multi-core,1088
+Intel Celeron 4305UE,2.0,2,Multi-core,1086
+Intel Celeron G5900,3.4,2,Multi-core,1086
+Intel Core M-5Y70,1.1,2,Multi-core,1084
+Intel Celeron G4930,3.2,2,Multi-core,1079
+Intel Celeron N5100,1.1,4,Multi-core,1078
+AMD A10-8750,3.6,4,Multi-core,1077
+AMD 3020e,1.2,2,Multi-core,1076
+Intel Celeron G5905T,3.3,2,Multi-core,1076
+AMD A8-6600K,3.9,4,Multi-core,1074
+Intel Pentium Silver J5005,1.5,4,Multi-core,1067
+Intel Pentium G3460,3.5,2,Multi-core,1067
+Intel Core i3-4010U,1.7,2,Multi-core,1066
+Intel Core i7-920XM,2.0,4,Multi-core,1064
+Intel Core i3-2130,3.4,2,Multi-core,1064
+AMD FX-4130,3.8,4,Multi-core,1061
+AMD PRO A8-8650B,3.2,4,Multi-core,1059
+Intel Core i5-3340M,2.7,2,Multi-core,1057
+AMD A8-7600,3.1,4,Multi-core,1057
+Intel Core 2 Quad Q9650,3.0,4,Multi-core,1055
+Intel Pentium G3258,3.2,2,Multi-core,1055
+AMD A10 PRO-7800B,3.5,4,Multi-core,1055
+Intel Pentium G4400T,2.9,2,Multi-core,1054
+Intel Core 2 Quad Q9505,2.8,4,Multi-core,1051
+Intel Core i5-3320M,2.6,2,Multi-core,1049
+AMD A8-7650K,3.3,4,Multi-core,1049
+Intel Core i7-840QM,1.9,4,Multi-core,1048
+Intel Core i3-4005U,1.7,2,Multi-core,1048
+Intel Core 2 Quad Q9550,2.8,4,Multi-core,1046
+Intel Pentium G3450,3.4,2,Multi-core,1046
+AMD Phenom II X4 955 Black Edition,3.2,4,Multi-core,1045
+Intel Core i7-3687U,2.1,2,Multi-core,1044
+Intel Core i3-2125,3.3,2,Multi-core,1043
+AMD A8 PRO-7600B,3.1,4,Multi-core,1041
+Intel Xeon E5430,2.7,4,Multi-core,1041
+AMD A8-3870,3.0,4,Multi-core,1040
+AMD A8-6500,3.5,4,Multi-core,1038
+Intel Celeron G3930,2.9,2,Multi-core,1035
+AMD Phenom II X4 945,3.0,4,Multi-core,1035
+Intel Xeon E5606,2.1,4,Multi-core,1035
+AMD A10-9600P,2.4,4,Multi-core,1034
+Intel Core i5-670,3.5,2,Multi-core,1032
+Intel Celeron G3920,2.9,2,Multi-core,1031
+Intel Core i5-3380M,2.9,2,Multi-core,1030
+Intel Core i3-3210,3.2,2,Multi-core,1029
+AMD Athlon X4 750K,3.4,4,Multi-core,1029
+Intel Core i5-661,3.3,2,Multi-core,1028
+Intel Core i3-2120,3.3,2,Multi-core,1022
+Intel Xeon E5440,2.8,4,Multi-core,1022
+AMD Phenom II X4 960T,3.0,4,Multi-core,1021
+Intel Core i7-2620M,2.7,2,Multi-core,1018
+AMD A8-5600K,3.6,4,Multi-core,1018
+Intel Core i5-3230M,2.6,2,Multi-core,1018
+Intel Celeron G4900,3.1,2,Multi-core,1016
+AMD PRO A8-9600B,2.4,4,Multi-core,1015
+Intel Core i7-2640M,2.8,2,Multi-core,1012
+AMD A8-6500B,3.5,4,Multi-core,1011
+Intel Core 2 Quad Q9500,2.8,4,Multi-core,1009
+AMD FX-4100,3.6,4,Multi-core,1005
+Intel Core i5-3210M,2.5,2,Multi-core,999
+Intel Pentium G3420,3.2,2,Multi-core,998
+Intel Pentium G3260,3.3,2,Multi-core,998
+Intel Core i5-4210Y,1.5,2,Multi-core,997
+Intel Xeon E3-1220L v2,2.3,2,Multi-core,997
+Intel Core 2 Extreme Q9300,2.5,4,Multi-core,996
+Intel Core i3-2105,3.1,2,Multi-core,992
+Intel Celeron G3900,2.8,2,Multi-core,990
+AMD A10-5700,3.4,4,Multi-core,989
+Intel Pentium G3250,3.2,2,Multi-core,989
+AMD Phenom II X4 B95,3.0,4,Multi-core,989
+AMD PRO A10-8700B,1.8,4,Multi-core,987
+Intel Celeron G3900T,2.6,2,Multi-core,986
+AMD 3015e,1.2,2,Multi-core,986
+Intel Core i5-660,3.3,2,Multi-core,985
+AMD PRO A10-8750B,3.6,4,Multi-core,985
+Intel Core i7-3667U,2.0,2,Multi-core,981
+AMD Phenom II X4 925,2.8,4,Multi-core,981
+Intel Core i3-3240T,2.9,2,Multi-core,980
+Intel Celeron G3930T,2.7,2,Multi-core,976
+AMD Phenom II X4 840,3.2,4,Multi-core,975
+Intel Core i7-740QM,1.7,4,Multi-core,974
+Intel Core 2 Quad Q9450,2.7,4,Multi-core,971
+Intel Core i5-2540M,2.6,2,Multi-core,971
+Intel Core i7-820QM,1.7,4,Multi-core,968
+AMD PRO A12-8830B,2.5,4,Multi-core,966
+AMD PRO A10-8730B,2.4,4,Multi-core,964
+Intel Core i3-3220T,2.8,2,Multi-core,962
+Intel Celeron J4125,2.0,4,Multi-core,961
+AMD A8-5500B,3.2,4,Multi-core,961
+Intel Core 2 Extreme Q6850,3.0,4,Multi-core,961
+Intel Core i7-3537U,2.0,2,Multi-core,960
+AMD A6-9500,3.5,2,Multi-core,957
+AMD Athlon II X4 640,3.0,4,Multi-core,952
+AMD Athlon II X4 645,3.1,4,Multi-core,949
+AMD Phenom II X4 B97,3.2,4,Multi-core,947
+Intel Core i3-2100,3.1,2,Multi-core,942
+Intel Core i3-560,3.3,2,Multi-core,940
+Intel Celeron G4900T,2.9,2,Multi-core,940
+Intel Core 2 Quad Q9400,2.7,4,Multi-core,936
+AMD R-Series RX-427BB,2.7,4,Multi-core,935
+AMD A8-7500,3.0,4,Multi-core,934
+Intel Core i5-2520M,2.5,2,Multi-core,933
+Intel Core i5-650,3.2,2,Multi-core,932
+Intel Pentium G2130,3.2,2,Multi-core,932
+AMD A8-3820,2.5,4,Multi-core,929
+Intel Celeron J4105,1.5,4,Multi-core,924
+Intel Core i5-4202Y,1.6,2,Multi-core,924
+Intel Core i5-2390T,2.7,2,Multi-core,924
+Intel Celeron G1830,2.8,2,Multi-core,924
+AMD Phenom II X4 820,2.8,4,Multi-core,923
+AMD PRO A8-8600B,1.6,4,Multi-core,920
+Intel Pentium 4415U,2.3,2,Multi-core,920
+Intel Atom x6425RE,1.9,4,Multi-core,919
+AMD Phenom II X4 940 Black Edition,3.0,4,Multi-core,918
+Intel Pentium G2120,3.1,2,Multi-core,917
+Intel Core i7-3517U,1.9,2,Multi-core,916
+AMD A8-3850,2.9,4,Multi-core,914
+AMD A8-5500,3.2,4,Multi-core,911
+AMD A6-3650,2.6,4,Multi-core,911
+AMD A6-9500E,3.0,2,Multi-core,908
+Intel Celeron G1850,2.9,2,Multi-core,901
+Intel Pentium G3220,3.0,2,Multi-core,896
+Intel Core 2 Quad Q8400,2.7,4,Multi-core,894
+Intel Core i3-550,3.2,2,Multi-core,894
+Intel Core i5-3437U,1.9,2,Multi-core,893
+AMD Athlon II X4 630,2.8,4,Multi-core,893
+AMD Phenom II X4 810,2.6,4,Multi-core,891
+Intel Core i5-2435M,2.4,2,Multi-core,890
+Intel Pentium G3240,3.1,2,Multi-core,889
+AMD A8-3800,2.4,4,Multi-core,889
+Intel Core i3-2100T,2.5,2,Multi-core,887
+AMD Athlon X4 740,3.2,4,Multi-core,884
+Intel Core 2 Quad Q8300,2.5,4,Multi-core,883
+Intel Core 2 Quad Q9300,2.5,4,Multi-core,883
+Intel Core i5-3427U,1.8,2,Multi-core,882
+Intel Pentium Gold 4417U,2.3,2,Multi-core,882
+Intel Core i5-2415M,2.3,2,Multi-core,882
+AMD PRO A6-9500,3.5,2,Multi-core,882
+AMD A6-3670,2.7,4,Multi-core,878
+Intel Core i5-2450M,2.5,2,Multi-core,877
+Intel Core i3-4020Y,1.5,2,Multi-core,877
+Intel Core i5-2430M,2.4,2,Multi-core,866
+AMD Athlon II X4 620,2.6,4,Multi-core,866
+AMD Athlon II X4 635,2.9,4,Multi-core,866
+AMD Athlon II X4 631,2.6,4,Multi-core,866
+Intel Pentium Silver N5000,1.1,4,Multi-core,863
+Intel Pentium G3240T,2.7,2,Multi-core,859
+Intel Pentium 4405U,2.1,2,Multi-core,857
+AMD Phenom X4 9950,2.6,4,Multi-core,852
+AMD Athlon X4 730,2.8,4,Multi-core,849
+Intel Core i7-720QM,1.6,4,Multi-core,848
+Intel Xeon L5420,2.5,4,Multi-core,848
+AMD Athlon II X3 455,3.3,3,Multi-core,848
+Intel Core i5-2410M,2.3,2,Multi-core,847
+Intel Xeon E5504,2.0,4,Multi-core,847
+Intel Core i3-540,3.1,2,Multi-core,844
+Intel Celeron G1820,2.7,2,Multi-core,835
+Intel Core i3-3120M,2.5,2,Multi-core,829
+Intel Core 2 Quad Q6700,2.7,4,Multi-core,828
+Intel Core 2 Quad Q8200,2.3,4,Multi-core,827
+Intel Core i7-620M,2.7,2,Multi-core,826
+Intel Celeron G1840,2.8,2,Multi-core,824
+Intel Celeron N4100,1.1,4,Multi-core,823
+Intel Core i5-580M,2.7,2,Multi-core,820
+AMD Phenom II X3 B75,3.0,3,Multi-core,819
+Intel Pentium G3220T,2.6,2,Multi-core,817
+Intel Pentium G2030,3.0,2,Multi-core,817
+Intel Core i5-3317U,1.7,2,Multi-core,816
+Intel Core i3-3110M,2.4,2,Multi-core,815
+Intel Core i7-640M,2.8,2,Multi-core,814
+Intel Pentium G2020,2.9,2,Multi-core,814
+AMD FX-7600P,2.7,4,Multi-core,807
+Intel Core i5-3337U,1.8,2,Multi-core,803
+AMD A10-5757M,2.5,4,Multi-core,803
+Intel Core i7-2637M,1.7,2,Multi-core,803
+Intel Celeron 3965U,2.2,2,Multi-core,799
+Intel Celeron J3455E,1.5,4,Multi-core,796
+AMD A6-3620,2.2,4,Multi-core,790
+AMD A6-3600,2.1,4,Multi-core,789
+Intel Pentium Silver N5030,1.1,4,Multi-core,788
+Intel Pentium G850,2.9,2,Multi-core,784
+Intel Pentium G870,3.1,2,Multi-core,782
+Intel Pentium G840,2.8,2,Multi-core,781
+Intel Core i5-540M,2.5,2,Multi-core,778
+Intel Core i5-2557M,1.7,2,Multi-core,776
+Intel Pentium J4205,1.5,4,Multi-core,765
+Intel Celeron N4120,1.1,4,Multi-core,765
+Intel Atom x6416RE,1.7,4,Multi-core,765
+Intel Core 2 Quad Q6600,2.4,4,Multi-core,762
+Intel Celeron N4505,2.0,2,Multi-core,762
+Intel Core i3-530,2.9,2,Multi-core,761
+AMD Phenom X4 9650,2.3,4,Multi-core,759
+AMD A9-9425,3.1,2,Multi-core,757
+Intel Celeron J3455,1.5,4,Multi-core,754
+Intel Celeron 3955U,2.0,2,Multi-core,754
+Intel Pentium G645,2.9,2,Multi-core,753
+Intel Core i3-2120T,2.6,2,Multi-core,749
+AMD Athlon II X3 450,3.2,3,Multi-core,746
+Intel Core i5-560M,2.7,2,Multi-core,745
+Intel Celeron G1620,2.7,2,Multi-core,743
+Intel Pentium G2030T,2.6,2,Multi-core,739
+AMD Phenom X4 9550,2.2,4,Multi-core,729
+Intel Pentium G860,3.0,2,Multi-core,727
+AMD A10-7400P,2.5,4,Multi-core,726
+AMD Athlon II X3 435,2.9,3,Multi-core,725
+Intel Pentium N4200,1.1,4,Multi-core,724
+AMD A10-4600M,2.3,4,Multi-core,723
+Intel Celeron N4500,1.1,2,Multi-core,723
+AMD Athlon II X3 440,3.0,3,Multi-core,721
+AMD Athlon II X3 460,3.4,3,Multi-core,720
+Intel Pentium G640,2.8,2,Multi-core,716
+Intel Atom x7-E3950,1.6,4,Multi-core,714
+Intel Core i5-4300Y,1.6,2,Multi-core,710
+Intel Core i3-2370M,2.4,2,Multi-core,709
+Intel Atom x6211E,1.3,2,Multi-core,709
+Intel Pentium 2030M,2.5,2,Multi-core,708
+Intel Celeron G1820TE,2.2,2,Multi-core,707
+Intel Pentium G2020T,2.5,2,Multi-core,702
+Intel Core i3-2348M,2.3,2,Multi-core,700
+Intel Core i5-520M,2.4,2,Multi-core,696
+AMD Phenom II X4 N930,2.0,4,Multi-core,696
+AMD A8-3510MX,1.8,4,Multi-core,696
+Intel Pentium 3825U,1.9,2,Multi-core,695
+Intel Pentium G630,2.7,2,Multi-core,694
+Intel Celeron G1610,2.6,2,Multi-core,690
+Intel Core i5-480M,2.7,2,Multi-core,689
+Intel Celeron 3865U,1.8,2,Multi-core,689
+AMD A8-3520M,1.6,4,Multi-core,687
+Intel Core i7-640LM,2.1,2,Multi-core,686
+Intel Core i5-460M,2.5,2,Multi-core,683
+AMD FX-7500,2.1,4,Multi-core,682
+AMD A6-3430MX,1.7,4,Multi-core,681
+Intel Core 2 Quad Q9000,2.0,4,Multi-core,677
+AMD A10-5750M,2.5,4,Multi-core,676
+AMD Athlon II X3 445,3.1,3,Multi-core,676
+Intel Celeron N3450,1.1,4,Multi-core,675
+Intel Core i5-450M,2.4,2,Multi-core,675
+Intel Core i3-2330M,2.2,2,Multi-core,675
+Intel Pentium G620,2.6,2,Multi-core,674
+Intel Celeron 5205U,1.9,2,Multi-core,674
+Intel Core i3-2350M,2.3,2,Multi-core,673
+Intel Core i3-2328M,2.2,2,Multi-core,673
+Intel Core i7-2677M,1.8,2,Multi-core,673
+Intel Pentium 2020M,2.4,2,Multi-core,668
+AMD PRO A6-9500B,2.3,2,Multi-core,668
+Intel Celeron G1840T,2.5,2,Multi-core,665
+AMD A8-5550M,2.1,4,Multi-core,663
+AMD A10 PRO-7350B,2.1,4,Multi-core,663
+Intel Pentium 4415Y,1.6,2,Multi-core,659
+AMD Phenom II X2 560 Black Edition,3.3,2,Multi-core,658
+Intel Core 2 Duo E8600,3.3,2,Multi-core,656
+Intel Core i5-430M,2.3,2,Multi-core,653
+Intel Core i3-380M,2.5,2,Multi-core,647
+AMD A8-4500M,1.9,4,Multi-core,647
+Intel Core i3-3227U,1.9,2,Multi-core,647
+Intel Core i3-2310M,2.1,2,Multi-core,645
+Intel Celeron G550,2.6,2,Multi-core,644
+Intel Core 2 Duo T9900,3.1,2,Multi-core,642
+Intel Celeron G4930T,3.0,2,Multi-core,642
+Intel Core i5-2467M,1.6,2,Multi-core,640
+Intel Celeron G540,2.5,2,Multi-core,639
+AMD Athlon II X3 425,2.7,3,Multi-core,639
+AMD A10-7300,1.9,4,Multi-core,637
+Intel Pentium G2010,2.8,2,Multi-core,637
+AMD Athlon 5350,2.0,4,Multi-core,636
+Intel Core i7-620LM,2.0,2,Multi-core,636
+Intel Core 2 Duo E8500,3.2,2,Multi-core,635
+Intel Core i3-370M,2.4,2,Multi-core,632
+AMD A8-7410,2.2,4,Multi-core,632
+AMD GX-420CA,2.0,4,Multi-core,630
+Intel Celeron 3867U,1.8,2,Multi-core,630
+Intel Core 2 Duo E7600,3.1,2,Multi-core,627
+Intel Core i3-390M,2.7,2,Multi-core,624
+Intel Celeron G530,2.4,2,Multi-core,624
+AMD A6-3500,2.1,3,Multi-core,622
+Intel Pentium B980,2.4,2,Multi-core,620
+AMD A8-3500M,1.5,4,Multi-core,620
+AMD A10-5745M,2.1,4,Multi-core,619
+AMD Phenom II X2 555 Black Edition,3.2,2,Multi-core,619
+AMD Phenom X3 8650,2.3,3,Multi-core,619
+AMD A6-9210,1.4,2,Multi-core,618
+Intel Core i3-3217U,1.8,2,Multi-core,617
+AMD Phenom II X2 550 Black Edition,3.1,2,Multi-core,617
+AMD A6-3420M,1.5,4,Multi-core,616
+Intel Core 2 Duo T9800,2.9,2,Multi-core,615
+Intel Core 2 Duo E8400,3.0,2,Multi-core,614
+AMD A6-3410MX,1.6,4,Multi-core,614
+AMD Athlon II X2 260,3.2,2,Multi-core,613
+Intel Pentium 3805U,1.9,2,Multi-core,608
+Intel Core 2 Duo P9700,2.8,2,Multi-core,600
+AMD A8-6410,2.0,4,Multi-core,597
+AMD A6-6310,1.8,4,Multi-core,596
+Intel Core i3-350M,2.3,2,Multi-core,595
+AMD A6-7310,2.0,4,Multi-core,594
+AMD Athlon II X2 270,3.4,2,Multi-core,594
+Intel Celeron 4205U,1.8,2,Multi-core,593
+AMD Athlon II X2 280,3.6,2,Multi-core,593
+Intel Pentium G645T,2.5,2,Multi-core,591
+AMD A10-4655M,2.0,4,Multi-core,591
+AMD A8-7100,1.8,4,Multi-core,586
+Intel Pentium B970,2.3,2,Multi-core,585
+AMD A6-5200,2.0,4,Multi-core,583
+Intel Core i5-2537M,1.4,2,Multi-core,583
+Intel Core 2 Duo P9500,2.5,2,Multi-core,583
+Intel Celeron 3215U,1.7,2,Multi-core,582
+Intel Celeron J4005,2.0,2,Multi-core,578
+Intel Pentium E6700,3.2,2,Multi-core,578
+AMD A6-6400K,3.9,2,Multi-core,577
+Intel Core 2 Duo E8300,2.8,2,Multi-core,576
+Intel Core i3-330M,2.1,2,Multi-core,573
+AMD A6-7400K,3.5,1,Multi-core,573
+Intel Core 2 Duo E7500,2.9,2,Multi-core,568
+AMD A6-3400M,1.4,4,Multi-core,567
+AMD A4-6300,3.7,2,Multi-core,562
+AMD A4-7300,3.8,2,Multi-core,562
+Intel Core 2 Duo T9500,2.6,2,Multi-core,561
+Intel Pentium E6600,3.1,2,Multi-core,560
+Intel Celeron 1005M,1.9,2,Multi-core,559
+Intel Pentium E5800,3.2,2,Multi-core,558
+Intel Pentium J3710,1.6,4,Multi-core,557
+Intel Pentium E6500,2.9,2,Multi-core,555
+Intel Celeron J4025,2.0,2,Multi-core,553
+Intel Core 2 Duo E8135,2.7,2,Multi-core,549
+Intel Pentium B940,2.0,2,Multi-core,548
+Intel Pentium N3540,2.2,4,Multi-core,545
+Intel Celeron 3855U,1.6,2,Multi-core,545
+AMD A4 Pro-3350B,2.0,4,Multi-core,545
+Intel Celeron N4020,1.1,2,Multi-core,544
+Intel Core 2 Duo T9600,2.8,2,Multi-core,543
+Intel Celeron 3965Y,1.5,2,Multi-core,542
+AMD A4-9125,2.3,2,Multi-core,540
+Intel Pentium 2127U,1.9,2,Multi-core,538
+Intel Pentium B960,2.2,2,Multi-core,536
+Intel Core 2 Duo P8800,2.7,2,Multi-core,535
+AMD A4-6210,1.8,4,Multi-core,534
+Intel Core 2 Duo E6850,3.0,2,Multi-core,532
+AMD A4-3420,2.8,2,Multi-core,531
+Intel Celeron N3160,1.6,4,Multi-core,530
+Intel Pentium N3530,2.2,4,Multi-core,530
+Intel Celeron N4000,1.1,2,Multi-core,529
+AMD A4-7210,1.8,4,Multi-core,528
+AMD E2-7110,1.8,4,Multi-core,527
+Intel Core 2 Duo T9550,2.7,2,Multi-core,527
+Intel Pentium G6950,2.8,2,Multi-core,526
+Intel Celeron 1037U,1.8,2,Multi-core,525
+AMD A8-4555M,1.6,4,Multi-core,525
+Intel Core 2 Duo E7400,2.8,2,Multi-core,523
+Intel Core 2 Duo E8200,2.7,2,Multi-core,522
+Intel Celeron J1900,2.0,4,Multi-core,522
+AMD A8-5545M,1.7,4,Multi-core,519
+AMD Athlon II X2 250,3.0,2,Multi-core,518
+AMD Athlon II X2 245,2.9,2,Multi-core,518
+Intel Atom x7-Z8750,1.6,4,Multi-core,517
+Intel Atom x7-Z8700,1.6,4,Multi-core,516
+Intel Atom Z3795,1.6,4,Multi-core,515
+AMD A4-5300B,3.4,2,Multi-core,515
+Intel Celeron 1000M,1.8,2,Multi-core,514
+Intel Pentium E5700,3.0,2,Multi-core,513
+Intel Core 2 Duo T9400,2.5,2,Multi-core,512
+AMD A4-5300,3.4,2,Multi-core,512
+Intel Pentium B950,2.1,2,Multi-core,511
+AMD Athlon II X2 240,2.8,2,Multi-core,510
+Intel Celeron J3160,1.6,4,Multi-core,510
+AMD A6-5400K,3.6,2,Multi-core,510
+Intel Pentium 3556U,1.7,2,Multi-core,509
+Intel Core 2 Duo T9300,2.5,2,Multi-core,506
+Intel Pentium N3700,1.6,4,Multi-core,503
+Intel Pentium 2117U,1.8,2,Multi-core,502
+Intel Celeron N3150,1.6,4,Multi-core,502
+Intel Core 2 Duo E6700,2.7,2,Multi-core,501
+Intel Pentium E5400,2.7,2,Multi-core,499
+AMD Athlon II X2 220,2.8,2,Multi-core,499
+Intel Core 2 Duo E6750,2.7,2,Multi-core,498
+Intel Celeron N2940,1.8,4,Multi-core,496
+AMD Athlon 5150,1.6,4,Multi-core,496
+Intel Core 2 Duo P8700,2.5,2,Multi-core,495
+Intel Pentium E5300,2.6,2,Multi-core,494
+Intel Pentium N3520,2.2,4,Multi-core,493
+Intel Celeron 3205U,1.5,2,Multi-core,492
+Intel Core 2 Duo E7300,2.7,2,Multi-core,491
+Intel Celeron B820,1.7,2,Multi-core,490
+AMD Phenom II X4 P920,1.6,4,Multi-core,488
+AMD Athlon II X2 B24,3.0,2,Multi-core,488
+Intel Pentium E5500,2.8,2,Multi-core,487
+AMD A4-3400,2.7,2,Multi-core,485
+Intel Celeron E3400,2.6,2,Multi-core,485
+Intel Atom x5-Z8550,1.4,4,Multi-core,484
+Intel Core i3-2375M,1.5,2,Multi-core,484
+Intel Pentium P6200,2.1,2,Multi-core,483
+Intel Core 2 Duo E7200,2.5,2,Multi-core,482
+Intel Core i3-2377M,1.5,2,Multi-core,481
+Intel Core 2 Duo T8300,2.4,2,Multi-core,478
+Intel Celeron N2930,1.8,4,Multi-core,477
+Intel Core i3-2367M,1.4,2,Multi-core,475
+AMD Athlon II X2 215,2.7,2,Multi-core,475
+AMD A4-3300,2.5,2,Multi-core,474
+AMD A4-5000,1.5,4,Multi-core,473
+Intel Core 2 Duo P8600,2.4,2,Multi-core,467
+Intel Atom x5-Z8500,1.4,4,Multi-core,467
+AMD A4-4000,3.0,2,Multi-core,465
+Intel Pentium E6300,2.8,2,Multi-core,465
+Intel Celeron B830,1.8,2,Multi-core,461
+Intel Celeron 2955U,1.4,2,Multi-core,459
+Intel Core i3-2365M,1.4,2,Multi-core,459
+Intel Celeron 1017U,1.6,2,Multi-core,454
+Intel Pentium P6100,2.0,2,Multi-core,454
+AMD Athlon II X2 255,3.1,2,Multi-core,452
+AMD Athlon X2 340,3.2,1,Multi-core,451
+Intel Pentium P6000,1.9,2,Multi-core,450
+Intel Core 2 Duo P8400,2.3,2,Multi-core,449
+Intel Pentium E5200,2.5,2,Multi-core,444
+AMD A6-5350M,2.9,2,Multi-core,444
+Intel Core 2 Duo P7450,2.1,2,Multi-core,443
+AMD A4-4020,3.2,2,Multi-core,438
+Intel Celeron 887,1.5,2,Multi-core,434
+AMD GX-415GA,1.5,4,Multi-core,433
+AMD E2-6110,1.5,4,Multi-core,433
+AMD A4-3330MX,2.2,2,Multi-core,432
+Intel Atom x5-E8000,1.0,4,Multi-core,430
+Intel Celeron J3355,2.0,2,Multi-core,427
+Intel Core 2 Duo T8100,2.1,2,Multi-core,423
+Intel Core 2 Duo T7600,2.3,2,Multi-core,423
+Intel Core 2 Extreme X9100,3.1,2,Multi-core,422
+Intel Core 2 Duo T6570,2.1,2,Multi-core,421
+Intel Core 2 Duo E6600,2.4,2,Multi-core,417
+Intel Celeron 1007U,1.5,2,Multi-core,416
+Intel Celeron N3350,1.1,2,Multi-core,414
+Intel Celeron B800,1.5,2,Multi-core,413
+Intel Core 2 Duo E6550,2.3,2,Multi-core,411
+Intel Core 2 Duo T6600,2.2,2,Multi-core,408
+AMD A6-4400M,2.7,2,Multi-core,406
+Intel Celeron E3500,2.7,2,Multi-core,406
+Intel Core 2 Duo T7700,2.4,2,Multi-core,404
+AMD Athlon 64 X2 5600+,2.8,2,Multi-core,401
+Intel Core 2 Duo P7350,2.0,2,Multi-core,399
+Intel Pentium T4400,2.2,2,Multi-core,399
+Intel Celeron E3300,2.5,2,Multi-core,395
+AMD Athlon 64 X2 6000+,3.0,2,Multi-core,394
+Intel Core 2 Duo L9400,1.9,2,Multi-core,393
+Intel Celeron B815,1.6,2,Multi-core,393
+Intel Pentium 987,1.5,2,Multi-core,392
+AMD A4-3300M,1.9,2,Multi-core,391
+AMD E2-3800,1.3,4,Multi-core,389
+Intel Core 2 Duo T6670,2.2,2,Multi-core,388
+Intel Core 2 Duo T6500,2.1,2,Multi-core,388
+Intel Core 2 Duo T7400,2.2,2,Multi-core,388
+AMD A4-4300M,2.5,2,Multi-core,387
+Intel Core 2 Duo P7550,2.3,2,Multi-core,386
+Intel Pentium T4500,2.3,2,Multi-core,385
+Intel Pentium E2200,2.2,2,Multi-core,384
+Intel Core 2 Duo E4600,2.4,2,Multi-core,384
+Intel Pentium T4300,2.1,2,Multi-core,380
+Intel Pentium E2220,2.4,2,Multi-core,378
+Intel Core 2 Duo E6400,2.1,2,Multi-core,376
+Intel Core 2 Duo E4500,2.2,2,Multi-core,376
+AMD Turion II Neo N54L,2.2,2,Multi-core,376
+Intel Core 2 Duo T6400,2.0,2,Multi-core,373
+Intel Core 2 Duo T7500,2.2,2,Multi-core,371
+Intel Core 2 Duo T7800,2.6,2,Multi-core,364
+Intel Atom x5-Z8350,1.4,4,Multi-core,363
+Intel Pentium T3400,2.2,2,Multi-core,362
+Intel Pentium T4200,2.0,2,Multi-core,361
+Intel Core 2 Duo T5870,2.0,2,Multi-core,357
+Intel Atom x5-Z8300,1.4,4,Multi-core,356
+Intel Core 2 Duo T7100,1.8,2,Multi-core,355
+Intel Core 2 Duo T7300,2.0,2,Multi-core,352
+Intel Core 2 Duo E4300,1.8,2,Multi-core,351
+Intel Celeron T3500,2.1,2,Multi-core,350
+Intel Core 2 Duo T7250,2.0,2,Multi-core,349
+Intel Pentium E2180,2.0,2,Multi-core,349
+Intel Core 2 Duo T5800,2.0,2,Multi-core,346
+Intel Core 2 Duo T7200,2.0,2,Multi-core,341
+AMD Athlon 64 X2 5000+,2.6,2,Multi-core,339
+Intel Core 2 Duo E6320,1.9,2,Multi-core,339
+Intel Core 2 Duo T5850,2.2,2,Multi-core,336
+Intel Core 2 Duo T5750,2.0,2,Multi-core,330
+Intel Pentium T3200,2.0,2,Multi-core,327
+AMD Athlon II P320,2.1,2,Multi-core,320
+Intel Core 2 Duo T5450,1.7,2,Multi-core,319
+Intel Core 2 Duo E6300,1.9,2,Multi-core,315
+Intel Core 2 Duo T5670,1.8,2,Multi-core,314
+Intel Celeron J3060,1.6,2,Multi-core,313
+AMD Athlon II P340,2.2,2,Multi-core,308
+AMD A6-4455M,2.1,2,Multi-core,307
+Intel Celeron N2840,2.2,2,Multi-core,296
+Intel Core 2 Duo SU7300,1.3,2,Multi-core,292
+Intel Pentium SU4100,1.3,2,Multi-core,290
+Intel Celeron N3010,1.0,2,Multi-core,288
+Intel Pentium T2390,1.9,2,Multi-core,287
+Intel Pentium D 945/950,3.4,2,Multi-core,284
+AMD Sempron 145,2.8,1,Multi-core,282
+Intel Pentium E2140,1.6,2,Multi-core,280
+Intel Celeron N2820,2.1,2,Multi-core,278
+Intel Celeron N2830,2.2,2,Multi-core,275
+Intel Pentium E2160,1.8,2,Multi-core,275
+Intel Celeron N3050,1.6,2,Multi-core,269
+Intel Celeron 847,1.1,2,Multi-core,267
+Intel Core 2 Duo T5500,1.7,2,Multi-core,259
+Intel Pentium D 830/925/930,3.0,2,Multi-core,257
+Intel Celeron N2815,1.9,2,Multi-core,249
+AMD Athlon 64 X2 4200+,2.2,2,Multi-core,243
+Intel Pentium T2330,1.6,2,Multi-core,240
+Intel Celeron N2807,1.6,2,Multi-core,239
+AMD E1-2500,1.4,2,Multi-core,237
+AMD Sempron 2650,1.4,2,Multi-core,234
+Intel Celeron 900,2.2,1,Multi-core,230
+AMD E1-6010,1.4,2,Multi-core,220
+AMD E1-7010,1.5,2,Multi-core,219
+AMD E1-1500,1.5,2,Multi-core,190
+AMD E-450,1.6,2,Multi-core,186
+AMD E2-1800,1.7,2,Multi-core,185
+AMD E-350,1.6,2,Multi-core,184
+Intel Atom D525,1.8,2,Multi-core,181
+AMD Athlon II Neo N36L,1.3,2,Multi-core,180
+AMD E1-2100,1.0,2,Multi-core,169
+AMD E1-1200,1.4,2,Multi-core,164
+Intel Celeron 450,2.2,1,Multi-core,161
+Intel Pentium SU2700,1.3,1,Multi-core,150
+AMD E-300,1.3,2,Multi-core,149
+AMD Turion 64 X2 TL-50,1.6,2,Multi-core,147
+Intel Atom N550,1.5,2,Multi-core,141
+AMD Athlon 1640B,2.7,1,Multi-core,136
+AMD C-50,1.0,2,Multi-core,124
+AMD Athlon 64 3500+,2.2,1,Multi-core,116
+Intel Atom N455,1.7,1,Multi-core,80

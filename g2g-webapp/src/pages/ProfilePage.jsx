@@ -542,14 +542,7 @@ const ProfilePage = () => {
   if (loading) {
     return (
       <div className="profile-page">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "200px",
-          }}
-        >
+        <div className="loading-container">
           <Loading />
         </div>
       </div>
@@ -558,441 +551,532 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-      <div className="hero-bg-shapes">
-        <div className="shape shape-1"></div>
-        <div className="shape shape-2"></div>
-        <div className="shape shape-3"></div>
-      </div>
-      <div className="container">
-        <div className="button-container">
+      <div className="profile-container">
+        <div className="profile-header">
+          <h1>Profile Dashboard</h1>
+          <p>Manage your gaming profile and benchmark contributions</p>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="tab-navigation">
           <button
-            className={`btn ${activeTab === "profile" ? "active" : ""}`}
+            className={`tab-btn ${activeTab === "profile" ? "active" : ""}`}
             onClick={() => handleTabChange("profile")}
           >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
             Profile
           </button>
           <button
-            className={`btn ${activeTab === "options" ? "active" : ""}`}
+            className={`tab-btn ${activeTab === "options" ? "active" : ""}`}
             onClick={() => handleTabChange("options")}
           >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.82,11.69,4.82,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+            </svg>
             Options
           </button>
           {isBenchmarker && userSubmissions.length > 0 && (
             <button
-              className={`btn ${activeTab === "submits" ? "active" : ""}`}
+              className={`tab-btn ${activeTab === "submits" ? "active" : ""}`}
               onClick={() => handleTabChange("submits")}
             >
-              Submits
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+              </svg>
+              Submissions
             </button>
           )}
-          <button className="btn-red" onClick={handleLogout}>
+          <button className="logout-btn" onClick={handleLogout}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+            </svg>
             Logout
           </button>
         </div>
 
-        {activeTab === "profile" && (
-          <div className="profile-info">
-            <div className="user-info">
-              <div className="info-item">
-                <label>Username:</label>
-                <span>{userProfile?.username || "N/A"}</span>
-              </div>
-              <div className="info-item">
-                <label>Email:</label>
-                <span>{currentUser?.email}</span>
-              </div>
-              <div className="info-item">
-                <label>Member Since:</label>
-                <span>
-                  {userProfile?.createdAt
-                    ? new Date(
-                        userProfile.createdAt.seconds * 1000
-                      ).toLocaleDateString()
-                    : "N/A"}
-                </span>
-              </div>
-            </div>
-            <div className="specs-container">
-              <div className="specs-info">
-                <div className="specs-item" ref={cpuInputRef}>
-                  <label>CPU:</label>
-                  <input
-                    type="text"
-                    placeholder="Start typing CPU name..."
-                    value={specs.cpu}
-                    onChange={(e) => handleCpuChange(e.target.value)}
-                  />
-                  {showCpuDropdown && filteredCpus.length > 0 && (
-                    <div className="dropdown">
-                      {filteredCpus.map((cpu, index) => (
-                        <div
-                          key={index}
-                          className="dropdown-item"
-                          onClick={() => selectCpu(cpu)}
-                        >
-                          {cpu}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div className="specs-item" ref={gpuInputRef}>
-                  <label>GPU:</label>
-                  <input
-                    type="text"
-                    placeholder="Start typing GPU name..."
-                    value={specs.gpu}
-                    onChange={(e) => handleGpuChange(e.target.value)}
-                  />
-                  {showGpuDropdown && filteredGpus.length > 0 && (
-                    <div className="dropdown">
-                      {filteredGpus.map((gpu, index) => (
-                        <div
-                          key={index}
-                          className="dropdown-item"
-                          onClick={() => selectGpu(gpu)}
-                        >
-                          {gpu.name} ({gpu.vram}GB VRAM)
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div className="specs-item">
-                  <label>RAM:</label>
-                  <select
-                    value={specs.ram}
-                    onChange={(e) =>
-                      setSpecs((prev) => ({ ...prev, ram: e.target.value }))
-                    }
-                  >
-                    <option value="">Select RAM</option>
-                    {ramOptions.map((ram) => (
-                      <option key={ram} value={ram}>
-                        {ram}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="specs-item">
-                  <label>Resolution:</label>
-                  <select
-                    value={specs.resolution}
-                    onChange={(e) =>
-                      setSpecs((prev) => ({
-                        ...prev,
-                        resolution: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="">Select Resolution</option>
-                    {resolutionOptions.map((resolution) => (
-                      <option key={resolution} value={resolution}>
-                        {resolution}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <button
-                className="btn-specs"
-                onClick={handleSaveSpecs}
-                disabled={saving}
-              >
-                {saving ? "Saving..." : hasSpecs ? "Edit Specs" : "Add Specs"}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "options" && (
-          <div className="options-container">
-            {!isBenchmarker && (
-              <div className="options-item">
-                <label>Join as a Game Benchmarker</label>
-                <p>
-                  Join our community of game enthusiasts who help us test and
-                  improve our AI-powered tool. By applying to be a game
-                  benchmarker, your submitted data will be used to improve the
-                  tool and you will be rewarded with a rank among users. Your
-                  rank will be based on the number of games you have benchmarked
-                  and the accuracy of your benchmarks. All user-submitted
-                  benchmarks will be publicly available and will be reviewed for
-                  accuracy before being added to the database.
-                </p>
-                <button
-                  className="btn-specs"
-                  onClick={handleApplyBenchmarker}
-                  disabled={applyingBenchmarker}
-                >
-                  {applyingBenchmarker ? "Applying..." : "Apply"}
-                </button>
-              </div>
-            )}
-
-            {isBenchmarker && (
-              <div className="options-item">
-                <div className="benchmark-form">
-                  <label>Submit Benchmark Data</label>
-                  <div className="benchmark-row">
-                    <div className="benchmark-field" ref={gameInputRef}>
-                      <label>Game Name:</label>
-                      <input
-                        type="text"
-                        placeholder="Start typing game name..."
-                        value={benchmarkData.Game_Name}
-                        onChange={(e) => handleGameChange(e.target.value)}
-                      />
-                      {showGameDropdown && filteredGames.length > 0 && (
-                        <div className="dropdown">
-                          {filteredGames.map((game, index) => (
-                            <div
-                              key={index}
-                              className="dropdown-item"
-                              onClick={() => selectGame(game)}
-                            >
-                              {game}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="benchmark-field">
-                      <label>AVG FPS:</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        placeholder="e.g., 40.9"
-                        value={benchmarkData.FPS}
-                        onChange={(e) =>
-                          handleBenchmarkChange("FPS", e.target.value)
-                        }
-                      />
-                    </div>
+        {/* Tab Content */}
+        <div className="tab-content">
+          {activeTab === "profile" && (
+            <div className="profile-content">
+              {/* User Info Card */}
+              <div className="info-card user-card">
+                <div className="card-header">
+                  <h3>User Information</h3>
+                  <div className="user-avatar">
+                    {userProfile?.username?.charAt(0).toUpperCase() || currentUser?.email?.charAt(0).toUpperCase()}
                   </div>
+                </div>
+                <div className="card-content">
+                  <div className="info-grid">
+                    <div className="info-item">
+                      <span className="label">Username</span>
+                      <span className="value">{userProfile?.username || "N/A"}</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="label">Email</span>
+                      <span className="value">{currentUser?.email}</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="label">Member Since</span>
+                      <span className="value">
+                        {userProfile?.createdAt
+                          ? new Date(userProfile.createdAt.seconds * 1000).toLocaleDateString()
+                          : "N/A"}
+                      </span>
+                    </div>
+                    {isBenchmarker && (
+                      <div className="info-item">
+                        <span className="label">Benchmarker Status</span>
+                        <span className="value benchmarker-badge">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                          </svg>
+                          Bronze Benchmarker
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
 
-                  <div className="benchmark-row">
-                    <div className="benchmark-field" ref={benchmarkCpuInputRef}>
-                      <label>CPU:</label>
-                      <input
-                        type="text"
-                        placeholder="Start typing CPU name..."
-                        value={benchmarkData.CPU}
-                        onChange={(e) =>
-                          handleBenchmarkCpuChange(e.target.value)
-                        }
-                      />
-                      {showBenchmarkCpuDropdown &&
-                        filteredBenchmarkCpus.length > 0 && (
+              {/* System Specs Card */}
+              <div className="info-card specs-card">
+                <div className="card-header">
+                  <h3>System Specifications</h3>
+                  <div className="specs-status">
+                    {hasSpecs ? (
+                      <span className="status-complete">Complete</span>
+                    ) : (
+                      <span className="status-incomplete">Incomplete</span>
+                    )}
+                  </div>
+                </div>
+                <div className="card-content">
+                  <div className="specs-form">
+                    <div className="form-row">
+                      <div className="form-group" ref={cpuInputRef}>
+                        <label>CPU Processor</label>
+                        <input
+                          type="text"
+                          placeholder="Start typing CPU name..."
+                          value={specs.cpu}
+                          onChange={(e) => handleCpuChange(e.target.value)}
+                          className="modern-input"
+                        />
+                        {showCpuDropdown && filteredCpus.length > 0 && (
                           <div className="dropdown">
-                            {filteredBenchmarkCpus.map((cpu, index) => (
+                            {filteredCpus.map((cpu, index) => (
                               <div
                                 key={index}
                                 className="dropdown-item"
-                                onClick={() => selectBenchmarkCpu(cpu)}
+                                onClick={() => selectCpu(cpu)}
                               >
                                 {cpu}
                               </div>
                             ))}
                           </div>
                         )}
-                    </div>
-                    <div className="benchmark-field" ref={benchmarkGpuInputRef}>
-                      <label>GPU:</label>
-                      <input
-                        type="text"
-                        placeholder="Start typing GPU name..."
-                        value={benchmarkData.GPU}
-                        onChange={(e) =>
-                          handleBenchmarkGpuChange(e.target.value)
-                        }
-                      />
-                      {showBenchmarkGpuDropdown &&
-                        filteredBenchmarkGpus.length > 0 && (
+                      </div>
+                      <div className="form-group" ref={gpuInputRef}>
+                        <label>Graphics Card</label>
+                        <input
+                          type="text"
+                          placeholder="Start typing GPU name..."
+                          value={specs.gpu}
+                          onChange={(e) => handleGpuChange(e.target.value)}
+                          className="modern-input"
+                        />
+                        {showGpuDropdown && filteredGpus.length > 0 && (
                           <div className="dropdown">
-                            {filteredBenchmarkGpus.map((gpu, index) => (
+                            {filteredGpus.map((gpu, index) => (
                               <div
                                 key={index}
                                 className="dropdown-item"
-                                onClick={() => selectBenchmarkGpu(gpu)}
+                                onClick={() => selectGpu(gpu)}
                               >
                                 {gpu.name} ({gpu.vram}GB VRAM)
                               </div>
                             ))}
                           </div>
                         )}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="benchmark-row">
-                    <div className="benchmark-field">
-                      <label>RAM (GB):</label>
-                      <input
-                        type="number"
-                        placeholder="e.g., 32"
-                        value={benchmarkData.RAM}
-                        onChange={(e) =>
-                          handleBenchmarkChange("RAM", e.target.value)
-                        }
-                      />
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Memory (RAM)</label>
+                        <select
+                          value={specs.ram}
+                          onChange={(e) => setSpecs((prev) => ({ ...prev, ram: e.target.value }))}
+                          className="modern-select"
+                        >
+                          <option value="">Select RAM</option>
+                          {ramOptions.map((ram) => (
+                            <option key={ram} value={ram}>{ram}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label>Display Resolution</label>
+                        <select
+                          value={specs.resolution}
+                          onChange={(e) => setSpecs((prev) => ({ ...prev, resolution: e.target.value }))}
+                          className="modern-select"
+                        >
+                          <option value="">Select Resolution</option>
+                          {resolutionOptions.map((resolution) => (
+                            <option key={resolution} value={resolution}>{resolution}</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
-                    <div className="benchmark-field">
-                      <label>VRAM (GB):</label>
-                      <input
-                        type="number"
-                        placeholder="Auto-filled from GPU"
-                        value={benchmarkData.VRAM}
-                        readOnly
-                        disabled
-                        style={{
-                          backgroundColor: "#f5f5f5",
-                          cursor: "not-allowed",
-                        }}
-                      />
-                    </div>
-                  </div>
 
-                  <div className="benchmark-row">
-                    <div className="benchmark-field">
-                      <label>Resolution:</label>
-                      <select
-                        value={benchmarkData.Resolution}
-                        onChange={(e) =>
-                          handleBenchmarkChange("Resolution", e.target.value)
-                        }
-                      >
-                        <option value="">Select Resolution</option>
-                        <option value="1920x1080">1920x1080</option>
-                        <option value="2560x1440">2560x1440</option>
-                        <option value="3840x2160">3840x2160 (4K)</option>
-                      </select>
-                    </div>
-                    <div className="benchmark-field">
-                      <label>Graphics Mode:</label>
-                      <select
-                        value={benchmarkData.Mode}
-                        onChange={(e) =>
-                          handleBenchmarkChange("Mode", e.target.value)
-                        }
-                      >
-                        <option value="">Select Mode</option>
-                        {gameModeOptions.map((mode) => (
-                          <option key={mode} value={mode}>
-                            {mode}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <button
+                      className="save-specs-btn"
+                      onClick={handleSaveSpecs}
+                      disabled={saving}
+                    >
+                      {saving ? (
+                        <>
+                          <div className="spinner"></div>
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                          </svg>
+                          {hasSpecs ? "Update Specs" : "Save Specs"}
+                        </>
+                      )}
+                    </button>
                   </div>
-
-                  <button
-                    className="btn-specs"
-                    onClick={handleSubmitBenchmark}
-                    disabled={submittingBenchmark}
-                  >
-                    {submittingBenchmark ? "Submitting..." : "Add Data"}
-                  </button>
                 </div>
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
 
-        {activeTab === "submits" && (
-          <div className="submits-container">
-            <div className="submits-item">
-              <label>Your Benchmark Submissions</label>
-
-              {loadingSubmissions ? (
-                <div className="loading-submissions">
-                  <Loading />
-                </div>
-              ) : userSubmissions.length === 0 ? (
-                <div className="no-submissions">
-                  <p>You haven't submitted any benchmarks yet.</p>
-                  <button
-                    className="btn-specs"
-                    onClick={() => handleTabChange("options")}
-                  >
-                    Submit Benchmark
-                  </button>
+          {activeTab === "options" && (
+            <div className="options-content">
+              {!isBenchmarker ? (
+                <div className="info-card benchmarker-application-card">
+                  <div className="card-header">
+                    <h3>Become a Game Benchmarker</h3>
+                    <div className="rank-badge bronze">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                      Bronze Rank
+                    </div>
+                  </div>
+                  <div className="card-content">
+                    <div className="application-info">
+                      <div className="benefits-grid">
+                        <div className="benefit-item">
+                          <div className="benefit-icon">📊</div>
+                          <h4>Contribute Data</h4>
+                          <p>Help improve our AI model with your benchmark results</p>
+                        </div>
+                        <div className="benefit-item">
+                          <div className="benefit-icon">🏆</div>
+                          <h4>Earn Rankings</h4>
+                          <p>Get recognized for your contributions with rank badges</p>
+                        </div>
+                        <div className="benefit-item">
+                          <div className="benefit-icon">🎮</div>
+                          <h4>Gaming Community</h4>
+                          <p>Join a community of gaming enthusiasts and testers</p>
+                        </div>
+                      </div>
+                      <div className="application-description">
+                        <p>
+                          Join our community of game enthusiasts who help test and improve our AI-powered FPS prediction tool. 
+                          Your submitted benchmark data will be reviewed for accuracy and used to enhance the model's predictions.
+                        </p>
+                      </div>
+                      <button
+                        className="apply-benchmarker-btn"
+                        onClick={handleApplyBenchmarker}
+                        disabled={applyingBenchmarker}
+                      >
+                        {applyingBenchmarker ? (
+                          <>
+                            <div className="spinner"></div>
+                            Applying...
+                          </>
+                        ) : (
+                          <>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                            </svg>
+                            Apply Now
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ) : (
-                <div className="submissions-list">
-                  {userSubmissions.map((submission) => (
-                    <div key={submission.id} className="submission-card">
-                      <div className="submission-header">
-                        <h3>{submission.Game_Name}</h3>
-                        <span className={getStatusBadge(submission.status)}>
-                          {submission.status || "pending"}
-                        </span>
-                      </div>
-
-                      <div className="submission-details">
-                        <div className="detail-row">
-                          <div className="detail-group">
-                            <span className="detail-label">FPS:</span>
-                            <span className="detail-value">
-                              {submission.FPS}
-                            </span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">Graphics:</span>
-                            <span className="detail-value">
-                              {submission.Mode}
-                            </span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">Resolution:</span>
-                            <span className="detail-value">
-                              {submission.Resolution}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="detail-row">
-                          <div className="detail-group">
-                            <span className="detail-label">CPU:</span>
-                            <span className="detail-value">
-                              {submission.CPU}
-                            </span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">GPU:</span>
-                            <span className="detail-value">
-                              {submission.GPU}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="detail-row">
-                          <div className="detail-group">
-                            <span className="detail-label">RAM:</span>
-                            <span className="detail-value">
-                              {submission.RAM}GB
-                            </span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">VRAM:</span>
-                            <span className="detail-value">
-                              {submission.VRAM}GB
-                            </span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">Submitted:</span>
-                            <span className="detail-value">
-                              {formatDate(submission.submittedAt)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+                <div className="info-card benchmark-submission-card">
+                  <div className="card-header">
+                    <h3>Submit Benchmark Data</h3>
+                    <div className="submission-stats">
+                      <span className="stat-item">
+                        <span className="stat-number">{userSubmissions.length}</span>
+                        <span className="stat-label">Submissions</span>
+                      </span>
                     </div>
-                  ))}
+                  </div>
+                  <div className="card-content">
+                    <div className="benchmark-form">
+                      <div className="form-row">
+                        <div className="form-group" ref={gameInputRef}>
+                          <label>Game Name</label>
+                          <input
+                            type="text"
+                            placeholder="Start typing game name..."
+                            value={benchmarkData.Game_Name}
+                            onChange={(e) => handleGameChange(e.target.value)}
+                            className="modern-input"
+                          />
+                          {showGameDropdown && filteredGames.length > 0 && (
+                            <div className="dropdown">
+                              {filteredGames.map((game, index) => (
+                                <div
+                                  key={index}
+                                  className="dropdown-item"
+                                  onClick={() => selectGame(game)}
+                                >
+                                  {game}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="form-group">
+                          <label>Average FPS</label>
+                          <input
+                            type="number"
+                            step="0.1"
+                            placeholder="e.g., 60.5"
+                            value={benchmarkData.FPS}
+                            onChange={(e) => handleBenchmarkChange("FPS", e.target.value)}
+                            className="modern-input"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group" ref={benchmarkCpuInputRef}>
+                          <label>CPU</label>
+                          <input
+                            type="text"
+                            placeholder="Start typing CPU name..."
+                            value={benchmarkData.CPU}
+                            onChange={(e) => handleBenchmarkCpuChange(e.target.value)}
+                            className="modern-input"
+                          />
+                          {showBenchmarkCpuDropdown && filteredBenchmarkCpus.length > 0 && (
+                            <div className="dropdown">
+                              {filteredBenchmarkCpus.map((cpu, index) => (
+                                <div
+                                  key={index}
+                                  className="dropdown-item"
+                                  onClick={() => selectBenchmarkCpu(cpu)}
+                                >
+                                  {cpu}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="form-group" ref={benchmarkGpuInputRef}>
+                          <label>GPU</label>
+                          <input
+                            type="text"
+                            placeholder="Start typing GPU name..."
+                            value={benchmarkData.GPU}
+                            onChange={(e) => handleBenchmarkGpuChange(e.target.value)}
+                            className="modern-input"
+                          />
+                          {showBenchmarkGpuDropdown && filteredBenchmarkGpus.length > 0 && (
+                            <div className="dropdown">
+                              {filteredBenchmarkGpus.map((gpu, index) => (
+                                <div
+                                  key={index}
+                                  className="dropdown-item"
+                                  onClick={() => selectBenchmarkGpu(gpu)}
+                                >
+                                  {gpu.name} ({gpu.vram}GB VRAM)
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>RAM (GB)</label>
+                          <input
+                            type="number"
+                            placeholder="e.g., 16"
+                            value={benchmarkData.RAM}
+                            onChange={(e) => handleBenchmarkChange("RAM", e.target.value)}
+                            className="modern-input"
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>VRAM (GB)</label>
+                          <input
+                            type="number"
+                            placeholder="Auto-filled from GPU"
+                            value={benchmarkData.VRAM}
+                            readOnly
+                            disabled
+                            className="modern-input disabled"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Resolution</label>
+                          <select
+                            value={benchmarkData.Resolution}
+                            onChange={(e) => handleBenchmarkChange("Resolution", e.target.value)}
+                            className="modern-select"
+                          >
+                            <option value="">Select Resolution</option>
+                            <option value="1920x1080">1920x1080</option>
+                            <option value="2560x1440">2560x1440</option>
+                            <option value="3840x2160">3840x2160 (4K)</option>
+                          </select>
+                        </div>
+                        <div className="form-group">
+                          <label>Graphics Mode</label>
+                          <select
+                            value={benchmarkData.Mode}
+                            onChange={(e) => handleBenchmarkChange("Mode", e.target.value)}
+                            className="modern-select"
+                          >
+                            <option value="">Select Mode</option>
+                            {gameModeOptions.map((mode) => (
+                              <option key={mode} value={mode}>{mode}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
+                      <button
+                        className="submit-benchmark-btn"
+                        onClick={handleSubmitBenchmark}
+                        disabled={submittingBenchmark}
+                      >
+                        {submittingBenchmark ? (
+                          <>
+                            <div className="spinner"></div>
+                            Submitting...
+                          </>
+                        ) : (
+                          <>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                            Submit Benchmark
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
-          </div>
-        )}
+          )}
+
+          {activeTab === "submits" && (
+            <div className="submissions-content">
+              <div className="info-card submissions-card">
+                <div className="card-header">
+                  <h3>Your Benchmark Submissions</h3>
+                  <div className="submission-summary">
+                    <span className="total-submissions">{userSubmissions.length} Total</span>
+                  </div>
+                </div>
+                <div className="card-content">
+                  {loadingSubmissions ? (
+                    <div className="loading-submissions">
+                      <Loading />
+                    </div>
+                  ) : userSubmissions.length === 0 ? (
+                    <div className="no-submissions">
+                      <div className="empty-state">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        <h4>No Submissions Yet</h4>
+                        <p>You haven't submitted any benchmarks yet. Start contributing to help improve our model!</p>
+                        <button
+                          className="create-submission-btn"
+                          onClick={() => handleTabChange("options")}
+                        >
+                          Create Your First Submission
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="submissions-grid">
+                      {userSubmissions.map((submission) => (
+                        <div key={submission.id} className="submission-card">
+                          <div className="submission-header">
+                            <div className="game-info">
+                              <h4>{submission.Game_Name}</h4>
+                              <span className="fps-display">{submission.FPS} FPS</span>
+                            </div>
+                            <span className={`status-badge ${submission.status || 'pending'}`}>
+                              {submission.status || 'pending'}
+                            </span>
+                          </div>
+
+                          <div className="submission-details">
+                            <div className="detail-grid">
+                              <div className="detail-item">
+                                <span className="detail-label">Graphics</span>
+                                <span className="detail-value">{submission.Mode}</span>
+                              </div>
+                              <div className="detail-item">
+                                <span className="detail-label">Resolution</span>
+                                <span className="detail-value">{submission.Resolution}</span>
+                              </div>
+                              <div className="detail-item">
+                                <span className="detail-label">CPU</span>
+                                <span className="detail-value">{submission.CPU}</span>
+                              </div>
+                              <div className="detail-item">
+                                <span className="detail-label">GPU</span>
+                                <span className="detail-value">{submission.GPU}</span>
+                              </div>
+                              <div className="detail-item">
+                                <span className="detail-label">RAM</span>
+                                <span className="detail-value">{submission.RAM}GB</span>
+                              </div>
+                              <div className="detail-item">
+                                <span className="detail-label">Submitted</span>
+                                <span className="detail-value">{formatDate(submission.submittedAt)}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
