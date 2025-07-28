@@ -20,19 +20,24 @@ const ProfilePage = () => {
   const { currentUser, userProfile, logout } = useAuth();
   const navigate = useNavigate();
 
-  // Tab navigation state
+  // Tab navigation
   const [activeTab, setActiveTab] = useState("profile");
 
-  // Benchmarker status and application state
+  // Benchmarker status
   const [isBenchmarker, setIsBenchmarker] = useState(false);
   const [applyingBenchmarker, setApplyingBenchmarker] = useState(false);
 
-  // Games autocomplete data and state
+  // User submissions
+  const [userSubmissions, setUserSubmissions] = useState([]);
+  const [loadingSubmissions, setLoadingSubmissions] = useState(false);
+  const [hasCheckedSubmissions, setHasCheckedSubmissions] = useState(false);
+
+  // Games data
   const [gamesList, setGamesList] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
   const [showGameDropdown, setShowGameDropdown] = useState(false);
 
-  // Benchmark form autocomplete states
+  // Benchmark form autocomplete
   const [filteredBenchmarkCpus, setFilteredBenchmarkCpus] = useState([]);
   const [filteredBenchmarkGpus, setFilteredBenchmarkGpus] = useState([]);
   const [showBenchmarkCpuDropdown, setShowBenchmarkCpuDropdown] =
@@ -40,7 +45,7 @@ const ProfilePage = () => {
   const [showBenchmarkGpuDropdown, setShowBenchmarkGpuDropdown] =
     useState(false);
 
-  // Benchmark data form state - matches Firebase schema
+  // Benchmark form data
   const [benchmarkData, setBenchmarkData] = useState({
     CPU: "",
     FPS: "",
@@ -53,7 +58,7 @@ const ProfilePage = () => {
   });
   const [submittingBenchmark, setSubmittingBenchmark] = useState(false);
 
-  // User specs form state
+  // User specs
   const [specs, setSpecs] = useState({
     cpu: "",
     gpu: "",
@@ -61,27 +66,22 @@ const ProfilePage = () => {
     resolution: "",
   });
 
-  // Hardware autocomplete data from Firebase
+  // Hardware data from Firebase
   const [cpuList, setCpuList] = useState([]);
   const [gpuList, setGpuList] = useState([]);
   const [filteredCpus, setFilteredCpus] = useState([]);
   const [filteredGpus, setFilteredGpus] = useState([]);
 
-  // Profile specs dropdown visibility
+  // Profile specs dropdowns
   const [showCpuDropdown, setShowCpuDropdown] = useState(false);
   const [showGpuDropdown, setShowGpuDropdown] = useState(false);
 
-  // Loading and specs existence state
+  // Loading states
   const [loading, setLoading] = useState(true);
   const [hasSpecs, setHasSpecs] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // User submissions data
-  const [userSubmissions, setUserSubmissions] = useState([]);
-  const [loadingSubmissions, setLoadingSubmissions] = useState(false);
-  const [hasCheckedSubmissions, setHasCheckedSubmissions] = useState(false);
-
-  // Input field refs for click-outside detection
+  // Input refs for click-outside detection
   const cpuInputRef = useRef(null);
   const gpuInputRef = useRef(null);
   const gameInputRef = useRef(null);
@@ -93,23 +93,20 @@ const ProfilePage = () => {
   const resolutionOptions = ["1920x1080", "2560x1440", "3840x2160 (4K)"];
   const gameModeOptions = ["Low", "Medium", "High", "Ultra"];
 
-  // Initialize data on component mount - fetch hardware specs, games, and user data
+  // Initialize data on component mount
   useEffect(() => {
     const fetchSpecsData = async () => {
       try {
-        // Fetch available CPUs from Firebase
         const cpuDoc = await getDoc(doc(db, "cpu_names", "all_cpus"));
         if (cpuDoc.exists()) {
           setCpuList(cpuDoc.data().names || []);
         }
 
-        // Fetch available GPUs with VRAM data from Firebase
         const gpuDoc = await getDoc(doc(db, "gpu_names", "all_gpus"));
         if (gpuDoc.exists()) {
           setGpuList(gpuDoc.data().gpus || []);
         }
 
-        // Fetch games from requirements collection for benchmarking
         const gameRequirementsSnapshot = await getDocs(
           collection(db, "game_requirements")
         );
@@ -120,22 +117,19 @@ const ProfilePage = () => {
             games.push(gameData.Game_Name);
           }
         });
-        games.sort(); // Alphabetical order for better UX
+        games.sort();
         setGamesList(games);
 
-        // Load user's existing data if available
         if (currentUser) {
           const userDoc = await getDoc(doc(db, "users", currentUser.uid));
           if (userDoc.exists()) {
             const userData = userDoc.data();
 
-            // Load existing specs
             if (userData.specs) {
               setSpecs(userData.specs);
               setHasSpecs(true);
             }
 
-            // Check benchmarker status
             if (userData.benchmarker === "yes") {
               setIsBenchmarker(true);
             }
@@ -153,7 +147,7 @@ const ProfilePage = () => {
     }
   }, [currentUser]);
 
-  // Check if user has any submissions (lightweight check)
+  // Check if user has submissions
   const checkUserSubmissions = async () => {
     if (!currentUser || !isBenchmarker) return;
 
@@ -162,11 +156,10 @@ const ProfilePage = () => {
         collection(db, "users_benchmarks"),
         where("userId", "==", currentUser.uid)
       );
-      
+
       const submissionsSnapshot = await getDocs(submissionsQuery);
       setHasCheckedSubmissions(true);
-      
-      // If we have submissions, set them
+
       if (!submissionsSnapshot.empty) {
         const submissions = [];
         submissionsSnapshot.forEach((doc) => {
@@ -175,14 +168,17 @@ const ProfilePage = () => {
             ...doc.data(),
           });
         });
-        
-        // Sort by submittedAt in JavaScript (most recent first)
+
         submissions.sort((a, b) => {
-          const dateA = a.submittedAt?.toDate ? a.submittedAt.toDate() : new Date(a.submittedAt);
-          const dateB = b.submittedAt?.toDate ? b.submittedAt.toDate() : new Date(b.submittedAt);
+          const dateA = a.submittedAt?.toDate
+            ? a.submittedAt.toDate()
+            : new Date(a.submittedAt);
+          const dateB = b.submittedAt?.toDate
+            ? b.submittedAt.toDate()
+            : new Date(b.submittedAt);
           return dateB - dateA;
         });
-        
+
         setUserSubmissions(submissions);
       }
     } catch (error) {
@@ -191,16 +187,18 @@ const ProfilePage = () => {
     }
   };
 
-  // Check for submissions when user becomes a benchmarker
   useEffect(() => {
     if (isBenchmarker && currentUser && !hasCheckedSubmissions) {
       checkUserSubmissions();
     }
   }, [isBenchmarker, currentUser, hasCheckedSubmissions]);
 
-  // Fetch full submissions when submits tab is opened
   useEffect(() => {
-    if (activeTab === "submits" && isBenchmarker && userSubmissions.length === 0) {
+    if (
+      activeTab === "submits" &&
+      isBenchmarker &&
+      userSubmissions.length === 0
+    ) {
       fetchUserSubmissions();
     }
   }, [activeTab, isBenchmarker]);
@@ -301,12 +299,11 @@ const ProfilePage = () => {
     setBenchmarkData((prev) => ({
       ...prev,
       GPU: gpu.name,
-      VRAM: gpu.vram.toString(), // Auto-populate VRAM from GPU data
+      VRAM: gpu.vram.toString(),
     }));
     setShowBenchmarkGpuDropdown(false);
   };
 
-  // Save user's hardware specs to Firebase
   const handleSaveSpecs = async () => {
     if (!specs.cpu || !specs.gpu || !specs.ram || !specs.resolution) {
       alert("Please fill in all fields");
@@ -341,7 +338,6 @@ const ProfilePage = () => {
     }
   };
 
-  // Apply to become a game benchmarker
   const handleApplyBenchmarker = async () => {
     if (isBenchmarker) return;
 
@@ -367,12 +363,10 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle form input changes for benchmark data
   const handleBenchmarkChange = (field, value) => {
     setBenchmarkData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Submit benchmark data to users_benchmarks collection
   const handleSubmitBenchmark = async () => {
     const requiredFields = [
       "CPU",
@@ -395,22 +389,20 @@ const ProfilePage = () => {
 
     setSubmittingBenchmark(true);
     try {
-      // Create benchmark document with proper data types and metadata
       const benchmarkDoc = {
         ...benchmarkData,
-        FPS: parseFloat(benchmarkData.FPS), // Convert to number
-        RAM: parseInt(benchmarkData.RAM), // Convert to number
-        VRAM: parseInt(benchmarkData.VRAM), // Convert to number
+        FPS: parseFloat(benchmarkData.FPS),
+        RAM: parseInt(benchmarkData.RAM),
+        VRAM: parseInt(benchmarkData.VRAM),
         userName: userProfile?.username || currentUser?.email,
         userId: currentUser.uid,
         submittedAt: new Date(),
-        status: "pending", // For review process
+        status: "pending",
       };
 
       const benchmarksRef = collection(db, "users_benchmarks");
       await addDoc(benchmarksRef, benchmarkDoc);
 
-      // Reset form after successful submission
       setBenchmarkData({
         CPU: "",
         FPS: "",
@@ -422,7 +414,7 @@ const ProfilePage = () => {
         VRAM: "",
       });
 
-      // Refresh submissions to show the new one
+      // Refresh submissions
       setHasCheckedSubmissions(false);
       setUserSubmissions([]);
 
@@ -434,6 +426,45 @@ const ProfilePage = () => {
       alert("Failed to submit benchmark data. Please try again.");
     } finally {
       setSubmittingBenchmark(false);
+    }
+  };
+
+  const fetchUserSubmissions = async () => {
+    if (!currentUser) return;
+
+    setLoadingSubmissions(true);
+    try {
+      const submissionsQuery = query(
+        collection(db, "users_benchmarks"),
+        where("userId", "==", currentUser.uid)
+      );
+
+      const submissionsSnapshot = await getDocs(submissionsQuery);
+      const submissions = [];
+
+      submissionsSnapshot.forEach((doc) => {
+        submissions.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+
+      submissions.sort((a, b) => {
+        const dateA = a.submittedAt?.toDate
+          ? a.submittedAt.toDate()
+          : new Date(a.submittedAt);
+        const dateB = b.submittedAt?.toDate
+          ? b.submittedAt.toDate()
+          : new Date(b.submittedAt);
+        return dateB - dateA;
+      });
+
+      setUserSubmissions(submissions);
+    } catch (error) {
+      console.error("Error fetching user submissions:", error);
+      alert("Failed to load submissions. Please try again.");
+    } finally {
+      setLoadingSubmissions(false);
     }
   };
 
@@ -450,7 +481,7 @@ const ProfilePage = () => {
     setActiveTab(tab);
   };
 
-  // Close all dropdowns when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (cpuInputRef.current && !cpuInputRef.current.contains(event.target)) {
@@ -483,13 +514,31 @@ const ProfilePage = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Redirect to home if not authenticated
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "N/A";
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+  };
+
+  const getStatusBadge = (status) => {
+    const baseClass = "status-badge";
+    switch (status) {
+      case "pending":
+        return `${baseClass} status-pending`;
+      case "approved":
+        return `${baseClass} status-approved`;
+      case "rejected":
+        return `${baseClass} status-rejected`;
+      default:
+        return `${baseClass} status-unknown`;
+    }
+  };
+
   if (!currentUser) {
     navigate("/");
     return null;
   }
 
-  // Show loading spinner while fetching data
   if (loading) {
     return (
       <div className="profile-page">
@@ -507,28 +556,6 @@ const ProfilePage = () => {
     );
   }
 
-  // Format date for display
-  const formatDate = (timestamp) => {
-    if (!timestamp) return "N/A";
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
-  };
-
-  // Get status badge styling
-  const getStatusBadge = (status) => {
-    const baseClass = "status-badge";
-    switch (status) {
-      case "pending":
-        return `${baseClass} status-pending`;
-      case "approved":
-        return `${baseClass} status-approved`;
-      case "rejected":
-        return `${baseClass} status-rejected`;
-      default:
-        return `${baseClass} status-unknown`;
-    }
-  };
-
   return (
     <div className="profile-page">
       <div className="hero-bg-shapes">
@@ -537,23 +564,21 @@ const ProfilePage = () => {
         <div className="shape shape-3"></div>
       </div>
       <div className="container">
-        {/* Tab navigation buttons */}
         <div className="button-container">
-          <button 
+          <button
             className={`btn ${activeTab === "profile" ? "active" : ""}`}
             onClick={() => handleTabChange("profile")}
           >
             Profile
           </button>
-          <button 
+          <button
             className={`btn ${activeTab === "options" ? "active" : ""}`}
             onClick={() => handleTabChange("options")}
           >
             Options
           </button>
-          {/* Show Submits tab only for benchmarkers who have submissions */}
           {isBenchmarker && userSubmissions.length > 0 && (
-            <button 
+            <button
               className={`btn ${activeTab === "submits" ? "active" : ""}`}
               onClick={() => handleTabChange("submits")}
             >
@@ -565,7 +590,6 @@ const ProfilePage = () => {
           </button>
         </div>
 
-        {/* Profile tab: user info and hardware specs */}
         {activeTab === "profile" && (
           <div className="profile-info">
             <div className="user-info">
@@ -680,89 +704,9 @@ const ProfilePage = () => {
             </div>
           </div>
         )}
-        {activeTab === "submits" && (
-          <div className="submits-container">
-            <label>Your Benchmark Submissions</label>
-            <div className="submits-item">
-              
-              {loadingSubmissions ? (
-                <div className="loading-submissions">
-                  <Loading />
-                </div>
-              ) : userSubmissions.length === 0 ? (
-                <div className="no-submissions">
-                  <p>You haven't submitted any benchmarks yet.</p>
-                  <button 
-                    className="btn-specs"
-                    onClick={() => handleTabChange("options")}
-                  >
-                    Submit Benchmark
-                  </button>
-                </div>
-              ) : (
-                <div className="submissions-list">
-                  {userSubmissions.map((submission) => (
-                    <div key={submission.id} className="submission-card">
-                      <div className="submission-header">
-                        <h3>{submission.Game_Name}</h3>
-                        <span className={getStatusBadge(submission.status)}>
-                          {submission.status || "pending"}
-                        </span>
-                      </div>
-                      
-                      <div className="submission-details">
-                        <div className="detail-row">
-                          <div className="detail-group">
-                            <span className="detail-label">FPS:</span>
-                            <span className="detail-value">{submission.FPS}</span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">Graphics:</span>
-                            <span className="detail-value">{submission.Mode}</span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">Resolution:</span>
-                            <span className="detail-value">{submission.Resolution}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="detail-row">
-                          <div className="detail-group">
-                            <span className="detail-label">CPU:</span>
-                            <span className="detail-value">{submission.CPU}</span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">GPU:</span>
-                            <span className="detail-value">{submission.GPU}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="detail-row">
-                          <div className="detail-group">
-                            <span className="detail-label">RAM:</span>
-                            <span className="detail-value">{submission.RAM}GB</span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">VRAM:</span>
-                            <span className="detail-value">{submission.VRAM}GB</span>
-                          </div>
-                          <div className="detail-group">
-                            <span className="detail-label">Submitted:</span>
-                            <span className="detail-value">{formatDate(submission.submittedAt)}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-        {/* Options tab: benchmarker application or benchmark submission */}
+
         {activeTab === "options" && (
           <div className="options-container">
-            {/* Benchmarker application - shown only to non-benchmarkers */}
             {!isBenchmarker && (
               <div className="options-item">
                 <label>Join as a Game Benchmarker</label>
@@ -786,7 +730,6 @@ const ProfilePage = () => {
               </div>
             )}
 
-            {/* Benchmark submission form - shown only to approved benchmarkers */}
             {isBenchmarker && (
               <div className="options-item">
                 <div className="benchmark-form">
@@ -947,11 +890,107 @@ const ProfilePage = () => {
                     onClick={handleSubmitBenchmark}
                     disabled={submittingBenchmark}
                   >
-                    {submittingBenchmark ? "Submitting" : "Add Data"}
+                    {submittingBenchmark ? "Submitting..." : "Add Data"}
                   </button>
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === "submits" && (
+          <div className="submits-container">
+            <div className="submits-item">
+              <label>Your Benchmark Submissions</label>
+
+              {loadingSubmissions ? (
+                <div className="loading-submissions">
+                  <Loading />
+                </div>
+              ) : userSubmissions.length === 0 ? (
+                <div className="no-submissions">
+                  <p>You haven't submitted any benchmarks yet.</p>
+                  <button
+                    className="btn-specs"
+                    onClick={() => handleTabChange("options")}
+                  >
+                    Submit Benchmark
+                  </button>
+                </div>
+              ) : (
+                <div className="submissions-list">
+                  {userSubmissions.map((submission) => (
+                    <div key={submission.id} className="submission-card">
+                      <div className="submission-header">
+                        <h3>{submission.Game_Name}</h3>
+                        <span className={getStatusBadge(submission.status)}>
+                          {submission.status || "pending"}
+                        </span>
+                      </div>
+
+                      <div className="submission-details">
+                        <div className="detail-row">
+                          <div className="detail-group">
+                            <span className="detail-label">FPS:</span>
+                            <span className="detail-value">
+                              {submission.FPS}
+                            </span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">Graphics:</span>
+                            <span className="detail-value">
+                              {submission.Mode}
+                            </span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">Resolution:</span>
+                            <span className="detail-value">
+                              {submission.Resolution}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="detail-row">
+                          <div className="detail-group">
+                            <span className="detail-label">CPU:</span>
+                            <span className="detail-value">
+                              {submission.CPU}
+                            </span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">GPU:</span>
+                            <span className="detail-value">
+                              {submission.GPU}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="detail-row">
+                          <div className="detail-group">
+                            <span className="detail-label">RAM:</span>
+                            <span className="detail-value">
+                              {submission.RAM}GB
+                            </span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">VRAM:</span>
+                            <span className="detail-value">
+                              {submission.VRAM}GB
+                            </span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">Submitted:</span>
+                            <span className="detail-value">
+                              {formatDate(submission.submittedAt)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
