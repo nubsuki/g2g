@@ -1276,15 +1276,29 @@ const Admin = () => {
                           className="submit-btn"
                           onClick={handleTrainModel}
                           disabled={fetchLoading}
+                          style={{ flex: 1 }}
                         >
                           <FaBrain />
                           <span>
-                            {trainingStatus.is_training 
-                              ? 'Training...' 
-                              : trainingStatus.status === 'idle' 
-                                ? 'Train Model' 
-                                : 'Resume Progress View'
-                            }
+                            {(() => {
+                              if (trainingStatus.is_training) {
+                                return 'Training...';
+                              }
+                              
+                              switch (trainingStatus.status) {
+                                case 'idle':
+                                  return 'Train Model';
+                                case 'completed':
+                                  return 'Train New Model';
+                                case 'failed':
+                                  return 'Retry Training';
+                                case 'starting':
+                                case 'training':
+                                  return 'Resume Progress View';
+                                default:
+                                  return 'Train Model';
+                              }
+                            })()}
                           </span>
                         </button>
                         
