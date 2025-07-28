@@ -90,7 +90,7 @@ const Home = ({ onLoginClick }) => {
       icon: <FaRobot />,
       title: "AI-Powered Predictions",
       description: "Our advanced AI analyzes massive benchmark datasets to predict FPS and performance tailored specifically to your hardware configuration.",
-      highlight: "enchmarksAccuracy"
+      highlight: "Accuracy"
     },
     {
       icon: <FaMicrochip />,
@@ -109,7 +109,7 @@ const Home = ({ onLoginClick }) => {
       icon: <FaUsers />,
       title: "Gaming Community",
       description: "Connect with gamers worldwide, share performance tips, contribute benchmarks, and help improve our prediction model.",
-      highlight: "Active Community"
+      highlight: "Community"
     }
   ];
 
