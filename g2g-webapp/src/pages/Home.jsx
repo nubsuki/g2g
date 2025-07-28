@@ -86,10 +86,6 @@ const Home = ({ onLoginClick }) => {
                 <span>Get Started</span>
                 <FaArrowRight />
               </button>
-              <button className="cta-secondary" onClick={() => navigate('/fps')}>
-                <FaGamepad />
-                <span>Try Demo</span>
-              </button>
             </div>
             
             {/* Stats Preview */}
@@ -158,28 +154,6 @@ const Home = ({ onLoginClick }) => {
         </div>
       </div>
 
-      {/* CTA Section */}
-      <div className="cta-section">
-        <div className="cta-container">
-          <div className="cta-content">
-            <div className="cta-icon">
-              <FaGamepad />
-            </div>
-            <h2 className="cta-title">Ready to Optimize Your Gaming?</h2>
-            <p className="cta-description">
-              Join thousands of gamers who trust G2G for accurate performance predictions. 
-              Start making smarter gaming decisions today.
-            </p>
-            <div className="cta-actions">
-              <button className="cta-main-btn" onClick={handleGetStarted}>
-                <span>Start Predicting FPS</span>
-                <FaArrowRight />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Footer */}
       <footer className="footer">
         <div className="footer-container">
@@ -187,20 +161,6 @@ const Home = ({ onLoginClick }) => {
             <div className="footer-brand">
               <h3>G2G</h3>
               <p>From Gamers to Gamers</p>
-            </div>
-            
-            <div className="footer-links">
-              <div className="footer-section">
-                <h4>Product</h4>
-                <a href="/fps">FPS Predictor</a>
-                <a href="/profile">Profile</a>
-              </div>
-              
-              <div className="footer-section">
-                <h4>Community</h4>
-                <a href="#">Benchmarkers</a>
-                <a href="#">Contributors</a>
-              </div>
             </div>
             
             <div className="footer-social">
