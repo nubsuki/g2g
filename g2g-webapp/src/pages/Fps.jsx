@@ -16,6 +16,7 @@ const Fps = () => {
 
   // State for database stats
   const [benchmarksCount, setBenchmarksCount] = useState(0);
+  const [loadingStats, setLoadingStats] = useState(true);
 
   // Ref for click outside detection
   const gameInputRef = useRef(null);
@@ -24,6 +25,8 @@ const Fps = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoadingStats(true);
+        
         // Fetch games list
         const gameRequirementsSnapshot = await getDocs(
           collection(db, "game_requirements")
@@ -38,14 +41,32 @@ const Fps = () => {
         games.sort();
         setGamesList(games);
 
-        // Fetch benchmarks count
-        const benchmarksSnapshot = await getDocs(
-          collection(db, "game_benchmarks")
-        );
-        setBenchmarksCount(benchmarksSnapshot.size);
+        // Fetch benchmarks count from all three collections
+        const [gameBenchmarksSnapshot, cpuBenchmarksSnapshot, gpuBenchmarksSnapshot] = await Promise.all([
+          getDocs(collection(db, "game_benchmarks")),
+          getDocs(collection(db, "cpu_benchmarks")),
+          getDocs(collection(db, "gpu_benchmarks"))
+        ]);
+
+        // Combine all benchmark counts
+        const totalBenchmarks = 
+          gameBenchmarksSnapshot.size + 
+          cpuBenchmarksSnapshot.size + 
+          gpuBenchmarksSnapshot.size;
+
+        setBenchmarksCount(totalBenchmarks);
+
+        console.log("Benchmark counts:", {
+          game_benchmarks: gameBenchmarksSnapshot.size,
+          cpu_benchmarks: cpuBenchmarksSnapshot.size,
+          gpu_benchmarks: gpuBenchmarksSnapshot.size,
+          total: totalBenchmarks
+        });
 
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoadingStats(false);
       }
     };
 
@@ -283,6 +304,11 @@ const Fps = () => {
             <div className="info-card stats-card">
               <div className="card-header">
                 <h3>Database Stats</h3>
+                {loadingStats && (
+                  <div className="loading-spinner">
+                    <div className="spinner"></div>
+                  </div>
+                )}
               </div>
               <div className="card-content">
                 <div className="stat-item">
@@ -290,8 +316,10 @@ const Fps = () => {
                   <span className="stat-label">Games Available</span>
                 </div>
                 <div className="stat-item">
-                  <span className="stat-value">{formatNumber(benchmarksCount)}</span>
-                  <span className="stat-label">Benchmarks</span>
+                  <span className="stat-value">
+                    {loadingStats ? "..." : formatNumber(benchmarksCount)}
+                  </span>
+                  <span className="stat-label">Total Benchmarks</span>
                 </div>
                 <div className="stat-item">
                   <span className="stat-value">99%</span>
