@@ -598,6 +598,57 @@
     color: #9a79ff;
 }
 
+/* Submission Actions Container */
+.submission-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+/* Delete Button */
+.delete-submission-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(244, 67, 54, 0.2);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    border-radius: 0.5rem;
+    color: #f44336;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    padding: 0;
+}
+
+.delete-submission-btn:hover:not(:disabled) {
+    background: rgba(244, 67, 54, 0.3);
+    border-color: #f44336;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.2);
+}
+
+.delete-submission-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.delete-submission-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* Small Spinner for Delete Button */
+.spinner-small {
+    width: 12px;
+    height: 12px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
 /* Status Badges */
 .status-badge {
     padding: 0.3rem 0.8rem;
@@ -714,6 +765,11 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+    }
+    
+    .submission-actions {
+        align-self: flex-end;
+        gap: 0.5rem;
     }
     
     .detail-grid {

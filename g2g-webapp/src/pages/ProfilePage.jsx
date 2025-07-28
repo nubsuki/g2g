@@ -13,6 +13,7 @@ import {
   getDocs,
   query,
   where,
+  deleteDoc,
 } from "firebase/firestore";
 import "./ProfilePage.css";
 
@@ -31,6 +32,7 @@ const ProfilePage = () => {
   const [userSubmissions, setUserSubmissions] = useState([]);
   const [loadingSubmissions, setLoadingSubmissions] = useState(false);
   const [hasCheckedSubmissions, setHasCheckedSubmissions] = useState(false);
+  const [deletingSubmissions, setDeletingSubmissions] = useState(new Set());
 
   // Games data
   const [gamesList, setGamesList] = useState([]);
@@ -534,6 +536,39 @@ const ProfilePage = () => {
     }
   };
 
+  // Add delete submission function
+  const handleDeleteSubmission = async (submissionId, submissionStatus) => {
+    // Only allow deleting pending submissions
+    if (submissionStatus !== 'pending' && submissionStatus !== undefined) {
+      alert("You can only delete pending submissions.");
+      return;
+    }
+
+    if (!window.confirm("Are you sure you want to delete this submission? This action cannot be undone.")) {
+      return;
+    }
+
+    setDeletingSubmissions(prev => new Set(prev).add(submissionId));
+
+    try {
+      await deleteDoc(doc(db, "users_benchmarks", submissionId));
+      
+      // Remove from local state
+      setUserSubmissions(prev => prev.filter(sub => sub.id !== submissionId));
+      
+      alert("Submission deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting submission:", error);
+      alert("Failed to delete submission. Please try again.");
+    } finally {
+      setDeletingSubmissions(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(submissionId);
+        return newSet;
+      });
+    }
+  };
+
   if (!currentUser) {
     navigate("/");
     return null;
@@ -1029,9 +1064,28 @@ const ProfilePage = () => {
                               <h4>{submission.Game_Name}</h4>
                               <span className="fps-display">{submission.FPS} FPS</span>
                             </div>
-                            <span className={`status-badge ${submission.status || 'pending'}`}>
-                              {submission.status || 'pending'}
-                            </span>
+                            <div className="submission-actions">
+                              <span className={`status-badge ${submission.status || 'pending'}`}>
+                                {submission.status || 'pending'}
+                              </span>
+                              {/* Only show delete button for pending submissions */}
+                              {(submission.status === 'pending' || !submission.status) && (
+                                <button
+                                  className="delete-submission-btn"
+                                  onClick={() => handleDeleteSubmission(submission.id, submission.status)}
+                                  disabled={deletingSubmissions.has(submission.id)}
+                                  title="Delete pending submission"
+                                >
+                                  {deletingSubmissions.has(submission.id) ? (
+                                    <div className="spinner-small"></div>
+                                  ) : (
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                                    </svg>
+                                  )}
+                                </button>
+                              )}
+                            </div>
                           </div>
 
                           <div className="submission-details">
