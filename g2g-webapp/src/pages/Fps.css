@@ -670,7 +670,7 @@
   font-style: italic;
 }
 
-/* Keep existing tier badge styles */
+/* badge styles */
 .protondb-tier-badge {
   display: inline-block;
   padding: 4px 10px;
@@ -735,4 +735,41 @@
   gap: 6px;
   font-size: 11px;
   color: rgba(200, 182, 255, 0.7);
+}
+
+/* ProtonDB link icon styles */
+.protondb-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  color: rgba(200, 182, 255, 0.7);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+  padding: 2px;
+}
+
+.protondb-link:hover {
+  color: #c8b6ff;
+  background-color: rgba(200, 182, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.protondb-link:active {
+  transform: translateY(0);
+}
+
+.protondb-link svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Update protondb-main to align items properly */
+.protondb-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

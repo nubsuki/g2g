@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
 import { collection, getDocs, query, where, doc, getDoc } from "firebase/firestore";
 import "./Fps.css";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const Fps = () => {
   const { currentUser } = useAuth();
@@ -70,6 +71,8 @@ const Fps = () => {
   const handleGameChange = (value) => {
     setGameName(value);
 
+    setProtonDBData(null);
+
     if (value.length > 0) {
       const filtered = gamesList
         .filter((game) => game.toLowerCase().includes(value.toLowerCase()))
@@ -82,6 +85,7 @@ const Fps = () => {
       if (value === "") {
         setGameRequirements(null);
         setPrediction(null);
+        setProtonDBData(null);
       }
     }
   };
@@ -105,8 +109,7 @@ const Fps = () => {
       } else {
         console.log("No requirements found for:", selectedGameName);
         setGameRequirements(null);
-      }
-    } catch (error) {
+      }    } catch (error) {
       console.error("Error fetching game requirements:", error);
       setGameRequirements(null);
     } finally {
@@ -427,14 +430,19 @@ const Fps = () => {
                                   {protonDBData.total} reports
                                 </span>
                               )}
+                              {/* Add ProtonDB link icon */}
+                              {protonDBData.appId && protonDBData.appId !== 'null' && (
+                                <a 
+                                  href={`https://www.protondb.com/app/${protonDBData.appId}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="protondb-link"
+                                  title="View on ProtonDB"
+                                >
+                                  <FaExternalLinkAlt />
+                                </a>
+                              )}
                             </div>
-                            
-                            {protonDBData.confidence && (
-                              <div className="protondb-confidence">
-                                <span className="confidence-label">Confidence:</span>
-                                <span className="confidence-value">{protonDBData.confidence}</span>
-                              </div>
-                            )}
                             
                             {protonDBData.breakdown && (
                               <div className="protondb-breakdown">
@@ -569,3 +577,4 @@ const Fps = () => {
 };
 
 export default Fps;
+
