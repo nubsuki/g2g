@@ -10,7 +10,7 @@ lightgbm
 # Model persistence
 joblib
 
-# Google Cloud (for fetch.py)
+# Google Cloud
 google-cloud-firestore
 
 # Web API

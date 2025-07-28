@@ -41,12 +41,12 @@ def load_model_and_data():
         r2 = metadata['model_performance']['r2']
         accuracy_percentage = max(0, (1 - mae / 60) * 100)
         
-        print("✅ FPS Predictor loaded!")
-        print(f"✅ Model Accuracy: ±{mae:.1f} FPS ({accuracy_percentage:.1f}% accurate)")
-        print(f"✅ Reliability: {r2*100:.1f}% variance explained")
+        print("FPS Predictor loaded!")
+        print(f"Model Accuracy: ±{mae:.1f} FPS ({accuracy_percentage:.1f}% accurate)")
+        print(f"Reliability: {r2*100:.1f}% variance explained")
         
         # Load lookup tables
-        print("🔄 Loading hardware databases...")
+        print("Loading hardware databases...")
         cpu = pd.read_csv('cpu_benchmarks.csv')
         gpu = pd.read_csv('gpu_benchmarks.csv')
         req_data = pd.read_csv('game_requirements.csv')
@@ -76,10 +76,10 @@ def load_model_and_data():
         req['Min_CPU_GHz'] = req['Min_CPU_GHz'].fillna(req['Min_CPU_GHz'].median())
         req['Min_CPU_Cores'] = req['Min_CPU_Cores'].fillna(req['Min_CPU_Cores'].median())
         
-        print("✅ Hardware databases loaded successfully!")
+        print("Hardware databases loaded successfully!")
         
     except Exception as e:
-        print(f"❌ Error loading model: {e}")
+        print(f"Error loading model: {e}")
         return False
     return True
 
@@ -332,11 +332,11 @@ def get_games():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    print("🚀 Starting FPS Predictor API...")
+    print("Starting FPS Predictor API...")
     
     # Load model and data
     if load_model_and_data():
-        print("🎯 API ready to serve predictions!")
+        print("API ready to serve predictions!")
         app.run(host='0.0.0.0', port=5000, debug=True)
     else:
-        print("❌ Failed to start API - model loading failed") 
+        print("Failed to start API - model loading failed") 
