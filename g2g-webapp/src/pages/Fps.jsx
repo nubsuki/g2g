@@ -221,7 +221,7 @@ const Fps = () => {
             <div className="game-input-container" ref={gameInputRef}>
               <input 
                 type="text" 
-                placeholder="Start typing game name (e.g., Cyberpunk 2077)" 
+                placeholder="Start typing game name" 
                 className="game-input"
                 value={gameName}
                 onChange={(e) => handleGameChange(e.target.value)}
