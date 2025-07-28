@@ -10,10 +10,9 @@ const Admin = () => {
   const [activeTab, setActiveTab] = useState("users");
   const [loading, setLoading] = useState(false);
   
-  // Check if user is admin
   const isAdmin = currentUser && userProfile?.role === 'admin';
 
-  // If user is not admin, show access denied
+  // Access denied screens
   if (!currentUser) {
     return (
       <div className="admin-page">
@@ -47,12 +46,11 @@ const Admin = () => {
     );
   }
 
-  // Users data
+  // State variables
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [userSearchTerm, setUserSearchTerm] = useState("");
   
-  // Games data with search functionality
   const [games, setGames] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
   const [gameSearchTerm, setGameSearchTerm] = useState("");
@@ -65,29 +63,25 @@ const Admin = () => {
     File_size: ""
   });
   
-  // CPU and GPU autocomplete - store full GPU objects for VRAM display
+  // Autocomplete data
   const [cpuSuggestions, setCpuSuggestions] = useState([]);
   const [filteredCpus, setFilteredCpus] = useState([]);
   const [showCpuDropdown, setShowCpuDropdown] = useState(false);
-  const [gpuSuggestions, setGpuSuggestions] = useState([]); // Now stores full GPU objects
+  const [gpuSuggestions, setGpuSuggestions] = useState([]);
   const [filteredGpus, setFilteredGpus] = useState([]);
   const [showGpuDropdown, setShowGpuDropdown] = useState(false);
   
-  // CPU display data (separate from autocomplete)
-  const [displayCpus, setDisplayCpus] = useState([]); // CPU names for display
+  // Display data
+  const [displayCpus, setDisplayCpus] = useState([]);
   const [filteredDisplayCpus, setFilteredDisplayCpus] = useState([]);
   const [cpuSearchTerm, setCpuSearchTerm] = useState("");
-  
-  // GPU display data (separate from autocomplete)
-  const [displayGpus, setDisplayGpus] = useState([]); // GPU objects for display
+  const [displayGpus, setDisplayGpus] = useState([]);
   const [filteredDisplayGpus, setFilteredDisplayGpus] = useState([]);
   const [gpuSearchTerm, setGpuSearchTerm] = useState("");
   
-  // Refs for click outside detection
   const cpuInputRef = useRef(null);
   const gpuInputRef = useRef(null);
   
-  // CPU data
   const [cpus, setCpus] = useState([]);
   const [cpuFormData, setCpuFormData] = useState({
     CPU_Name: "",
@@ -97,7 +91,6 @@ const Admin = () => {
     Test_type: ""
   });
   
-  // GPU data
   const [gpus, setGpus] = useState([]);
   const [gpuFormData, setGpuFormData] = useState({
     GPU_Name: "",
@@ -106,12 +99,11 @@ const Admin = () => {
     Benchmark_Score: ""
   });
 
-  // Fetch data on component mount
   useEffect(() => {
     fetchAllData();
   }, []);
 
-  // Filter users based on search term
+  // Filter functions
   useEffect(() => {
     if (userSearchTerm.trim() === "") {
       setFilteredUsers(users);
@@ -124,7 +116,6 @@ const Admin = () => {
     }
   }, [users, userSearchTerm]);
 
-  // Filter games based on search term
   useEffect(() => {
     if (gameSearchTerm.trim() === "") {
       setFilteredGames(games);
@@ -138,7 +129,6 @@ const Admin = () => {
     }
   }, [games, gameSearchTerm]);
 
-  // Filter CPUs based on search term
   useEffect(() => {
     if (cpuSearchTerm.trim() === "") {
       setFilteredDisplayCpus(displayCpus);
@@ -150,7 +140,6 @@ const Admin = () => {
     }
   }, [displayCpus, cpuSearchTerm]);
 
-  // Filter GPUs based on search term
   useEffect(() => {
     if (gpuSearchTerm.trim() === "") {
       setFilteredDisplayGpus(displayGpus);
@@ -162,7 +151,7 @@ const Admin = () => {
     }
   }, [displayGpus, gpuSearchTerm]);
 
-  // Close dropdown when clicking outside
+  // Click outside handler
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (cpuInputRef.current && !cpuInputRef.current.contains(event.target)) {
@@ -185,8 +174,8 @@ const Admin = () => {
         fetchGames(),
         fetchCPUs(),
         fetchGPUs(),
-        fetchCpuNames(), // Fetch CPU names for autocomplete
-        fetchGpuNames()  // Fetch GPU names for autocomplete
+        fetchCpuNames(),
+        fetchGpuNames()
       ]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -195,18 +184,15 @@ const Admin = () => {
     }
   };
 
-  // Fetch CPU names from the correct collection (updated to also set display CPUs)
   const fetchCpuNames = async () => {
     try {
       const cpuDoc = await getDoc(doc(db, "cpu_names", "all_cpus"));
       if (cpuDoc.exists()) {
         const cpuNames = cpuDoc.data().names || [];
-        setCpuSuggestions(cpuNames); // For autocomplete
-        setDisplayCpus(cpuNames); // For display section
-        setFilteredDisplayCpus(cpuNames); // Initialize filtered display
-        console.log("CPU names loaded:", cpuNames.length);
+        setCpuSuggestions(cpuNames);
+        setDisplayCpus(cpuNames);
+        setFilteredDisplayCpus(cpuNames);
       } else {
-        console.log("No CPU names document found");
         setCpuSuggestions([]);
         setDisplayCpus([]);
         setFilteredDisplayCpus([]);
@@ -219,19 +205,16 @@ const Admin = () => {
     }
   };
 
-  // Fetch GPU names from the correct collection - Updated to also set display GPUs
   const fetchGpuNames = async () => {
     try {
       const gpuDoc = await getDoc(doc(db, "gpu_names", "all_gpus"));
       if (gpuDoc.exists()) {
         const gpuData = gpuDoc.data().gpus || [];
         const validGpus = gpuData.filter(gpu => gpu.name);
-        setGpuSuggestions(validGpus); // For autocomplete (full objects)
-        setDisplayGpus(validGpus); // For display section (full objects)
-        setFilteredDisplayGpus(validGpus); // Initialize filtered display
-        console.log("GPU data loaded:", validGpus.length, validGpus);
+        setGpuSuggestions(validGpus);
+        setDisplayGpus(validGpus);
+        setFilteredDisplayGpus(validGpus);
       } else {
-        console.log("No GPU names document found");
         setGpuSuggestions([]);
         setDisplayGpus([]);
         setFilteredDisplayGpus([]);
@@ -244,11 +227,10 @@ const Admin = () => {
     }
   };
 
-  // Fetch benchmark submissions for a specific user
   const fetchUserBenchmarkStats = async (userId) => {
     try {
       const benchmarkQuery = query(
-        collection(db, "user_benchmarks"),
+        collection(db, "users_benchmarks"),
         where("userId", "==", userId)
       );
       
@@ -264,16 +246,9 @@ const Admin = () => {
         }
       });
 
-      return {
-        totalSubmissions,
-        approvedSubmissions
-      };
+      return { totalSubmissions, approvedSubmissions };
     } catch (error) {
-      console.log(`No benchmark data found for user ${userId}`);
-      return {
-        totalSubmissions: 0,
-        approvedSubmissions: 0
-      };
+      return { totalSubmissions: 0, approvedSubmissions: 0 };
     }
   };
 
@@ -303,7 +278,7 @@ const Admin = () => {
         gamesData.push({ id: doc.id, ...doc.data() });
       });
       setGames(gamesData);
-      setFilteredGames(gamesData); // Initialize filtered games
+      setFilteredGames(gamesData);
     } catch (error) {
       console.error("Error fetching games:", error);
     }
@@ -335,18 +310,14 @@ const Admin = () => {
     }
   };
 
-  // Handle CPU input change with autocomplete
+  // Autocomplete handlers
   const handleCpuInputChange = (value) => {
     setGameFormData({...gameFormData, CPU: value});
-
-    console.log("CPU input changed:", value);
-    console.log("Available CPU suggestions:", cpuSuggestions.length);
 
     if (value.length > 0) {
       const filtered = cpuSuggestions
         .filter((cpu) => cpu.toLowerCase().includes(value.toLowerCase()))
         .slice(0, 10);
-      console.log("Filtered CPUs:", filtered);
       setFilteredCpus(filtered);
       setShowCpuDropdown(true);
     } else {
@@ -354,18 +325,13 @@ const Admin = () => {
     }
   };
 
-  // Handle GPU input change with autocomplete - Updated for VRAM display
   const handleGpuInputChange = (value) => {
     setGameFormData({...gameFormData, GPU: value});
-
-    console.log("GPU input changed:", value);
-    console.log("Available GPU suggestions:", gpuSuggestions.length);
 
     if (value.length > 0) {
       const filtered = gpuSuggestions
         .filter((gpu) => gpu.name.toLowerCase().includes(value.toLowerCase()))
         .slice(0, 10);
-      console.log("Filtered GPUs:", filtered);
       setFilteredGpus(filtered);
       setShowGpuDropdown(true);
     } else {
@@ -373,13 +339,11 @@ const Admin = () => {
     }
   };
 
-  // Select CPU from dropdown
   const selectCpu = (selectedCpu) => {
     setGameFormData({...gameFormData, CPU: selectedCpu});
     setShowCpuDropdown(false);
   };
 
-  // Select GPU from dropdown - Updated to use GPU object
   const selectGpu = (selectedGpu) => {
     setGameFormData({...gameFormData, GPU: selectedGpu.name});
     setShowGpuDropdown(false);
@@ -389,13 +353,13 @@ const Admin = () => {
     setActiveTab(tab);
   };
 
+  // Form submission handlers
   const handleGameSubmit = async (e) => {
     e.preventDefault();
     if (!gameFormData.Game_Name) return;
 
     setLoading(true);
     try {
-      // 1. Save game data to game_requirements collection
       const gameData = {
         Game_Name: gameFormData.Game_Name,
         CPU: gameFormData.CPU || "",
@@ -403,19 +367,14 @@ const Admin = () => {
         RAM: parseInt(gameFormData.RAM) || 0,
         OS: gameFormData.OS || "",
         File_size: parseFloat(gameFormData.File_size) || 0
-        // Removed createdAt field
       };
 
       const docRef = await addDoc(collection(db, "game_requirements"), gameData);
-      console.log("Game data saved with ID:", docRef.id);
-
-      // 2. Update the document to include its own ID
+      
       await updateDoc(docRef, {
         id: docRef.id
       });
-      console.log("Added document ID to game data");
       
-      // 3. Clear the form
       setGameFormData({
         Game_Name: "",
         CPU: "",
@@ -425,7 +384,6 @@ const Admin = () => {
         File_size: ""
       });
       
-      // 4. Refresh games data
       await fetchGames();
       alert("Game added successfully!");
     } catch (error) {
@@ -442,49 +400,37 @@ const Admin = () => {
 
     setLoading(true);
     try {
-      // 1. Save CPU data to cpu_benchmarks collection with correct field names
       const cpuBenchmarkData = {
-        Processor: cpuFormData.CPU_Name,  // CPU name goes in "Processor" field
+        Processor: cpuFormData.CPU_Name,
         Cores: parseInt(cpuFormData.CPU_Cores) || 0,
         GHz: parseFloat(cpuFormData.CPU_GHz) || 0,
         Score: parseInt(cpuFormData.Benchmark_Score) || 0,
         Test_Type: cpuFormData.Test_type || ""
-        // Removed createdAt field
       };
 
       const docRef = await addDoc(collection(db, "cpu_benchmarks"), cpuBenchmarkData);
-      console.log("CPU benchmark data saved with ID:", docRef.id);
 
-      // 2. Update the document to include its own ID
       await updateDoc(docRef, {
         id: docRef.id
       });
-      console.log("Added document ID to CPU benchmark data");
 
-      // 3. Add CPU name to cpu_names > all_cpus > names array (if not already exists)
+      // Add to cpu_names collection
       const cpuNamesRef = doc(db, "cpu_names", "all_cpus");
-      
-      // Check if the CPU name already exists to avoid duplicates
       const cpuNamesDoc = await getDoc(cpuNamesRef);
+      
       if (cpuNamesDoc.exists()) {
         const existingNames = cpuNamesDoc.data().names || [];
         if (!existingNames.includes(cpuFormData.CPU_Name)) {
           await updateDoc(cpuNamesRef, {
             names: arrayUnion(cpuFormData.CPU_Name)
           });
-          console.log("CPU name added to cpu_names collection");
-        } else {
-          console.log("CPU name already exists in cpu_names collection");
         }
       } else {
-        // If document doesn't exist, create it
         await setDoc(cpuNamesRef, {
           names: [cpuFormData.CPU_Name]
         });
-        console.log("Created cpu_names document and added CPU name");
       }
 
-      // 4. Clear the form
       setCpuFormData({
         CPU_Name: "",
         CPU_Cores: "",
@@ -493,12 +439,7 @@ const Admin = () => {
         Test_type: ""
       });
       
-      // 5. Refresh data to show the new CPU
-      await Promise.all([
-        fetchCPUs(),        // Refresh benchmark data
-        fetchCpuNames()     // Refresh CPU names for both autocomplete and display
-      ]);
-      
+      await Promise.all([fetchCPUs(), fetchCpuNames()]);
       alert("CPU added successfully!");
     } catch (error) {
       console.error("Error adding CPU:", error);
@@ -508,36 +449,29 @@ const Admin = () => {
     }
   };
 
-  // Handle GPU form submission - UPDATED with correct field names
   const handleGpuSubmit = async (e) => {
     e.preventDefault();
     if (!gpuFormData.GPU_Name) return;
 
     setLoading(true);
     try {
-      // 1. Save GPU data to gpu_benchmarks collection with correct field names
       const gpuBenchmarkData = {
-        GPU: gpuFormData.GPU_Name,        // GPU name goes in "GPU" field
+        GPU: gpuFormData.GPU_Name,
         API: gpuFormData.API || "",
-        VRAM: parseInt(gpuFormData.GPU_VRAM) || 0,    // VRAM field (not GPU_VRAM)
-        Score: parseInt(gpuFormData.Benchmark_Score) || 0   // Score field (not Benchmark_Score)
-        // Removed createdAt field
+        VRAM: parseInt(gpuFormData.GPU_VRAM) || 0,
+        Score: parseInt(gpuFormData.Benchmark_Score) || 0
       };
 
       const docRef = await addDoc(collection(db, "gpu_benchmarks"), gpuBenchmarkData);
-      console.log("GPU benchmark data saved with ID:", docRef.id);
 
-      // 2. Update the document to include its own ID
       await updateDoc(docRef, {
         id: docRef.id
       });
-      console.log("Added document ID to GPU benchmark data");
 
-      // 3. Add GPU to gpu_names > all_gpus > gpus array (if not already exists)
+      // Add to gpu_names collection
       const gpuNamesRef = doc(db, "gpu_names", "all_gpus");
-      
-      // Check if the GPU name already exists to avoid duplicates
       const gpuNamesDoc = await getDoc(gpuNamesRef);
+      
       if (gpuNamesDoc.exists()) {
         const existingGpus = gpuNamesDoc.data().gpus || [];
         const gpuExists = existingGpus.some(gpu => gpu.name === gpuFormData.GPU_Name);
@@ -550,12 +484,8 @@ const Admin = () => {
           await updateDoc(gpuNamesRef, {
             gpus: arrayUnion(newGpu)
           });
-          console.log("GPU added to gpu_names collection");
-        } else {
-          console.log("GPU name already exists in gpu_names collection");
         }
       } else {
-        // If document doesn't exist, create it
         const newGpu = {
           name: gpuFormData.GPU_Name,
           vram: parseInt(gpuFormData.GPU_VRAM) || 0
@@ -563,10 +493,8 @@ const Admin = () => {
         await setDoc(gpuNamesRef, {
           gpus: [newGpu]
         });
-        console.log("Created gpu_names document and added GPU");
       }
 
-      // 4. Clear the form
       setGpuFormData({
         GPU_Name: "",
         API: "",
@@ -574,12 +502,7 @@ const Admin = () => {
         Benchmark_Score: ""
       });
       
-      // 5. Refresh data to show the new GPU
-      await Promise.all([
-        fetchGPUs(),        // Refresh benchmark data
-        fetchGpuNames()     // Refresh GPU names for both autocomplete and display
-      ]);
-      
+      await Promise.all([fetchGPUs(), fetchGpuNames()]);
       alert("GPU added successfully!");
     } catch (error) {
       console.error("Error adding GPU:", error);
@@ -589,6 +512,7 @@ const Admin = () => {
     }
   };
 
+  // Delete handlers
   const deleteItem = async (collection_name, id) => {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
     
@@ -619,20 +543,18 @@ const Admin = () => {
     }
   };
 
-  // Delete CPU from both collections
   const deleteCpu = async (cpuName) => {
     if (!window.confirm(`Are you sure you want to delete "${cpuName}"? This will remove it from both CPU names and benchmarks.`)) return;
     
     setLoading(true);
     try {
-      // 1. Remove CPU name from cpu_names > all_cpus > names array
+      // Remove from cpu_names
       const cpuNamesRef = doc(db, "cpu_names", "all_cpus");
       await updateDoc(cpuNamesRef, {
         names: arrayRemove(cpuName)
       });
-      console.log("CPU name removed from cpu_names collection");
 
-      // 2. Find and delete the corresponding document from cpu_benchmarks
+      // Remove from cpu_benchmarks
       const cpuBenchmarkQuery = query(
         collection(db, "cpu_benchmarks"),
         where("Processor", "==", cpuName)
@@ -646,14 +568,7 @@ const Admin = () => {
       });
       
       await Promise.all(deletePromises);
-      console.log(`Deleted ${deletePromises.length} CPU benchmark document(s) for ${cpuName}`);
-
-      // 3. Refresh data to update displays
-      await Promise.all([
-        fetchCPUs(),        // Refresh benchmark data
-        fetchCpuNames()     // Refresh CPU names for both autocomplete and display
-      ]);
-      
+      await Promise.all([fetchCPUs(), fetchCpuNames()]);
       alert(`CPU "${cpuName}" deleted successfully!`);
     } catch (error) {
       console.error("Error deleting CPU:", error);
@@ -663,21 +578,18 @@ const Admin = () => {
     }
   };
 
-  // Delete GPU from both collections - UPDATED to match field names
   const deleteGpu = async (gpu) => {
     if (!window.confirm(`Are you sure you want to delete "${gpu.name} (${gpu.vram}GB)"? This will remove it from both GPU names and benchmarks.`)) return;
     
     setLoading(true);
     try {
-      // 1. Remove GPU object from gpu_names > all_gpus > gpus array
+      // Remove from gpu_names
       const gpuNamesRef = doc(db, "gpu_names", "all_gpus");
       await updateDoc(gpuNamesRef, {
         gpus: arrayRemove(gpu)
       });
-      console.log("GPU removed from gpu_names collection");
 
-      // 2. Find and delete the corresponding document from gpu_benchmarks
-      // Updated to use "GPU" field instead of "GPU_Name"
+      // Remove from gpu_benchmarks
       const gpuBenchmarkQuery = query(
         collection(db, "gpu_benchmarks"),
         where("GPU", "==", gpu.name)
@@ -691,14 +603,7 @@ const Admin = () => {
       });
       
       await Promise.all(deletePromises);
-      console.log(`Deleted ${deletePromises.length} GPU benchmark document(s) for ${gpu.name}`);
-
-      // 3. Refresh data to update displays
-      await Promise.all([
-        fetchGPUs(),        // Refresh benchmark data
-        fetchGpuNames()     // Refresh GPU names for both autocomplete and display
-      ]);
-      
+      await Promise.all([fetchGPUs(), fetchGpuNames()]);
       alert(`GPU "${gpu.name}" deleted successfully!`);
     } catch (error) {
       console.error("Error deleting GPU:", error);
@@ -738,7 +643,6 @@ const Admin = () => {
             ))}
           </div>
 
-          {/* Tab Content */}
           <div className="tab-content">
             {/* Users Tab */}
             {activeTab === "users" && (
@@ -829,7 +733,7 @@ const Admin = () => {
               </div>
             )}
 
-            {/* Games Tab - UPDATED */}
+            {/* Games Tab */}
             {activeTab === "games" && (
               <div className="games-section">
                 <div className="section-split">
@@ -991,7 +895,7 @@ const Admin = () => {
               </div>
             )}
 
-            {/* CPU Tab - UPDATED with delete functionality */}
+            {/* CPU Tab */}
             {activeTab === "cpu" && (
               <div className="cpu-section">
                 <div className="section-split">
@@ -1097,7 +1001,7 @@ const Admin = () => {
               </div>
             )}
 
-            {/* GPU Tab - UPDATED */}
+            {/* GPU Tab */}
             {activeTab === "gpu" && (
               <div className="gpu-section">
                 <div className="section-split">

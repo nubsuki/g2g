@@ -1,3 +1,4 @@
+/* Base Styles */
 .admin-page {
     min-height: 100vh;
     color: white;
@@ -19,6 +20,7 @@
     width: 100%;
 }
 
+/* Header */
 .admin-header {
     text-align: center;
     margin-bottom: 3rem;
@@ -94,7 +96,7 @@
     background: linear-gradient(45deg, #9a79ff, #8a69ff);
 }
 
-/* Tab Content - Remove overflow restrictions */
+/* Tab Content */
 .tab-content {
     background: rgba(26, 26, 26, 0.8);
     border-radius: 1rem;
@@ -104,7 +106,7 @@
     padding: 2rem;
     animation: fadeInUp 0.6s ease-out 0.2s both;
     position: relative;
-    overflow: visible; /* Allow dropdowns to overflow */
+    overflow: visible;
 }
 
 /* Section Headers */
@@ -184,7 +186,7 @@
     background: rgba(200, 182, 255, 0.05);
 }
 
-/* Status Badge */
+/* Status Badges */
 .status-badge {
     padding: 0.3rem 0.8rem;
     border-radius: 1rem;
@@ -204,6 +206,28 @@
     background: rgba(239, 68, 68, 0.2);
     color: #ef4444;
     border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Role Badge */
+.role-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.role-badge.admin {
+    background: rgba(200, 182, 255, 0.2);
+    color: #c8b6ff;
+    border: 1px solid rgba(200, 182, 255, 0.3);
+}
+
+.role-badge.user {
+    background: rgba(156, 163, 175, 0.2);
+    color: #9ca3af;
+    border: 1px solid rgba(156, 163, 175, 0.3);
 }
 
 /* Action Buttons */
@@ -237,7 +261,7 @@
     color: #ef4444;
 }
 
-/* Section Split Layout - Allow overflow */
+/* Section Split Layout */
 .section-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -252,7 +276,7 @@
     border-radius: 0.8rem;
     border: 1px solid rgba(200, 182, 255, 0.1);
     position: relative;
-    overflow: visible; /* Allow dropdowns to overflow */
+    overflow: visible;
 }
 
 .form-section h2 {
@@ -262,7 +286,7 @@
     margin-bottom: 1.5rem;
 }
 
-/* Forms - Allow overflow */
+/* Forms */
 .admin-form {
     display: flex;
     flex-direction: column;
@@ -352,11 +376,19 @@
     border: 1px solid rgba(200, 182, 255, 0.1);
 }
 
+.data-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
 .data-section h3 {
     font-size: 1.1rem;
     font-weight: 600;
     color: #c8b6ff;
-    margin-bottom: 1rem;
+    margin: 0;
 }
 
 .data-list {
@@ -370,9 +402,9 @@
 .data-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     background: rgba(26, 26, 26, 0.8);
-    padding: 1rem;
+    padding: 1.2rem;
     border-radius: 0.6rem;
     border: 1px solid rgba(200, 182, 255, 0.1);
     transition: all 0.3s ease;
@@ -381,219 +413,39 @@
 .data-item:hover {
     border-color: rgba(200, 182, 255, 0.3);
     background: rgba(26, 26, 26, 0.9);
+    transform: translateY(-2px);
+}
+
+.item-info {
+    flex: 1;
 }
 
 .item-info h4 {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #c8b6ff;
-    margin: 0 0 0.3rem 0;
+    margin: 0 0 0.5rem 0;
 }
 
-.item-info span {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* No Data */
-.no-data {
-    text-align: center;
-    padding: 3rem;
-    color: rgba(200, 182, 255, 0.6);
-    font-size: 1rem;
-}
-
-/* Loading States */
-.spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(200, 182, 255, 0.3);
-    border-top: 2px solid #c8b6ff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Scrollbar Styling */
-.data-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.data-list::-webkit-scrollbar-track {
-    background: rgba(200, 182, 255, 0.1);
-    border-radius: 3px;
-}
-
-.data-list::-webkit-scrollbar-thumb {
-    background: rgba(200, 182, 255, 0.3);
-    border-radius: 3px;
-}
-
-.data-list::-webkit-scrollbar-thumb:hover {
-    background: rgba(200, 182, 255, 0.5);
-}
-
-/* Animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .admin-container {
-        padding: 4rem 1rem 1rem 1rem;
-    }
-    
-    .section-split {
-        grid-template-columns: 1fr;
-    }
-    
-    .tab-navigation {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-}
-
-@media (max-width: 768px) {
-    .admin-header h1 {
-        font-size: 2rem;
-    }
-    
-    .tab-content {
-        padding: 1.5rem;
-    }
-    
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-    
-    .search-input {
-        width: 200px;
-    }
-    
-    .data-table {
-        font-size: 0.8rem;
-    }
-    
-    .data-table th,
-    .data-table td {
-        padding: 0.8rem 0.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .admin-container {
-        padding: 3rem 1rem 1rem 1rem;
-    }
-    
-    .admin-header h1 {
-        font-size: 1.8rem;
-    }
-    
-    .tab-button {
-        padding: 0.6rem 1rem;
-        font-size: 0.8rem;
-    }
-    
-    .tab-content {
-        padding: 1rem;
-    }
-    
-    .search-input {
-        width: 150px;
-    }
-    
-    .data-table th,
-    .data-table td {
-        padding: 0.6rem 0.3rem;
-    }
-    
-    .item-info h4 {
-        font-size: 0.8rem;
-    }
-    
-    .item-info span {
-        font-size: 0.75rem;
-    }
-}
-
-/* Access Denied Styles */
-.access-denied {
+/* Game Details */
+.game-details {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 4rem 2rem;
-    min-height: 60vh;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
 }
 
-.access-denied-icon {
-    font-size: 4rem;
-    color: rgba(239, 68, 68, 0.8);
-    margin-bottom: 2rem;
-    background: rgba(239, 68, 68, 0.1);
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid rgba(239, 68, 68, 0.3);
-}
-
-.access-denied h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ef4444;
-    margin-bottom: 1rem;
-}
-
-.access-denied p {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 0.5rem;
-    max-width: 500px;
-    line-height: 1.6;
-}
-
-/* Role Badge */
-.role-badge {
-    padding: 0.3rem 0.8rem;
-    border-radius: 1rem;
+.detail-row {
     font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.detail-row strong {
+    color: rgba(200, 182, 255, 0.8);
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.role-badge.admin {
-    background: rgba(200, 182, 255, 0.2);
-    color: #c8b6ff;
-    border: 1px solid rgba(200, 182, 255, 0.3);
-}
-
-.role-badge.user {
-    background: rgba(156, 163, 175, 0.2);
-    color: #9ca3af;
-    border: 1px solid rgba(156, 163, 175, 0.3);
+    min-width: 40px;
 }
 
 /* Benchmark Statistics */
@@ -640,47 +492,7 @@
     letter-spacing: 0.5px;
 }
 
-/* Responsive adjustments for benchmark stats */
-@media (max-width: 1024px) {
-    .benchmark-stats {
-        flex-direction: row;
-        gap: 0.3rem;
-    }
-    
-    .benchmark-stat {
-        flex-direction: column;
-        padding: 0.2rem 0.4rem;
-        min-width: 60px;
-    }
-    
-    .stat-label {
-        font-size: 0.6rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .benchmark-stats {
-        flex-direction: column;
-        gap: 0.2rem;
-    }
-    
-    .benchmark-stat {
-        flex-direction: row;
-        padding: 0.2rem 0.3rem;
-        min-width: 50px;
-        gap: 0.2rem;
-    }
-    
-    .stat-number {
-        font-size: 0.8rem;
-    }
-    
-    .stat-label {
-        display: none; /* Hide labels on small screens to save space */
-    }
-}
-
-/* Autocomplete Container - Higher z-index */
+/* Autocomplete Container */
 .autocomplete-container {
     position: relative;
     width: 100%;
@@ -697,7 +509,7 @@
     border-radius: 0.6rem;
     max-height: 200px;
     overflow-y: auto;
-    z-index: 9999; /* Much higher z-index */
+    z-index: 9999;
     backdrop-filter: blur(15px);
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
     margin-top: 0.5rem;
@@ -723,36 +535,6 @@
 
 .autocomplete-dropdown .dropdown-item:last-child {
     border-bottom: none;
-}
-
-.autocomplete-dropdown::-webkit-scrollbar {
-    width: 6px;
-}
-
-.autocomplete-dropdown::-webkit-scrollbar-track {
-    background: rgba(200, 182, 255, 0.1);
-    border-radius: 3px;
-}
-
-.autocomplete-dropdown::-webkit-scrollbar-thumb {
-    background: rgba(200, 182, 255, 0.3);
-    border-radius: 3px;
-}
-
-.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
-    background: rgba(200, 182, 255, 0.5);
-}
-
-/* Responsive adjustments for autocomplete */
-@media (max-width: 768px) {
-    .autocomplete-dropdown {
-        max-height: 150px;
-    }
-    
-    .autocomplete-dropdown .dropdown-item {
-        padding: 0.6rem;
-        font-size: 0.85rem;
-    }
 }
 
 /* GPU Item Styling */
@@ -788,128 +570,7 @@
     border-color: rgba(200, 182, 255, 0.3);
 }
 
-/* Responsive adjustments for GPU items */
-@media (max-width: 768px) {
-    .gpu-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.3rem;
-    }
-    
-    .gpu-vram {
-        font-size: 0.75rem;
-    }
-}
-
-/* Data Section Header */
-.data-section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    gap: 1rem;
-}
-
-.data-section h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #c8b6ff;
-    margin: 0;
-}
-
-/* Game Details */
-.game-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    margin-top: 0.5rem;
-}
-
-.detail-row {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.7);
-    display: flex;
-    gap: 0.5rem;
-}
-
-.detail-row strong {
-    color: rgba(200, 182, 255, 0.8);
-    font-weight: 600;
-    min-width: 40px;
-}
-
-/* Enhanced data item for better readability */
-.data-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    background: rgba(26, 26, 26, 0.8);
-    padding: 1.2rem;
-    border-radius: 0.6rem;
-    border: 1px solid rgba(200, 182, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-.item-info h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #c8b6ff;
-    margin: 0 0 0.5rem 0;
-}
-
-/* Search input styling for data sections */
-.data-section .search-container {
-    display: flex;
-    align-items: center;
-    background: rgba(26, 26, 26, 0.8);
-    border: 1px solid rgba(200, 182, 255, 0.3);
-    border-radius: 0.6rem;
-    padding: 0.4rem 0.8rem;
-    gap: 0.5rem;
-    color: rgba(200, 182, 255, 0.8);
-    min-width: 200px;
-}
-
-.data-section .search-input {
-    background: transparent;
-    border: none;
-    color: #c8b6ff;
-    font-size: 0.85rem;
-    outline: none;
-    width: 100%;
-}
-
-.data-section .search-input::placeholder {
-    color: rgba(200, 182, 255, 0.5);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .data-section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.8rem;
-    }
-    
-    .data-section .search-container {
-        width: 100%;
-        min-width: unset;
-    }
-    
-    .game-details {
-        gap: 0.2rem;
-    }
-    
-    .detail-row {
-        font-size: 0.75rem;
-    }
-    
-    .detail-row strong {
-        min-width: 35px;
-    }
-}
-
-/* CPU Display Item - Updated to show delete button */
+/* CPU Display Item */
 .cpu-display-item {
     display: flex;
     justify-content: space-between;
@@ -938,7 +599,6 @@
     margin: 0;
 }
 
-/* Delete button styling for CPU items */
 .cpu-display-item .btn-delete {
     background: rgba(26, 26, 26, 0.8);
     border: 1px solid rgba(200, 182, 255, 0.3);
@@ -965,23 +625,6 @@
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
-}
-
-/* Responsive adjustments for CPU display */
-@media (max-width: 768px) {
-    .cpu-display-item {
-        padding: 0.8rem;
-    }
-    
-    .cpu-display-item .item-info h4 {
-        font-size: 0.9rem;
-    }
-    
-    .cpu-display-item .btn-delete {
-        min-width: 32px;
-        height: 32px;
-        padding: 0.4rem;
-    }
 }
 
 /* GPU Display Item */
@@ -1023,7 +666,6 @@
     border: 1px solid rgba(200, 182, 255, 0.2);
 }
 
-/* Delete button styling for GPU items */
 .gpu-display-item .btn-delete {
     background: rgba(26, 26, 26, 0.8);
     border: 1px solid rgba(200, 182, 255, 0.3);
@@ -1052,12 +694,253 @@
     transform: none;
 }
 
-/* Responsive adjustments for GPU display */
+/* Access Denied Styles */
+.access-denied {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    min-height: 60vh;
+}
+
+.access-denied-icon {
+    font-size: 4rem;
+    color: rgba(239, 68, 68, 0.8);
+    margin-bottom: 2rem;
+    background: rgba(239, 68, 68, 0.1);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+.access-denied h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ef4444;
+    margin-bottom: 1rem;
+}
+
+.access-denied p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+/* No Data */
+.no-data {
+    text-align: center;
+    padding: 3rem;
+    color: rgba(200, 182, 255, 0.6);
+    font-size: 1rem;
+}
+
+/* Loading States */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(200, 182, 255, 0.3);
+    border-top: 2px solid #c8b6ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Search input styling for data sections */
+.data-section .search-container {
+    display: flex;
+    align-items: center;
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(200, 182, 255, 0.3);
+    border-radius: 0.6rem;
+    padding: 0.4rem 0.8rem;
+    gap: 0.5rem;
+    color: rgba(200, 182, 255, 0.8);
+    min-width: 200px;
+}
+
+.data-section .search-input {
+    background: transparent;
+    border: none;
+    color: #c8b6ff;
+    font-size: 0.85rem;
+    outline: none;
+    width: 100%;
+}
+
+.data-section .search-input::placeholder {
+    color: rgba(200, 182, 255, 0.5);
+}
+
+/* Scrollbar Styling */
+.data-list::-webkit-scrollbar,
+.autocomplete-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.data-list::-webkit-scrollbar-track,
+.autocomplete-dropdown::-webkit-scrollbar-track {
+    background: rgba(200, 182, 255, 0.1);
+    border-radius: 3px;
+}
+
+.data-list::-webkit-scrollbar-thumb,
+.autocomplete-dropdown::-webkit-scrollbar-thumb {
+    background: rgba(200, 182, 255, 0.3);
+    border-radius: 3px;
+}
+
+.data-list::-webkit-scrollbar-thumb:hover,
+.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+    background: rgba(200, 182, 255, 0.5);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .admin-container {
+        padding: 4rem 1rem 1rem 1rem;
+    }
+    
+    .section-split {
+        grid-template-columns: 1fr;
+    }
+    
+    .tab-navigation {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .benchmark-stats {
+        flex-direction: row;
+        gap: 0.3rem;
+    }
+    
+    .benchmark-stat {
+        flex-direction: column;
+        padding: 0.2rem 0.4rem;
+        min-width: 60px;
+    }
+}
+
 @media (max-width: 768px) {
+    .admin-header h1 {
+        font-size: 2rem;
+    }
+    
+    .tab-content {
+        padding: 1.5rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .data-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    
+    .data-section .search-container {
+        width: 100%;
+        min-width: unset;
+    }
+    
+    .search-input {
+        width: 200px;
+    }
+    
+    .data-table {
+        font-size: 0.8rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 0.8rem 0.5rem;
+    }
+    
+    .game-details {
+        gap: 0.2rem;
+    }
+    
+    .detail-row {
+        font-size: 0.75rem;
+    }
+    
+    .detail-row strong {
+        min-width: 35px;
+    }
+    
+    .benchmark-stats {
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+    
+    .benchmark-stat {
+        flex-direction: row;
+        padding: 0.2rem 0.3rem;
+        min-width: 50px;
+        gap: 0.2rem;
+    }
+    
+    .stat-label {
+        display: none;
+    }
+    
+    .autocomplete-dropdown {
+        max-height: 150px;
+    }
+    
+    .autocomplete-dropdown .dropdown-item {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+    
+    .gpu-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+    }
+    
+    .gpu-vram {
+        font-size: 0.75rem;
+    }
+    
+    .cpu-display-item,
     .gpu-display-item {
         padding: 0.8rem;
     }
     
+    .cpu-display-item .item-info h4,
     .gpu-display-item .item-info h4 {
         font-size: 0.9rem;
     }
@@ -1066,9 +949,46 @@
         font-size: 0.75rem;
     }
     
+    .cpu-display-item .btn-delete,
     .gpu-display-item .btn-delete {
         min-width: 32px;
         height: 32px;
         padding: 0.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-container {
+        padding: 3rem 1rem 1rem 1rem;
+    }
+    
+    .admin-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .tab-button {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .tab-content {
+        padding: 1rem;
+    }
+    
+    .search-input {
+        width: 150px;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 0.6rem 0.3rem;
+    }
+    
+    .item-info h4 {
+        font-size: 0.8rem;
+    }
+    
+    .item-info span {
+        font-size: 0.75rem;
     }
 }
