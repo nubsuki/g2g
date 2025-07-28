@@ -22,6 +22,10 @@ const Fps = () => {
   const [predicting, setPredicting] = useState(false);
   const [userSpecs, setUserSpecs] = useState(null);
 
+  // State for ProtonDB compatibility
+  const [protonDBData, setProtonDBData] = useState(null);
+  const [loadingProtonDB, setLoadingProtonDB] = useState(false);
+
   // Ref for click outside detection
   const gameInputRef = useRef(null);
 
@@ -110,14 +114,85 @@ const Fps = () => {
     }
   };
 
+  // Fetch ProtonDB compatibility data
+  const fetchProtonDBCompatibility = async (gameName, requirements = null) => {
+    setLoadingProtonDB(true);
+    try {
+      console.log(`Fetching ProtonDB data for: ${gameName}`);
+      
+      // Use the passed requirements or fall back to state
+      const gameReqs = requirements || gameRequirements;
+      const steamAppId = gameReqs?.Steam_AppID || 'null';
+      
+      console.log(`Using Steam AppID: ${steamAppId}`);
+      console.log('Game requirements data:', gameReqs);
+      
+      // Use the endpoint with AppID
+      const endpoint = `http://localhost:5000/protondb/${encodeURIComponent(gameName)}/${encodeURIComponent(steamAppId)}`;
+      
+      console.log(`Calling endpoint: ${endpoint}`);
+      
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      
+      console.log('ProtonDB API response:', data);
+      
+      if (data.success) {
+        setProtonDBData(data.data);
+      } else {
+        console.error('ProtonDB API error:', data.error);
+        setProtonDBData({
+          tier: 'error',
+          message: data.error || 'Failed to fetch compatibility data'
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching ProtonDB data:", error);
+      setProtonDBData({
+        tier: 'error',
+        message: 'Unable to connect to ProtonDB service'
+      });
+    } finally {
+      setLoadingProtonDB(false);
+    }
+  };
+
   // Handle game selection from dropdown
   const selectGame = async (selectedGame) => {
     setGameName(selectedGame);
     setShowGameDropdown(false);
     setPrediction(null); // Clear previous prediction
+    setProtonDBData(null); // Clear previous ProtonDB data
     
-    // Fetch requirements for the selected game
-    await fetchGameRequirements(selectedGame);
+    try {
+      // Fetch requirements for the selected game
+      const gameQuery = query(
+        collection(db, "game_requirements"),
+        where("Game_Name", "==", selectedGame)
+      );
+      
+      const querySnapshot = await getDocs(gameQuery);
+      
+      if (!querySnapshot.empty) {
+        const gameDoc = querySnapshot.docs[0];
+        const requirements = gameDoc.data();
+        
+        // Set the state
+        setGameRequirements(requirements);
+        
+        // Pass the fetched requirements directly to ProtonDB function
+        await fetchProtonDBCompatibility(selectedGame, requirements);
+      } else {
+        console.log("No requirements found for:", selectedGame);
+        setGameRequirements(null);
+        // Still try ProtonDB without AppID
+        await fetchProtonDBCompatibility(selectedGame, null);
+      }
+    } catch (error) {
+      console.error("Error in selectGame:", error);
+      setGameRequirements(null);
+      await fetchProtonDBCompatibility(selectedGame, null);
+    }
   };
 
   // Handle calculate FPS button click
@@ -195,6 +270,27 @@ const Fps = () => {
   const formatFileSize = (sizeInGB) => {
     if (!sizeInGB) return "-";
     return `${sizeInGB} GB`;
+  };
+
+  // Format ProtonDB tier for display
+  const formatProtonDBTier = (tier) => {
+    if (!tier) return { label: "-", className: "" };
+    
+    const tierLabels = {
+      platinum: "Platinum",
+      gold: "Gold", 
+      silver: "Silver",
+      bronze: "Bronze",
+      borked: "Borked",
+      native: "Native",
+      unknown: "Unknown",
+      error: "Error"
+    };
+
+    return {
+      label: tierLabels[tier.toLowerCase()] || tier,
+      className: `protondb-tier-${tier.toLowerCase()}`
+    };
   };
 
   return (
@@ -309,6 +405,63 @@ const Fps = () => {
                       <span className="req-label">Storage:</span>
                       <span className="req-value">
                         {formatFileSize(gameRequirements?.File_size)}
+                      </span>
+                    </div>
+                    {/* Update the ProtonDB display section */}
+                    <div className="req-item">
+                      <span className="req-label">ProtonDB Compatibility:</span>
+                      <span className="req-value">
+                        {loadingProtonDB ? (
+                          <div className="protondb-loading">
+                            <div className="spinner"></div>
+                            <span>Loading...</span>
+                          </div>
+                        ) : protonDBData ? (
+                          <div className="protondb-info">
+                            <div className="protondb-main">
+                              <span className={`protondb-tier-badge ${formatProtonDBTier(protonDBData.tier).className}`}>
+                                {formatProtonDBTier(protonDBData.tier).label}
+                              </span>
+                              {protonDBData.total && (
+                                <span className="protondb-reports-count">
+                                  {protonDBData.total} reports
+                                </span>
+                              )}
+                            </div>
+                            
+                            {protonDBData.confidence && (
+                              <div className="protondb-confidence">
+                                <span className="confidence-label">Confidence:</span>
+                                <span className="confidence-value">{protonDBData.confidence}</span>
+                              </div>
+                            )}
+                            
+                            {protonDBData.breakdown && (
+                              <div className="protondb-breakdown">
+                                <span className="breakdown-label">Top ratings:</span>
+                                <div className="breakdown-values">
+                                  {Object.entries(protonDBData.breakdown)
+                                    .sort((a, b) => b[1].count - a[1].count)
+                                    .slice(0, 2)
+                                    .map(([rating, data], index) => (
+                                      <span key={rating} className="breakdown-item">
+                                        <span className="rating-name">{rating.charAt(0).toUpperCase() + rating.slice(1)}</span>
+                                        <span className="rating-percentage">{data.percentage}%</span>
+                                      </span>
+                                    ))}
+                                </div>
+                              </div>
+                            )}
+                            
+                            {protonDBData.message && (
+                              <div className="protondb-message">
+                                {protonDBData.message}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          "-"
+                        )}
                       </span>
                     </div>
                   </div>

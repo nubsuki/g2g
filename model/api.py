@@ -9,10 +9,23 @@ import sys
 import threading
 import time
 from datetime import datetime
+import requests
+from bs4 import BeautifulSoup
+import re
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
 warnings.filterwarnings('ignore', message='X does not have valid feature names')
+
+# Add these imports at the top
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+import time
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
@@ -484,6 +497,231 @@ def get_games():
         return jsonify({'games': games})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+def scrape_protondb_with_selenium(app_id):
+    """Use Selenium to scrape ProtonDB page with JavaScript execution"""
+    driver = None
+    try:
+        print(f"Starting Selenium scraper for AppID: {app_id}")
+        
+        # Setup Chrome options
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')  # Run in background
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--window-size=1920,1080')
+        chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+        
+        # Setup ChromeDriver
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        
+        # Navigate to ProtonDB page
+        protondb_url = f"https://www.protondb.com/app/{app_id}"
+        print(f"Navigating to: {protondb_url}")
+        
+        driver.get(protondb_url)
+        
+        # Wait for the page to load and find the rating
+        print("Waiting for rating element to load...")
+        
+        try:
+            # Method 1: Wait for div with alt="Rating: ..." 
+            rating_element = WebDriverWait(driver, 15).until(
+                EC.presence_of_element_located((By.XPATH, "//div[contains(@alt, 'Rating:')]"))
+            )
+            
+            alt_text = rating_element.get_attribute('alt')
+            print(f"Found rating via alt attribute: {alt_text}")
+            
+            # Extract rating from alt text like "Rating: Gold"
+            if 'Rating:' in alt_text:
+                rating = alt_text.split('Rating:')[1].strip().lower()
+                if rating in ['platinum', 'gold', 'silver', 'bronze', 'borked']:
+                    print(f"Successfully extracted rating: {rating}")
+                    return {
+                        'tier': rating,
+                        'confidence': 'high',
+                        'source': 'selenium_alt'
+                    }
+            
+        except Exception as e:
+            print(f"Method 1 (Rating:) failed: {e}")
+        
+        try:
+            # Method 2: Look for alt="Native" (for games with native Linux support)
+            native_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//div[@alt='Native']"))
+            )
+            
+            print("Found Native rating")
+            return {
+                'tier': 'native',
+                'confidence': 'high',
+                'source': 'selenium_native',
+                'message': 'Game has native Linux support'
+            }
+            
+        except Exception as e:
+            print(f"Method 2 (Native) failed: {e}")
+        
+        try:
+            # Method 3: Look for MedalSummary ExpandingSpan (fallback)
+            span_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "span.MedalSummary__ExpandingSpan-sc-1fjwtnh-1, span[class*='ExpandingSpan']"))
+            )
+            
+            span_text = span_element.text.strip().lower()
+            print(f"Found rating via span text: {span_text}")
+            
+            if span_text == 'native':
+                return {
+                    'tier': 'native',
+                    'confidence': 'high',
+                    'source': 'selenium_span_native',
+                    'message': 'Game has native Linux support'
+                }
+            elif span_text in ['platinum', 'gold', 'silver', 'bronze', 'borked']:
+                return {
+                    'tier': span_text,
+                    'confidence': 'high',
+                    'source': 'selenium_span'
+                }
+                
+        except Exception as e:
+            print(f"Method 3 failed: {e}")
+        
+        try:
+            # Method 4: General search for any element containing tier words or "native"
+            search_terms = ['platinum', 'gold', 'silver', 'bronze', 'borked', 'native']
+            for term in search_terms:
+                try:
+                    element = driver.find_element(By.XPATH, f"//*[contains(text(), '{term.title()}')]")
+                    if element:
+                        print(f"Found term '{term}' in element: {element.tag_name}")
+                        
+                        if term == 'native':
+                            return {
+                                'tier': 'native',
+                                'confidence': 'medium',
+                                'source': 'selenium_text_search',
+                                'message': 'Game has native Linux support'
+                            }
+                        else:
+                            return {
+                                'tier': term,
+                                'confidence': 'medium',
+                                'source': 'selenium_text_search'
+                            }
+                except:
+                    continue
+                    
+        except Exception as e:
+            print(f"Method 4 failed: {e}")
+        
+        print("Could not find rating with any method")
+        return {
+            'tier': 'unknown',
+            'confidence': 'no data',
+            'message': 'Could not find rating on ProtonDB page'
+        }
+        
+    except Exception as e:
+        print(f"Selenium scraping error: {e}")
+        return None
+        
+    finally:
+        if driver:
+            driver.quit()
+            print("Selenium driver closed")
+
+@app.route('/protondb/<game_name>/<app_id>', methods=['GET'])
+def get_protondb_data_with_appid(game_name, app_id):
+    """Get ProtonDB compatibility data using provided AppID"""
+    try:
+        print(f"Fetching ProtonDB data for: {game_name} with AppID: {app_id}")
+        
+        if app_id and app_id != 'null' and app_id != 'undefined' and app_id.strip():
+            if app_id.isdigit():
+                print(f"Using Steam AppID: {app_id}")
+                
+                # Try Selenium scraping first (most accurate)
+                compatibility_data = scrape_protondb_with_selenium(app_id)
+                
+                if compatibility_data and compatibility_data.get('tier') != 'unknown':
+                    return jsonify({
+                        'success': True,
+                        'data': {
+                            'appId': app_id,
+                            'title': game_name,
+                            'tier': compatibility_data['tier'],
+                            'confidence': compatibility_data.get('confidence', 'unknown'),
+                            'source': compatibility_data.get('source', 'selenium'),
+                            'message': compatibility_data.get('message')
+                        }
+                    })
+                
+                # Fallback to API if Selenium fails
+                try:
+                    api_url = f"https://protondb.max-p.me/games/{app_id}/reports"
+                    api_response = requests.get(api_url, timeout=10)
+                    if api_response.status_code == 200:
+                        reports_data = api_response.json()
+                        if reports_data and len(reports_data) > 0:
+                            compatibility_data = process_protondb_reports(reports_data)
+                            return jsonify({
+                                'success': True,
+                                'data': {
+                                    'appId': app_id,
+                                    'title': game_name,
+                                    'tier': compatibility_data['tier'],
+                                    'confidence': compatibility_data['confidence'],
+                                    'total': compatibility_data['total_reports'],
+                                    'breakdown': compatibility_data.get('breakdown', {}),
+                                    'source': 'api_fallback'
+                                }
+                            })
+                except Exception as e:
+                    print(f"API fallback failed: {e}")
+            
+            # Handle special cases (non-numeric AppIDs)
+            else:
+                special_cases = {
+                    "Anticheat": "Not compatible (Anti-cheat)",
+                    "Riot-Anticheat": "Not compatible (Riot Vanguard)",
+                    "Hoyoverse-Anticheat": "Not compatible (Hoyoverse Anti-cheat)",
+                    "miHoYo-Anticheat": "Not compatible (miHoYo Anti-cheat)", 
+                    "Epic": "Check Epic Games compatibility", 
+                    "Origin": "Check Origin compatibility",
+                    "Ubisoft": "Check Ubisoft Connect compatibility",
+                    "Console-Only": "No PC version available",
+                    "N/A": "Not available on Steam"
+                }
+                
+                message = special_cases.get(app_id, f"Non-Steam game ({app_id})")
+                tier = 'borked' if 'Anticheat' in app_id else 'unknown'
+                
+                return jsonify({
+                    'success': True,
+                    'data': {
+                        'tier': tier,
+                        'message': message,
+                        'source': 'special_case'
+                    }
+                })
+        
+        return jsonify({
+            'success': True,
+            'data': {
+                'tier': 'unknown',
+                'message': 'No Steam AppID available'
+            }
+        })
+        
+    except Exception as e:
+        print(f"Exception: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 if __name__ == '__main__':
     print("Starting FPS Predictor API...")

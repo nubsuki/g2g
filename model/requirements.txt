@@ -16,3 +16,5 @@ google-cloud-firestore
 # Web API
 flask
 flask-cors
+selenium
+webdriver-manager

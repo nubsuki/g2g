@@ -61,7 +61,8 @@ const Admin = () => {
     GPU: "",
     RAM: "",
     OS: "",
-    File_size: ""
+    File_size: "",
+    Steam_AppID: ""
   });
   
   // Autocomplete data
@@ -383,7 +384,8 @@ const Admin = () => {
         GPU: gameFormData.GPU || "",
         RAM: parseInt(gameFormData.RAM) || 0,
         OS: gameFormData.OS || "",
-        File_size: parseFloat(gameFormData.File_size) || 0
+        File_size: parseFloat(gameFormData.File_size) || 0,
+        Steam_AppID: gameFormData.Steam_AppID || ""
       };
 
       const docRef = await addDoc(collection(db, "game_requirements"), gameData);
@@ -398,7 +400,8 @@ const Admin = () => {
         GPU: "",
         RAM: "",
         OS: "",
-        File_size: ""
+        File_size: "",
+        Steam_AppID: ""
       });
       
       await fetchGames();
@@ -963,14 +966,28 @@ const Admin = () => {
                           />
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label>Operating System</label>
-                        <input
-                          type="text"
-                          value={gameFormData.OS}
-                          onChange={(e) => setGameFormData({...gameFormData, OS: e.target.value})}
-                          placeholder="Windows 10"
-                        />
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Steam AppID</label>
+                          <input
+                            type="text"
+                            value={gameFormData.Steam_AppID}
+                            onChange={(e) => setGameFormData({...gameFormData, Steam_AppID: e.target.value})}
+                            placeholder="e.g. 730"
+                          />
+                          <small style={{ color: '#888', fontSize: '11px', marginTop: '2px', display: 'block' }}>
+                            From Steam store URL
+                          </small>
+                        </div>
+                        <div className="form-group">
+                          <label>Operating System</label>
+                          <input
+                            type="text"
+                            value={gameFormData.OS}
+                            onChange={(e) => setGameFormData({...gameFormData, OS: e.target.value})}
+                            placeholder="Windows 10"
+                          />
+                        </div>
                       </div>
                       <button type="submit" className="submit-btn" disabled={loading}>
                         <FaPlus />
@@ -1013,6 +1030,9 @@ const Admin = () => {
                               </span>
                               <span className="detail-row">
                                 <strong>OS:</strong> {game.OS || "N/A"}
+                              </span>
+                              <span className="detail-row">
+                                <strong>Steam App ID:</strong> {game.Steam_AppID || "N/A"}
                               </span>
                             </div>
                           </div>

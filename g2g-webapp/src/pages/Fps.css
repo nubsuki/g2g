@@ -592,3 +592,147 @@
   color: #ffffff;
   font-size: 14px;
 }
+
+/* ProtonDB Compatibility Styles */
+.protondb-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.protondb-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.protondb-reports-count {
+  font-size: 11px;
+  color: rgba(200, 182, 255, 0.6);
+  font-weight: 500;
+}
+
+.protondb-confidence {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.confidence-label {
+  color: rgba(200, 182, 255, 0.6);
+}
+
+.confidence-value {
+  color: rgba(200, 182, 255, 0.9);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.protondb-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.breakdown-label {
+  font-size: 11px;
+  color: rgba(200, 182, 255, 0.6);
+}
+
+.breakdown-values {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.breakdown-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.rating-name {
+  color: rgba(200, 182, 255, 0.8);
+  text-transform: capitalize;
+}
+
+.rating-percentage {
+  color: rgba(200, 182, 255, 0.9);
+  font-weight: 600;
+}
+
+.protondb-message {
+  font-size: 11px;
+  color: rgba(200, 182, 255, 0.7);
+  font-style: italic;
+}
+
+/* Keep existing tier badge styles */
+.protondb-tier-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.protondb-tier-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.protondb-tier-platinum {
+  background-color: #B9F2FF;
+  color: #000;
+}
+
+.protondb-tier-gold {
+  background-color: #FFD700;
+  color: #000;
+}
+
+.protondb-tier-silver {
+  background-color: #C0C0C0;
+  color: #000;
+}
+
+.protondb-tier-bronze {
+  background-color: #CD7F32;
+  color: #fff;
+}
+
+.protondb-tier-borked {
+  background-color: #FF6B6B;
+  color: #fff;
+}
+
+.protondb-tier-unknown {
+  background-color: #888888;
+  color: #fff;
+}
+
+.protondb-tier-error {
+  background-color: #FF6B6B;
+  color: #fff;
+}
+
+.protondb-tier-native {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.protondb-details {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: rgba(200, 182, 255, 0.7);
+}
