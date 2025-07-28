@@ -822,12 +822,6 @@ const ProfilePage = () => {
                 <div className="info-card benchmark-submission-card">
                   <div className="card-header">
                     <h3>Submit Benchmark Data</h3>
-                    <div className="submission-stats">
-                      <span className="stat-item">
-                        <span className="stat-number">{userSubmissions.length}</span>
-                        <span className="stat-label">Submissions</span>
-                      </span>
-                    </div>
                   </div>
                   <div className="card-content">
                     <div className="benchmark-form">
