@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
-import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy, where, getDoc } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy, where, getDoc, updateDoc, arrayUnion, setDoc, arrayRemove } from "firebase/firestore";
 import "./Admin.css";
 import { FaUsers, FaGamepad, FaMicrochip, FaPlus, FaTrash, FaEdit, FaSearch, FaFilter, FaLock, FaCheck, FaClock } from "react-icons/fa";
 
@@ -405,14 +405,49 @@ const Admin = () => {
 
     setLoading(true);
     try {
-      await addDoc(collection(db, "cpu_benchmarks"), {
-        ...cpuFormData,
-        CPU_Cores: parseInt(cpuFormData.CPU_Cores) || 0,
-        CPU_GHz: parseFloat(cpuFormData.CPU_GHz) || 0,
-        Benchmark_Score: parseInt(cpuFormData.Benchmark_Score) || 0,
-        createdAt: new Date()
+      // 1. Save CPU data to cpu_benchmarks collection with correct field names
+      const cpuBenchmarkData = {
+        Processor: cpuFormData.CPU_Name,  // CPU name goes in "Processor" field
+        Cores: parseInt(cpuFormData.CPU_Cores) || 0,
+        GHz: parseFloat(cpuFormData.CPU_GHz) || 0,
+        Score: parseInt(cpuFormData.Benchmark_Score) || 0,
+        Test_Type: cpuFormData.Test_type || ""
+        // Removed createdAt field
+      };
+
+      const docRef = await addDoc(collection(db, "cpu_benchmarks"), cpuBenchmarkData);
+      console.log("CPU benchmark data saved with ID:", docRef.id);
+
+      // 2. Update the document to include its own ID
+      await updateDoc(docRef, {
+        id: docRef.id
       });
+      console.log("Added document ID to CPU benchmark data");
+
+      // 3. Add CPU name to cpu_names > all_cpus > names array (if not already exists)
+      const cpuNamesRef = doc(db, "cpu_names", "all_cpus");
       
+      // Check if the CPU name already exists to avoid duplicates
+      const cpuNamesDoc = await getDoc(cpuNamesRef);
+      if (cpuNamesDoc.exists()) {
+        const existingNames = cpuNamesDoc.data().names || [];
+        if (!existingNames.includes(cpuFormData.CPU_Name)) {
+          await updateDoc(cpuNamesRef, {
+            names: arrayUnion(cpuFormData.CPU_Name)
+          });
+          console.log("CPU name added to cpu_names collection");
+        } else {
+          console.log("CPU name already exists in cpu_names collection");
+        }
+      } else {
+        // If document doesn't exist, create it
+        await setDoc(cpuNamesRef, {
+          names: [cpuFormData.CPU_Name]
+        });
+        console.log("Created cpu_names document and added CPU name");
+      }
+
+      // 4. Clear the form
       setCpuFormData({
         CPU_Name: "",
         CPU_Cores: "",
@@ -421,7 +456,12 @@ const Admin = () => {
         Test_type: ""
       });
       
-      await fetchCPUs();
+      // 5. Refresh data to show the new CPU
+      await Promise.all([
+        fetchCPUs(),        // Refresh benchmark data
+        fetchCpuNames()     // Refresh CPU names for both autocomplete and display
+      ]);
+      
       alert("CPU added successfully!");
     } catch (error) {
       console.error("Error adding CPU:", error);
@@ -486,6 +526,50 @@ const Admin = () => {
     } catch (error) {
       console.error("Error deleting item:", error);
       alert("Error deleting item: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete CPU from both collections
+  const deleteCpu = async (cpuName) => {
+    if (!window.confirm(`Are you sure you want to delete "${cpuName}"? This will remove it from both CPU names and benchmarks.`)) return;
+    
+    setLoading(true);
+    try {
+      // 1. Remove CPU name from cpu_names > all_cpus > names array
+      const cpuNamesRef = doc(db, "cpu_names", "all_cpus");
+      await updateDoc(cpuNamesRef, {
+        names: arrayRemove(cpuName)
+      });
+      console.log("CPU name removed from cpu_names collection");
+
+      // 2. Find and delete the corresponding document from cpu_benchmarks
+      const cpuBenchmarkQuery = query(
+        collection(db, "cpu_benchmarks"),
+        where("Processor", "==", cpuName)
+      );
+      
+      const querySnapshot = await getDocs(cpuBenchmarkQuery);
+      const deletePromises = [];
+      
+      querySnapshot.forEach((doc) => {
+        deletePromises.push(deleteDoc(doc.ref));
+      });
+      
+      await Promise.all(deletePromises);
+      console.log(`Deleted ${deletePromises.length} CPU benchmark document(s) for ${cpuName}`);
+
+      // 3. Refresh data to update displays
+      await Promise.all([
+        fetchCPUs(),        // Refresh benchmark data
+        fetchCpuNames()     // Refresh CPU names for both autocomplete and display
+      ]);
+      
+      alert(`CPU "${cpuName}" deleted successfully!`);
+    } catch (error) {
+      console.error("Error deleting CPU:", error);
+      alert("Error deleting CPU: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -774,7 +858,7 @@ const Admin = () => {
               </div>
             )}
 
-            {/* CPU Tab - UPDATED */}
+            {/* CPU Tab - UPDATED with delete functionality */}
             {activeTab === "cpu" && (
               <div className="cpu-section">
                 <div className="section-split">
@@ -859,6 +943,14 @@ const Admin = () => {
                           <div className="item-info">
                             <h4>{cpu}</h4>
                           </div>
+                          <button 
+                            onClick={() => deleteCpu(cpu)}
+                            className="btn-delete"
+                            title="Delete CPU"
+                            disabled={loading}
+                          >
+                            <FaTrash />
+                          </button>
                         </div>
                       ))}
                       {filteredDisplayCpus.length === 0 && (
