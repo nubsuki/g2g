@@ -11,6 +11,8 @@ import {
   collection,
   addDoc,
   getDocs,
+  query,
+  where,
 } from "firebase/firestore";
 import "./ProfilePage.css";
 
@@ -73,6 +75,11 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [hasSpecs, setHasSpecs] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // User submissions data
+  const [userSubmissions, setUserSubmissions] = useState([]);
+  const [loadingSubmissions, setLoadingSubmissions] = useState(false);
+  const [hasCheckedSubmissions, setHasCheckedSubmissions] = useState(false);
 
   // Input field refs for click-outside detection
   const cpuInputRef = useRef(null);
@@ -145,6 +152,58 @@ const ProfilePage = () => {
       fetchSpecsData();
     }
   }, [currentUser]);
+
+  // Check if user has any submissions (lightweight check)
+  const checkUserSubmissions = async () => {
+    if (!currentUser || !isBenchmarker) return;
+
+    try {
+      const submissionsQuery = query(
+        collection(db, "users_benchmarks"),
+        where("userId", "==", currentUser.uid)
+      );
+      
+      const submissionsSnapshot = await getDocs(submissionsQuery);
+      setHasCheckedSubmissions(true);
+      
+      // If we have submissions, set them
+      if (!submissionsSnapshot.empty) {
+        const submissions = [];
+        submissionsSnapshot.forEach((doc) => {
+          submissions.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+        
+        // Sort by submittedAt in JavaScript (most recent first)
+        submissions.sort((a, b) => {
+          const dateA = a.submittedAt?.toDate ? a.submittedAt.toDate() : new Date(a.submittedAt);
+          const dateB = b.submittedAt?.toDate ? b.submittedAt.toDate() : new Date(b.submittedAt);
+          return dateB - dateA;
+        });
+        
+        setUserSubmissions(submissions);
+      }
+    } catch (error) {
+      console.error("Error checking user submissions:", error);
+      setHasCheckedSubmissions(true);
+    }
+  };
+
+  // Check for submissions when user becomes a benchmarker
+  useEffect(() => {
+    if (isBenchmarker && currentUser && !hasCheckedSubmissions) {
+      checkUserSubmissions();
+    }
+  }, [isBenchmarker, currentUser, hasCheckedSubmissions]);
+
+  // Fetch full submissions when submits tab is opened
+  useEffect(() => {
+    if (activeTab === "submits" && isBenchmarker && userSubmissions.length === 0) {
+      fetchUserSubmissions();
+    }
+  }, [activeTab, isBenchmarker]);
 
   // Profile specs autocomplete handlers
   const handleCpuChange = (value) => {
@@ -363,6 +422,10 @@ const ProfilePage = () => {
         VRAM: "",
       });
 
+      // Refresh submissions to show the new one
+      setHasCheckedSubmissions(false);
+      setUserSubmissions([]);
+
       alert(
         "Benchmark data submitted successfully! It will be reviewed before being added to the database."
       );
@@ -444,6 +507,28 @@ const ProfilePage = () => {
     );
   }
 
+  // Format date for display
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "N/A";
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+  };
+
+  // Get status badge styling
+  const getStatusBadge = (status) => {
+    const baseClass = "status-badge";
+    switch (status) {
+      case "pending":
+        return `${baseClass} status-pending`;
+      case "approved":
+        return `${baseClass} status-approved`;
+      case "rejected":
+        return `${baseClass} status-rejected`;
+      default:
+        return `${baseClass} status-unknown`;
+    }
+  };
+
   return (
     <div className="profile-page">
       <div className="hero-bg-shapes">
@@ -454,18 +539,27 @@ const ProfilePage = () => {
       <div className="container">
         {/* Tab navigation buttons */}
         <div className="button-container">
-          <button
+          <button 
             className={`btn ${activeTab === "profile" ? "active" : ""}`}
             onClick={() => handleTabChange("profile")}
           >
             Profile
           </button>
-          <button
+          <button 
             className={`btn ${activeTab === "options" ? "active" : ""}`}
             onClick={() => handleTabChange("options")}
           >
             Options
           </button>
+          {/* Show Submits tab only for benchmarkers who have submissions */}
+          {isBenchmarker && userSubmissions.length > 0 && (
+            <button 
+              className={`btn ${activeTab === "submits" ? "active" : ""}`}
+              onClick={() => handleTabChange("submits")}
+            >
+              Submits
+            </button>
+          )}
           <button className="btn-red" onClick={handleLogout}>
             Logout
           </button>
@@ -586,7 +680,85 @@ const ProfilePage = () => {
             </div>
           </div>
         )}
-
+        {activeTab === "submits" && (
+          <div className="submits-container">
+            <label>Your Benchmark Submissions</label>
+            <div className="submits-item">
+              
+              {loadingSubmissions ? (
+                <div className="loading-submissions">
+                  <Loading />
+                </div>
+              ) : userSubmissions.length === 0 ? (
+                <div className="no-submissions">
+                  <p>You haven't submitted any benchmarks yet.</p>
+                  <button 
+                    className="btn-specs"
+                    onClick={() => handleTabChange("options")}
+                  >
+                    Submit Benchmark
+                  </button>
+                </div>
+              ) : (
+                <div className="submissions-list">
+                  {userSubmissions.map((submission) => (
+                    <div key={submission.id} className="submission-card">
+                      <div className="submission-header">
+                        <h3>{submission.Game_Name}</h3>
+                        <span className={getStatusBadge(submission.status)}>
+                          {submission.status || "pending"}
+                        </span>
+                      </div>
+                      
+                      <div className="submission-details">
+                        <div className="detail-row">
+                          <div className="detail-group">
+                            <span className="detail-label">FPS:</span>
+                            <span className="detail-value">{submission.FPS}</span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">Graphics:</span>
+                            <span className="detail-value">{submission.Mode}</span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">Resolution:</span>
+                            <span className="detail-value">{submission.Resolution}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="detail-row">
+                          <div className="detail-group">
+                            <span className="detail-label">CPU:</span>
+                            <span className="detail-value">{submission.CPU}</span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">GPU:</span>
+                            <span className="detail-value">{submission.GPU}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="detail-row">
+                          <div className="detail-group">
+                            <span className="detail-label">RAM:</span>
+                            <span className="detail-value">{submission.RAM}GB</span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">VRAM:</span>
+                            <span className="detail-value">{submission.VRAM}GB</span>
+                          </div>
+                          <div className="detail-group">
+                            <span className="detail-label">Submitted:</span>
+                            <span className="detail-value">{formatDate(submission.submittedAt)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
         {/* Options tab: benchmarker application or benchmark submission */}
         {activeTab === "options" && (
           <div className="options-container">
@@ -775,7 +947,7 @@ const ProfilePage = () => {
                     onClick={handleSubmitBenchmark}
                     disabled={submittingBenchmark}
                   >
-                    {submittingBenchmark ? "Submitting..." : "Add Data"}
+                    {submittingBenchmark ? "Submitting" : "Add Data"}
                   </button>
                 </div>
               </div>
