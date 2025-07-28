@@ -52,8 +52,10 @@ const Admin = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [userSearchTerm, setUserSearchTerm] = useState("");
   
-  // Games data
+  // Games data with search functionality
   const [games, setGames] = useState([]);
+  const [filteredGames, setFilteredGames] = useState([]);
+  const [gameSearchTerm, setGameSearchTerm] = useState("");
   const [gameFormData, setGameFormData] = useState({
     Game_Name: "",
     CPU: "",
@@ -70,6 +72,11 @@ const Admin = () => {
   const [gpuSuggestions, setGpuSuggestions] = useState([]); // Now stores full GPU objects
   const [filteredGpus, setFilteredGpus] = useState([]);
   const [showGpuDropdown, setShowGpuDropdown] = useState(false);
+  
+  // CPU display data (separate from autocomplete)
+  const [displayCpus, setDisplayCpus] = useState([]); // CPU names for display
+  const [filteredDisplayCpus, setFilteredDisplayCpus] = useState([]);
+  const [cpuSearchTerm, setCpuSearchTerm] = useState("");
   
   // Refs for click outside detection
   const cpuInputRef = useRef(null);
@@ -112,6 +119,32 @@ const Admin = () => {
     }
   }, [users, userSearchTerm]);
 
+  // Filter games based on search term
+  useEffect(() => {
+    if (gameSearchTerm.trim() === "") {
+      setFilteredGames(games);
+    } else {
+      const filtered = games.filter(game => 
+        game.Game_Name?.toLowerCase().includes(gameSearchTerm.toLowerCase()) ||
+        game.CPU?.toLowerCase().includes(gameSearchTerm.toLowerCase()) ||
+        game.GPU?.toLowerCase().includes(gameSearchTerm.toLowerCase())
+      );
+      setFilteredGames(filtered);
+    }
+  }, [games, gameSearchTerm]);
+
+  // Filter CPUs based on search term
+  useEffect(() => {
+    if (cpuSearchTerm.trim() === "") {
+      setFilteredDisplayCpus(displayCpus);
+    } else {
+      const filtered = displayCpus.filter(cpu => 
+        cpu.toLowerCase().includes(cpuSearchTerm.toLowerCase())
+      );
+      setFilteredDisplayCpus(filtered);
+    }
+  }, [displayCpus, cpuSearchTerm]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -145,21 +178,27 @@ const Admin = () => {
     }
   };
 
-  // Fetch CPU names from the correct collection
+  // Fetch CPU names from the correct collection (updated to also set display CPUs)
   const fetchCpuNames = async () => {
     try {
       const cpuDoc = await getDoc(doc(db, "cpu_names", "all_cpus"));
       if (cpuDoc.exists()) {
         const cpuNames = cpuDoc.data().names || [];
-        setCpuSuggestions(cpuNames);
+        setCpuSuggestions(cpuNames); // For autocomplete
+        setDisplayCpus(cpuNames); // For display section
+        setFilteredDisplayCpus(cpuNames); // Initialize filtered display
         console.log("CPU names loaded:", cpuNames.length);
       } else {
         console.log("No CPU names document found");
         setCpuSuggestions([]);
+        setDisplayCpus([]);
+        setFilteredDisplayCpus([]);
       }
     } catch (error) {
       console.error("Error fetching CPU names:", error);
       setCpuSuggestions([]);
+      setDisplayCpus([]);
+      setFilteredDisplayCpus([]);
     }
   };
 
@@ -242,6 +281,7 @@ const Admin = () => {
         gamesData.push({ id: doc.id, ...doc.data() });
       });
       setGames(gamesData);
+      setFilteredGames(gamesData); // Initialize filtered games
     } catch (error) {
       console.error("Error fetching games:", error);
     }
@@ -572,7 +612,7 @@ const Admin = () => {
               </div>
             )}
 
-            {/* Games Tab */}
+            {/* Games Tab - UPDATED */}
             {activeTab === "games" && (
               <div className="games-section">
                 <div className="section-split">
@@ -678,13 +718,41 @@ const Admin = () => {
                   </div>
 
                   <div className="data-section">
-                    <h3>Existing Games ({games.length})</h3>
+                    <div className="data-section-header">
+                      <h3>Existing Games ({filteredGames.length}/{games.length})</h3>
+                      <div className="search-container">
+                        <FaSearch />
+                        <input
+                          type="text"
+                          placeholder="Search games..."
+                          value={gameSearchTerm}
+                          onChange={(e) => setGameSearchTerm(e.target.value)}
+                          className="search-input"
+                        />
+                      </div>
+                    </div>
                     <div className="data-list">
-                      {games.slice(0, 10).map((game) => (
+                      {filteredGames.map((game) => (
                         <div key={game.id} className="data-item">
                           <div className="item-info">
                             <h4>{game.Game_Name}</h4>
-                            <span>{game.CPU} • {game.GPU} • {game.RAM}GB RAM</span>
+                            <div className="game-details">
+                              <span className="detail-row">
+                                <strong>CPU:</strong> {game.CPU || "N/A"}
+                              </span>
+                              <span className="detail-row">
+                                <strong>GPU:</strong> {game.GPU || "N/A"}
+                              </span>
+                              <span className="detail-row">
+                                <strong>RAM:</strong> {game.RAM ? `${game.RAM}GB` : "N/A"}
+                              </span>
+                              <span className="detail-row">
+                                <strong>Size:</strong> {game.File_size ? `${game.File_size}GB` : "N/A"}
+                              </span>
+                              <span className="detail-row">
+                                <strong>OS:</strong> {game.OS || "N/A"}
+                              </span>
+                            </div>
                           </div>
                           <button 
                             onClick={() => deleteItem("game_requirements", game.id)}
@@ -695,13 +763,18 @@ const Admin = () => {
                           </button>
                         </div>
                       ))}
+                      {filteredGames.length === 0 && (
+                        <div className="no-data">
+                          {gameSearchTerm ? "No games found matching your search" : "No games found"}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* CPU Tab */}
+            {/* CPU Tab - UPDATED */}
             {activeTab === "cpu" && (
               <div className="cpu-section">
                 <div className="section-split">
@@ -767,23 +840,32 @@ const Admin = () => {
                   </div>
 
                   <div className="data-section">
-                    <h3>Existing CPUs ({cpus.length})</h3>
+                    <div className="data-section-header">
+                      <h3>Available CPUs ({filteredDisplayCpus.length}/{displayCpus.length})</h3>
+                      <div className="search-container">
+                        <FaSearch />
+                        <input
+                          type="text"
+                          placeholder="Search CPUs..."
+                          value={cpuSearchTerm}
+                          onChange={(e) => setCpuSearchTerm(e.target.value)}
+                          className="search-input"
+                        />
+                      </div>
+                    </div>
                     <div className="data-list">
-                      {cpus.slice(0, 10).map((cpu) => (
-                        <div key={cpu.id} className="data-item">
+                      {filteredDisplayCpus.map((cpu, index) => (
+                        <div key={index} className="data-item cpu-display-item">
                           <div className="item-info">
-                            <h4>{cpu.CPU_Name}</h4>
-                            <span>{cpu.CPU_Cores} cores • {cpu.CPU_GHz}GHz • Score: {cpu.Benchmark_Score}</span>
+                            <h4>{cpu}</h4>
                           </div>
-                          <button 
-                            onClick={() => deleteItem("cpu_benchmarks", cpu.id)}
-                            className="btn-delete"
-                            title="Delete CPU"
-                          >
-                            <FaTrash />
-                          </button>
                         </div>
                       ))}
+                      {filteredDisplayCpus.length === 0 && (
+                        <div className="no-data">
+                          {cpuSearchTerm ? "No CPUs found matching your search" : "No CPUs found"}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

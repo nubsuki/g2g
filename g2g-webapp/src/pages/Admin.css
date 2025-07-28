@@ -800,3 +800,150 @@
         font-size: 0.75rem;
     }
 }
+
+/* Data Section Header */
+.data-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.data-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #c8b6ff;
+    margin: 0;
+}
+
+/* Game Details */
+.game-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+}
+
+.detail-row {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.detail-row strong {
+    color: rgba(200, 182, 255, 0.8);
+    font-weight: 600;
+    min-width: 40px;
+}
+
+/* Enhanced data item for better readability */
+.data-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: rgba(26, 26, 26, 0.8);
+    padding: 1.2rem;
+    border-radius: 0.6rem;
+    border: 1px solid rgba(200, 182, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.item-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #c8b6ff;
+    margin: 0 0 0.5rem 0;
+}
+
+/* Search input styling for data sections */
+.data-section .search-container {
+    display: flex;
+    align-items: center;
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(200, 182, 255, 0.3);
+    border-radius: 0.6rem;
+    padding: 0.4rem 0.8rem;
+    gap: 0.5rem;
+    color: rgba(200, 182, 255, 0.8);
+    min-width: 200px;
+}
+
+.data-section .search-input {
+    background: transparent;
+    border: none;
+    color: #c8b6ff;
+    font-size: 0.85rem;
+    outline: none;
+    width: 100%;
+}
+
+.data-section .search-input::placeholder {
+    color: rgba(200, 182, 255, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .data-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    
+    .data-section .search-container {
+        width: 100%;
+        min-width: unset;
+    }
+    
+    .game-details {
+        gap: 0.2rem;
+    }
+    
+    .detail-row {
+        font-size: 0.75rem;
+    }
+    
+    .detail-row strong {
+        min-width: 35px;
+    }
+}
+
+/* CPU Display Item */
+.cpu-display-item {
+    display: flex;
+    align-items: center;
+    background: rgba(26, 26, 26, 0.8);
+    padding: 1rem;
+    border-radius: 0.6rem;
+    border: 1px solid rgba(200, 182, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.cpu-display-item:hover {
+    border-color: rgba(200, 182, 255, 0.3);
+    background: rgba(26, 26, 26, 0.9);
+    transform: translateY(-1px);
+}
+
+.cpu-display-item .item-info {
+    flex: 1;
+}
+
+.cpu-display-item .item-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #c8b6ff;
+    margin: 0;
+}
+
+/* Responsive adjustments for CPU display */
+@media (max-width: 768px) {
+    .cpu-display-item {
+        padding: 0.8rem;
+    }
+    
+    .cpu-display-item .item-info h4 {
+        font-size: 0.9rem;
+    }
+}
