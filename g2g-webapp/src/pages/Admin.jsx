@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
-import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy, where, getDoc } from "firebase/firestore";
 import "./Admin.css";
-import { FaUsers, FaGamepad, FaMicrochip, FaPlus, FaTrash, FaEdit, FaSearch, FaFilter, FaLock } from "react-icons/fa";
+import { FaUsers, FaGamepad, FaMicrochip, FaPlus, FaTrash, FaEdit, FaSearch, FaFilter, FaLock, FaCheck, FaClock } from "react-icons/fa";
 
 const Admin = () => {
   const { currentUser, userProfile } = useAuth();
@@ -63,6 +63,18 @@ const Admin = () => {
     File_size: ""
   });
   
+  // CPU and GPU autocomplete - store full GPU objects for VRAM display
+  const [cpuSuggestions, setCpuSuggestions] = useState([]);
+  const [filteredCpus, setFilteredCpus] = useState([]);
+  const [showCpuDropdown, setShowCpuDropdown] = useState(false);
+  const [gpuSuggestions, setGpuSuggestions] = useState([]); // Now stores full GPU objects
+  const [filteredGpus, setFilteredGpus] = useState([]);
+  const [showGpuDropdown, setShowGpuDropdown] = useState(false);
+  
+  // Refs for click outside detection
+  const cpuInputRef = useRef(null);
+  const gpuInputRef = useRef(null);
+  
   // CPU data
   const [cpus, setCpus] = useState([]);
   const [cpuFormData, setCpuFormData] = useState({
@@ -100,6 +112,21 @@ const Admin = () => {
     }
   }, [users, userSearchTerm]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cpuInputRef.current && !cpuInputRef.current.contains(event.target)) {
+        setShowCpuDropdown(false);
+      }
+      if (gpuInputRef.current && !gpuInputRef.current.contains(event.target)) {
+        setShowGpuDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const fetchAllData = async () => {
     setLoading(true);
     try {
@@ -107,7 +134,9 @@ const Admin = () => {
         fetchUsers(),
         fetchGames(),
         fetchCPUs(),
-        fetchGPUs()
+        fetchGPUs(),
+        fetchCpuNames(), // Fetch CPU names for autocomplete
+        fetchGpuNames()  // Fetch GPU names for autocomplete
       ]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -116,13 +145,89 @@ const Admin = () => {
     }
   };
 
+  // Fetch CPU names from the correct collection
+  const fetchCpuNames = async () => {
+    try {
+      const cpuDoc = await getDoc(doc(db, "cpu_names", "all_cpus"));
+      if (cpuDoc.exists()) {
+        const cpuNames = cpuDoc.data().names || [];
+        setCpuSuggestions(cpuNames);
+        console.log("CPU names loaded:", cpuNames.length);
+      } else {
+        console.log("No CPU names document found");
+        setCpuSuggestions([]);
+      }
+    } catch (error) {
+      console.error("Error fetching CPU names:", error);
+      setCpuSuggestions([]);
+    }
+  };
+
+  // Fetch GPU names from the correct collection - Store full objects with VRAM
+  const fetchGpuNames = async () => {
+    try {
+      const gpuDoc = await getDoc(doc(db, "gpu_names", "all_gpus"));
+      if (gpuDoc.exists()) {
+        const gpuData = gpuDoc.data().gpus || [];
+        // Store the full GPU objects (with name and vram)
+        const validGpus = gpuData.filter(gpu => gpu.name);
+        setGpuSuggestions(validGpus);
+        console.log("GPU data loaded:", validGpus.length, validGpus);
+      } else {
+        console.log("No GPU names document found");
+        setGpuSuggestions([]);
+      }
+    } catch (error) {
+      console.error("Error fetching GPU names:", error);
+      setGpuSuggestions([]);
+    }
+  };
+
+  // Fetch benchmark submissions for a specific user
+  const fetchUserBenchmarkStats = async (userId) => {
+    try {
+      const benchmarkQuery = query(
+        collection(db, "user_benchmarks"),
+        where("userId", "==", userId)
+      );
+      
+      const querySnapshot = await getDocs(benchmarkQuery);
+      let totalSubmissions = 0;
+      let approvedSubmissions = 0;
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        totalSubmissions++;
+        if (data.status === "approved") {
+          approvedSubmissions++;
+        }
+      });
+
+      return {
+        totalSubmissions,
+        approvedSubmissions
+      };
+    } catch (error) {
+      console.log(`No benchmark data found for user ${userId}`);
+      return {
+        totalSubmissions: 0,
+        approvedSubmissions: 0
+      };
+    }
+  };
+
   const fetchUsers = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
       const usersData = [];
-      querySnapshot.forEach((doc) => {
-        usersData.push({ id: doc.id, ...doc.data() });
-      });
+      
+      for (const docRef of querySnapshot.docs) {
+        const userData = { id: docRef.id, ...docRef.data() };
+        const benchmarkStats = await fetchUserBenchmarkStats(docRef.id);
+        userData.benchmarkStats = benchmarkStats;
+        usersData.push(userData);
+      }
+      
       setUsers(usersData);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -166,6 +271,56 @@ const Admin = () => {
     } catch (error) {
       console.error("Error fetching GPUs:", error);
     }
+  };
+
+  // Handle CPU input change with autocomplete
+  const handleCpuInputChange = (value) => {
+    setGameFormData({...gameFormData, CPU: value});
+
+    console.log("CPU input changed:", value);
+    console.log("Available CPU suggestions:", cpuSuggestions.length);
+
+    if (value.length > 0) {
+      const filtered = cpuSuggestions
+        .filter((cpu) => cpu.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, 10);
+      console.log("Filtered CPUs:", filtered);
+      setFilteredCpus(filtered);
+      setShowCpuDropdown(true);
+    } else {
+      setShowCpuDropdown(false);
+    }
+  };
+
+  // Handle GPU input change with autocomplete - Updated for VRAM display
+  const handleGpuInputChange = (value) => {
+    setGameFormData({...gameFormData, GPU: value});
+
+    console.log("GPU input changed:", value);
+    console.log("Available GPU suggestions:", gpuSuggestions.length);
+
+    if (value.length > 0) {
+      const filtered = gpuSuggestions
+        .filter((gpu) => gpu.name.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, 10);
+      console.log("Filtered GPUs:", filtered);
+      setFilteredGpus(filtered);
+      setShowGpuDropdown(true);
+    } else {
+      setShowGpuDropdown(false);
+    }
+  };
+
+  // Select CPU from dropdown
+  const selectCpu = (selectedCpu) => {
+    setGameFormData({...gameFormData, CPU: selectedCpu});
+    setShowCpuDropdown(false);
+  };
+
+  // Select GPU from dropdown - Updated to use GPU object
+  const selectGpu = (selectedGpu) => {
+    setGameFormData({...gameFormData, GPU: selectedGpu.name});
+    setShowGpuDropdown(false);
   };
 
   const handleTabChange = (tab) => {
@@ -273,7 +428,6 @@ const Admin = () => {
     try {
       await deleteDoc(doc(db, collection_name, id));
       
-      // Refresh appropriate data
       switch (collection_name) {
         case "game_requirements":
           await fetchGames();
@@ -355,6 +509,7 @@ const Admin = () => {
                         <th>Role</th>
                         <th>Join Date</th>
                         <th>Specs Status</th>
+                        <th>Benchmarks</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -373,6 +528,28 @@ const Admin = () => {
                             <span className={`status-badge ${user.specs ? 'complete' : 'incomplete'}`}>
                               {user.specs ? "Complete" : "Incomplete"}
                             </span>
+                          </td>
+                          <td>
+                            <div className="benchmark-stats">
+                              <div className="benchmark-stat">
+                                <span className="stat-icon">
+                                  <FaClock />
+                                </span>
+                                <span className="stat-number">
+                                  {user.benchmarkStats?.totalSubmissions || 0}
+                                </span>
+                                <span className="stat-label">Submitted</span>
+                              </div>
+                              <div className="benchmark-stat">
+                                <span className="stat-icon approved">
+                                  <FaCheck />
+                                </span>
+                                <span className="stat-number">
+                                  {user.benchmarkStats?.approvedSubmissions || 0}
+                                </span>
+                                <span className="stat-label">Approved</span>
+                              </div>
+                            </div>
                           </td>
                           <td>
                             <div className="action-buttons">
@@ -415,21 +592,52 @@ const Admin = () => {
                       <div className="form-row">
                         <div className="form-group">
                           <label>CPU Requirement</label>
-                          <input
-                            type="text"
-                            value={gameFormData.CPU}
-                            onChange={(e) => setGameFormData({...gameFormData, CPU: e.target.value})}
-                            placeholder="e.g. Intel i5-8400"
-                          />
+                          <div className="autocomplete-container" ref={cpuInputRef}>
+                            <input
+                              type="text"
+                              value={gameFormData.CPU}
+                              onChange={(e) => handleCpuInputChange(e.target.value)}
+                              placeholder="Start typing CPU name..."
+                            />
+                            {showCpuDropdown && filteredCpus.length > 0 && (
+                              <div className="autocomplete-dropdown">
+                                {filteredCpus.map((cpu, index) => (
+                                  <div
+                                    key={index}
+                                    className="dropdown-item"
+                                    onClick={() => selectCpu(cpu)}
+                                  >
+                                    {cpu}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         </div>
                         <div className="form-group">
                           <label>GPU Requirement</label>
-                          <input
-                            type="text"
-                            value={gameFormData.GPU}
-                            onChange={(e) => setGameFormData({...gameFormData, GPU: e.target.value})}
-                            placeholder="e.g. GTX 1060"
-                          />
+                          <div className="autocomplete-container" ref={gpuInputRef}>
+                            <input
+                              type="text"
+                              value={gameFormData.GPU}
+                              onChange={(e) => handleGpuInputChange(e.target.value)}
+                              placeholder="Start typing GPU name..."
+                            />
+                            {showGpuDropdown && filteredGpus.length > 0 && (
+                              <div className="autocomplete-dropdown">
+                                {filteredGpus.map((gpu, index) => (
+                                  <div
+                                    key={index}
+                                    className="dropdown-item gpu-item"
+                                    onClick={() => selectGpu(gpu)}
+                                  >
+                                    <span className="gpu-name">{gpu.name}</span>
+                                    <span className="gpu-vram">({gpu.vram}GB)</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <div className="form-row">
