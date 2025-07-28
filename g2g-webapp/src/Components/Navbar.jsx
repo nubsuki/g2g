@@ -11,12 +11,16 @@ const Navbar = ({ onLoginClick }) => {
     onLoginClick();
   };
 
+  // Check if user is admin
+  const isAdmin = currentUser && userProfile?.role === 'admin';
+
   return (
     <header className='header'>
       <Link to="/" className='logo'>G2G</Link>
       <nav className='navbar'>
         <Link to="/">Home</Link>
         {currentUser && <Link to="/fps">FPS</Link>}
+        {isAdmin && <Link to="/admin">Admin Panel</Link>}
         {currentUser ? (
           <Link to="/profile" className='username-link'>
             {userProfile?.username || 'User'}
