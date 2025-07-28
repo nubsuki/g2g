@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore', message='X does not have valid feature names')
 
 # Load the model and metadata
 try:
-    pipeline = joblib.load('fps_predictor_enhanced.pkl')
+    pipeline = joblib.load('fps_predictor.pkl')
     metadata = joblib.load('model_metadata.pkl')
     selected_features = metadata['selected_features']
     feature_selector = metadata['feature_selector']
@@ -43,7 +43,7 @@ cpu_mc = cpu[cpu['Test_Type'] == 'Multi-core'][['Processor', 'Score', 'GHz', 'Co
 # GPU scores loading
 gpu_scores = gpu[['GPU', 'Score', 'VRAM']].rename(columns={'Score': 'GPU_Score', 'VRAM': 'VRAM_GB'})
 
-# Enhanced game requirements
+# Game requirements
 req = req[['Game_Name', 'CPU', 'GPU', 'RAM', 'File_size']].copy()
 req['Min_RAM_GB'] = req['RAM'].astype(int)
 req['Min_File_Size_GB'] = req['File_size'].astype(int)
@@ -107,7 +107,7 @@ def find_best_gpu_match(gpu_name):
     raise ValueError(f"GPU '{gpu_name}' not found")
 
 def predict_fps(game_name, cpu_name, gpu_name, ram_gb, resolution):
-    """Enhanced FPS prediction with automatic VRAM detection"""
+    """FPS prediction with automatic VRAM detection"""
     
     # Parse resolution
     try:

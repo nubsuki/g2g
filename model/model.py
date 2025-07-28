@@ -144,7 +144,7 @@ feature_cols = [
     'Total_Pixels', 'Pixel_Density', 'Aspect_Ratio',
     'CPU_Performance_Index', 'GPU_Performance_Index', 'Overall_Performance_Index',
     'cpu_gpu_balance', 'vram_efficiency', 'ram_efficiency',
-    'vram_adequacy', 'vram_to_filesize_ratio'  # NEW VRAM features
+    'vram_adequacy', 'vram_to_filesize_ratio'
 ]
 
 # Add bottleneck indicator as encoded feature
@@ -293,14 +293,14 @@ model_metadata = {
     }
 }
 
-joblib.dump(pipeline, 'fps_predictor_enhanced.pkl')
+joblib.dump(pipeline, 'fps_predictor.pkl')
 joblib.dump(model_metadata, 'model_metadata.pkl')
-print("\nEnhanced model saved as 'fps_predictor_enhanced.pkl'")
+print("\nModel saved as 'fps_predictor.pkl'")
 print("Model metadata saved as 'model_metadata.pkl'")
 
 print("\nSaving model statistics to database...")
 
-# Initialize Firestore (same as in fetch.py)
+# Initialize Firestore
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'account.json'
 db = firestore.Client()
 
@@ -310,7 +310,10 @@ total_gpu_data = len(gpu)
 total_game_benchmark_data = len(bench)
 total_benchmark_data = total_cpu_data + total_gpu_data + total_game_benchmark_data
 
-# Calculate model accuracy percentage (using R² as accuracy metric)
+# Calculate number of unique games
+total_games_count = len(req['Game_Name'].unique())
+
+# Calculate model accuracy percentage
 model_accuracy_percentage = r2 * 100
 
 # Calculate training data amount
@@ -322,10 +325,12 @@ model_stats = {
     'training_data_amount': training_data_amount,
     'model_accuracy_percentage': round(model_accuracy_percentage, 2),
     'total_benchmark_data': total_benchmark_data,
+    'total_games_count': total_games_count,
     'breakdown': {
         'cpu_benchmark_records': total_cpu_data,
         'gpu_benchmark_records': total_gpu_data,
-        'game_benchmark_records': total_game_benchmark_data
+        'game_benchmark_records': total_game_benchmark_data,
+        'unique_games': total_games_count
     },
     'model_metrics': {
         'mae': round(mae, 2),
@@ -342,22 +347,20 @@ model_stats = {
 
 # Save to Firestore
 try:
-    doc_ref = db.collection('model_stats').document()
-    doc_ref.set(model_stats)
-    print(f"✅ Model statistics saved to database successfully!")
-    print(f"Document ID: {doc_ref.id}")
+    # Save as 'latest' (overwrites)
+    doc_ref_latest = db.collection('model_stats').document('latest')
+    doc_ref_latest.set(model_stats)
     
-    # Print summary
-    print(f"\n📊 SAVED STATISTICS:")
-    print(f"Training Data Amount: {training_data_amount:,} records")
-    print(f"Model Accuracy: {model_accuracy_percentage:.2f}%")
-    print(f"Total Benchmark Data: {total_benchmark_data:,} records")
-    print(f"  - CPU Benchmarks: {total_cpu_data:,}")
-    print(f"  - GPU Benchmarks: {total_gpu_data:,}")
-    print(f"  - Game Benchmarks: {total_game_benchmark_data:,}")
+    # Also save with timestamp (for history)
+    timestamp_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+    doc_ref_history = db.collection('model_stats').document(timestamp_id)
+    doc_ref_history.set(model_stats)
+    
+    print(f"✅ Model statistics saved to database successfully!")
+    print(f"Latest stats updated, history saved as: {timestamp_id}")
     
 except Exception as e:
-    print(f"❌ Error saving to database: {e}")
+    print(f"Error saving to database: {e}")
     print("Model files saved locally, but database update failed.")
 
-print("\n🎉 Training completed successfully!")
+print("\n Training completed successfully!")
