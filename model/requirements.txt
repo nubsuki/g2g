@@ -1,0 +1,14 @@
+# Data manipulation and analysis
+pandas
+numpy
+
+# Machine learning
+scikit-learn
+xgboost
+lightgbm
+
+# Model persistence
+joblib
+
+# Google Cloud (for fetch.py)
+google-cloud-firestore

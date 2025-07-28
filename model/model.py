@@ -11,6 +11,9 @@ from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
 import joblib
 import warnings
 warnings.filterwarnings('ignore')
+import os
+from google.cloud import firestore
+from datetime import datetime
 
 print("Loading datasets...")
 # Load datasets
@@ -55,7 +58,7 @@ print("Preparing training data...")
 df = bench.copy()
 
 # Parse VRAM from game_benchmarks.csv but also merge with cleaner GPU data
-df['VRAM_GB_from_bench'] = df['VRAM'].str.extract('(\d+)').astype(float)
+df['VRAM_GB_from_bench'] = pd.to_numeric(df['VRAM'], errors='coerce')
 df['RAM_GB_user'] = df['RAM']
 
 # Parse resolution
@@ -234,7 +237,7 @@ param_grid = {
 
 print("Performing hyperparameter tuning...")
 grid_search = GridSearchCV(
-    pipeline, param_grid, cv=3, scoring='neg_mean_absolute_error', n_jobs=-1, verbose=1
+    pipeline, param_grid, cv=3, scoring='neg_mean_absolute_error', n_jobs=-1, verbose=2
 )
 
 # Use log transformation for better performance
@@ -294,3 +297,67 @@ joblib.dump(pipeline, 'fps_predictor_enhanced.pkl')
 joblib.dump(model_metadata, 'model_metadata.pkl')
 print("\nEnhanced model saved as 'fps_predictor_enhanced.pkl'")
 print("Model metadata saved as 'model_metadata.pkl'")
+
+print("\nSaving model statistics to database...")
+
+# Initialize Firestore (same as in fetch.py)
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'account.json'
+db = firestore.Client()
+
+# Calculate total benchmark data amount
+total_cpu_data = len(cpu)
+total_gpu_data = len(gpu) 
+total_game_benchmark_data = len(bench)
+total_benchmark_data = total_cpu_data + total_gpu_data + total_game_benchmark_data
+
+# Calculate model accuracy percentage (using R² as accuracy metric)
+model_accuracy_percentage = r2 * 100
+
+# Calculate training data amount
+training_data_amount = len(df_train)
+
+# Prepare the statistics document
+model_stats = {
+    'timestamp': datetime.now(),
+    'training_data_amount': training_data_amount,
+    'model_accuracy_percentage': round(model_accuracy_percentage, 2),
+    'total_benchmark_data': total_benchmark_data,
+    'breakdown': {
+        'cpu_benchmark_records': total_cpu_data,
+        'gpu_benchmark_records': total_gpu_data,
+        'game_benchmark_records': total_game_benchmark_data
+    },
+    'model_metrics': {
+        'mae': round(mae, 2),
+        'rmse': round(rmse, 2),
+        'r2_score': round(r2, 4),
+        'cv_mae': round(-cv_scores.mean(), 2)
+    },
+    'model_info': {
+        'selected_features_count': len(selected_features),
+        'model_type': 'Ensemble (XGBoost + LightGBM + RandomForest)',
+        'scaling_method': 'RobustScaler'
+    }
+}
+
+# Save to Firestore
+try:
+    doc_ref = db.collection('model_stats').document()
+    doc_ref.set(model_stats)
+    print(f"✅ Model statistics saved to database successfully!")
+    print(f"Document ID: {doc_ref.id}")
+    
+    # Print summary
+    print(f"\n📊 SAVED STATISTICS:")
+    print(f"Training Data Amount: {training_data_amount:,} records")
+    print(f"Model Accuracy: {model_accuracy_percentage:.2f}%")
+    print(f"Total Benchmark Data: {total_benchmark_data:,} records")
+    print(f"  - CPU Benchmarks: {total_cpu_data:,}")
+    print(f"  - GPU Benchmarks: {total_gpu_data:,}")
+    print(f"  - Game Benchmarks: {total_game_benchmark_data:,}")
+    
+except Exception as e:
+    print(f"❌ Error saving to database: {e}")
+    print("Model files saved locally, but database update failed.")
+
+print("\n🎉 Training completed successfully!")
