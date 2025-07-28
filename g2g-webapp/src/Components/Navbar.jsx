@@ -21,6 +21,7 @@ const Navbar = ({ onLoginClick }) => {
         <Link to="/">Home</Link>
         {currentUser && <Link to="/fps">FPS</Link>}
         {isAdmin && <Link to="/admin">Admin Panel</Link>}
+        <Link to="/community">Community</Link>
         {currentUser ? (
           <Link to="/profile" className='username-link'>
             {userProfile?.username || 'User'}

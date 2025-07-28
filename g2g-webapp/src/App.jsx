@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import ProfilePage from './pages/ProfilePage'
 import Fps from './pages/Fps'
 import Admin from './pages/Admin'
+import Community from './pages/Community'
 import { AuthProvider } from './contexts/AuthContext'
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/fps" element={<Fps />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/community" element={<Community />} />
           </Routes>
           {showLoginForm && <LoginForm onClose={closeLoginForm}/>}
         </div>
