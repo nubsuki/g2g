@@ -4,6 +4,8 @@ import pandas as pd
 import joblib
 import numpy as np
 import warnings
+import subprocess
+import sys
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
@@ -320,6 +322,39 @@ def predict():
     except Exception as e:
         print(f"Prediction error: {e}")
         return jsonify({'success': False, 'error': 'Internal server error'}), 500
+
+@app.route('/fetch-data', methods=['POST'])
+def fetch_data():
+    """Trigger fetch.py to fetch data from Firestore"""
+    try:
+        # Run fetch.py as a subprocess
+        result = subprocess.run([sys.executable, 'fetch.py'], 
+                              capture_output=True, 
+                              text=True, 
+                              timeout=300)  # 5 minute timeout
+        
+        if result.returncode == 0:
+            return jsonify({
+                'success': True,
+                'message': 'Data fetched successfully',
+                'output': result.stdout
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': f'fetch.py failed: {result.stderr}'
+            }), 500
+            
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            'success': False,
+            'error': 'Fetch operation timed out (>5 minutes)'
+        }), 500
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 @app.route('/games', methods=['GET'])
 def get_games():

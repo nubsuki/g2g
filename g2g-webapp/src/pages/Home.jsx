@@ -90,19 +90,19 @@ const Home = ({ onLoginClick }) => {
       icon: <FaRobot />,
       title: "AI-Powered Predictions",
       description: "Our advanced AI analyzes massive benchmark datasets to predict FPS and performance tailored specifically to your hardware configuration.",
-      highlight: "99% Accuracy"
+      highlight: "enchmarksAccuracy"
     },
     {
       icon: <FaMicrochip />,
       title: "Comprehensive Database",
       description: "Access performance data from multiple trusted sources with real-world benchmarks from thousands of gaming configurations.",
-      highlight: "10K+ Benchmarks",
+      highlight: "Benchmarks",
       logos: [geekbenchLogo, techpowerupLogo]
     },
     {
       icon: <FaLinux />,
       title: "Cross-Platform Support",
-      description: "Full compatibility with Windows and Linux gaming through ProtonDB integration, ensuring accurate predictions across platforms.",
+      description: "Full compatibility ranking with Linux gaming through ProtonDB integration.",
       highlight: "Multi-Platform"
     },
     {

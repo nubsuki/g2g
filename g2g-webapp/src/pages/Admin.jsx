@@ -3,7 +3,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
 import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy, where, getDoc, updateDoc, arrayUnion, setDoc, arrayRemove } from "firebase/firestore";
 import "./Admin.css";
-import { FaUsers, FaGamepad, FaMicrochip, FaPlus, FaTrash, FaEdit, FaSearch, FaFilter, FaLock, FaCheck, FaClock } from "react-icons/fa";
+import { FaUsers, FaGamepad, FaMicrochip, FaPlus, FaTrash, FaEdit, FaSearch, FaFilter, FaLock, FaCheck, FaClock,FaBrain } from "react-icons/fa";
+import { BsGpuCard } from "react-icons/bs";
 
 const Admin = () => {
   const { currentUser, userProfile } = useAuth();
@@ -98,6 +99,9 @@ const Admin = () => {
     GPU_VRAM: "",
     Benchmark_Score: ""
   });
+
+  const [fetchLoading, setFetchLoading] = useState(false);
+  const [fetchMessage, setFetchMessage] = useState('');
 
   useEffect(() => {
     fetchAllData();
@@ -613,11 +617,38 @@ const Admin = () => {
     }
   };
 
+  const handleFetchData = async () => {
+    setFetchLoading(true);
+    setFetchMessage('');
+    
+    try {
+      const response = await fetch('http://localhost:5000/fetch-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setFetchMessage('Success! Data fetched and CSV files updated.');
+      } else {
+        setFetchMessage(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      setFetchMessage(`Failed to fetch data: ${error.message}`);
+    } finally {
+      setFetchLoading(false);
+    }
+  };
+
   const tabs = [
     { id: "users", label: "Users", icon: <FaUsers /> },
     { id: "games", label: "Add Games", icon: <FaGamepad /> },
     { id: "cpu", label: "Add CPU", icon: <FaMicrochip /> },
-    { id: "gpu", label: "Add GPU", icon: <FaMicrochip /> }
+    { id: "gpu", label: "Add GPU", icon: <BsGpuCard />},
+    { id: "model", label: "Model", icon: <FaBrain /> }
   ];
 
   return (
@@ -1090,6 +1121,52 @@ const Admin = () => {
                           {gpuSearchTerm ? "No GPUs found matching your search" : "No GPUs found"}
                         </div>
                       )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {activeTab === "model" && (
+              <div className="model-section">
+                <div className="section-split">
+                  <div className="form-section">
+                    <h2>Data Management</h2>
+                    <div className="admin-form">
+                      <div className="form-group">
+                        <label>Fetch Data from Firebase</label>
+                        <p style={{ fontSize: '0.85rem', color: 'rgba(200, 182, 255, 0.7)', margin: '0.5rem 0 1rem 0' }}>
+                          Fetch the latest data from Firebase and update CSV files
+                        </p>
+                        <button 
+                          className="submit-btn" 
+                          onClick={handleFetchData}
+                          disabled={fetchLoading}
+                        >
+                          <FaBrain />
+                          <span>{fetchLoading ? 'Fetching...' : 'Fetch Data'}</span>
+                        </button>
+                        {fetchMessage && (
+                          <div className={`status-message ${fetchMessage.includes('Success') ? 'success' : 'error'}`}>
+                            {fetchMessage}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="form-section">
+                    <h2>Model Training</h2>
+                    <div className="admin-form">
+                      <div className="form-group">
+                        <label>Train FPS Prediction Model</label>
+                        <p style={{ fontSize: '0.85rem', color: 'rgba(200, 182, 255, 0.7)', margin: '0.5rem 0 1rem 0' }}>
+                          Train the model with updated data to improve predictions
+                        </p>
+                        <button className="submit-btn">
+                          <FaBrain />
+                          <span>Train Model</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

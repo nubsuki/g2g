@@ -992,3 +992,25 @@
         font-size: 0.75rem;
     }
 }
+
+/* Status Messages for Model Section */
+.status-message {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.status-message.success {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-message.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}

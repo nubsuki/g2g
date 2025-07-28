@@ -410,9 +410,9 @@
 }
 
 .source-logo {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
 }
 
 /* Footer */
