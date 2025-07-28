@@ -14,19 +14,13 @@ const Fps = () => {
   const [gameRequirements, setGameRequirements] = useState(null);
   const [loadingRequirements, setLoadingRequirements] = useState(false);
 
-  // State for database stats
-  const [benchmarksCount, setBenchmarksCount] = useState(0);
-  const [loadingStats, setLoadingStats] = useState(true);
-
   // Ref for click outside detection
   const gameInputRef = useRef(null);
 
-  // Fetch games list and benchmarks count on component mount
+  // Fetch games list on component mount
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchGames = async () => {
       try {
-        setLoadingStats(true);
-        
         // Fetch games list
         const gameRequirementsSnapshot = await getDocs(
           collection(db, "game_requirements")
@@ -41,36 +35,12 @@ const Fps = () => {
         games.sort();
         setGamesList(games);
 
-        // Fetch benchmarks count from all three collections
-        const [gameBenchmarksSnapshot, cpuBenchmarksSnapshot, gpuBenchmarksSnapshot] = await Promise.all([
-          getDocs(collection(db, "game_benchmarks")),
-          getDocs(collection(db, "cpu_benchmarks")),
-          getDocs(collection(db, "gpu_benchmarks"))
-        ]);
-
-        // Combine all benchmark counts
-        const totalBenchmarks = 
-          gameBenchmarksSnapshot.size + 
-          cpuBenchmarksSnapshot.size + 
-          gpuBenchmarksSnapshot.size;
-
-        setBenchmarksCount(totalBenchmarks);
-
-        console.log("Benchmark counts:", {
-          game_benchmarks: gameBenchmarksSnapshot.size,
-          cpu_benchmarks: cpuBenchmarksSnapshot.size,
-          gpu_benchmarks: gpuBenchmarksSnapshot.size,
-          total: totalBenchmarks
-        });
-
       } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoadingStats(false);
+        console.error("Error fetching games:", error);
       }
     };
 
-    fetchData();
+    fetchGames();
   }, []);
 
   // Handle game name input change
@@ -164,12 +134,6 @@ const Fps = () => {
     return `${sizeInGB} GB`;
   };
 
-  // Format numbers with commas for better readability
-  const formatNumber = (num) => {
-    if (!num && num !== 0) return "-";
-    return num.toLocaleString();
-  };
-
   return (
     <div className="fps-page">
       <div className="fps-container">
@@ -211,7 +175,7 @@ const Fps = () => {
             </div>
           </div>
 
-          {/* Results Grid */}
+          {/* Results Grid - Now only 2 cards instead of 3 */}
           <div className="results-grid">
             {/* Game Information Card */}
             <div className="info-card game-info-card">
@@ -296,34 +260,6 @@ const Fps = () => {
                     <span className="detail-label">GPU Score:</span>
                     <span className="detail-value">-</span>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Stats Card */}
-            <div className="info-card stats-card">
-              <div className="card-header">
-                <h3>Database Stats</h3>
-                {loadingStats && (
-                  <div className="loading-spinner">
-                    <div className="spinner"></div>
-                  </div>
-                )}
-              </div>
-              <div className="card-content">
-                <div className="stat-item">
-                  <span className="stat-value">{formatNumber(gamesList.length)}</span>
-                  <span className="stat-label">Games Available</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-value">
-                    {loadingStats ? "..." : formatNumber(benchmarksCount)}
-                  </span>
-                  <span className="stat-label">Total Benchmarks</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-value">99%</span>
-                  <span className="stat-label">Model Accuracy</span>
                 </div>
               </div>
             </div>

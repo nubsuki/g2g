@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
 import "./Home.css";
 import { FaGithubAlt, FaRobot, FaLinux, FaUsers, FaMicrochip, FaArrowRight, FaStar, FaGamepad } from "react-icons/fa";
 import geekbenchLogo from "../assets/geekbench.png";
@@ -10,12 +12,77 @@ const Home = ({ onLoginClick }) => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
+  // State for database stats
+  const [modelAccuracy, setModelAccuracy] = useState(0);
+  const [uniqueGames, setUniqueGames] = useState(0);
+  const [totalBenchmarks, setTotalBenchmarks] = useState(0);
+  const [loadingStats, setLoadingStats] = useState(true);
+
+  // Fetch model stats on component mount
+  useEffect(() => {
+    const fetchModelStats = async () => {
+      try {
+        setLoadingStats(true);
+        
+        // Fetch model stats from model_stats > latest
+        const modelStatsRef = doc(db, "model_stats", "latest");
+        const modelStatsSnapshot = await getDoc(modelStatsRef);
+        
+        if (modelStatsSnapshot.exists()) {
+          const modelData = modelStatsSnapshot.data();
+          
+          // Get breakdown data
+          const breakdown = modelData.breakdown || {};
+          
+          // Set individual stats from breakdown
+          setModelAccuracy(modelData.model_accuracy_percentage || 0);
+          setUniqueGames(breakdown.unique_games || 0);
+          
+          // Calculate total benchmarks from breakdown map
+          const cpuBenchmarks = breakdown.cpu_benchmark_records || 0;
+          const gameBenchmarks = breakdown.game_benchmark_records || 0;
+          const gpuBenchmarks = breakdown.gpu_benchmark_records || 0;
+          setTotalBenchmarks(cpuBenchmarks + gameBenchmarks + gpuBenchmarks);
+
+          console.log("Model stats loaded on Home page:", {
+            model_accuracy_percentage: modelData.model_accuracy_percentage,
+            unique_games: breakdown.unique_games,
+            total_benchmarks: cpuBenchmarks + gameBenchmarks + gpuBenchmarks
+          });
+        } else {
+          console.log("No model stats found");
+          // Set default values if no stats found
+          setModelAccuracy(99);
+          setUniqueGames(50000);
+          setTotalBenchmarks(0);
+        }
+
+      } catch (error) {
+        console.error("Error fetching model stats:", error);
+        // Set fallback values on error
+        setModelAccuracy(99);
+        setUniqueGames(50000);
+        setTotalBenchmarks(0);
+      } finally {
+        setLoadingStats(false);
+      }
+    };
+
+    fetchModelStats();
+  }, []);
+
   const handleGetStarted = () => {
     if (currentUser) {
       navigate('/fps');
     } else {
       onLoginClick();
     }
+  };
+
+  // Format numbers with commas for better readability
+  const formatNumber = (num) => {
+    if (!num && num !== 0) return "...";
+    return num.toLocaleString();
   };
 
   const features = [
@@ -46,11 +113,24 @@ const Home = ({ onLoginClick }) => {
     }
   ];
 
+  // Dynamic stats using real data from Firebase
   const stats = [
-    { number: "50K+", label: "Games Analyzed" },
-    { number: "1M+", label: "Predictions Made" },
-    { number: "99%", label: "Accuracy Rate" },
-    { number: "24/7", label: "Available" }
+    { 
+      number: loadingStats ? "..." : `${formatNumber(uniqueGames)}`, 
+      label: "Games Available" 
+    },
+    { 
+      number: loadingStats ? "..." : `${formatNumber(totalBenchmarks)}`, 
+      label: "Total Benchmarks" 
+    },
+    { 
+      number: loadingStats ? "..." : `${modelAccuracy}%`, 
+      label: "Model Accuracy" 
+    },
+    { 
+      number: "24/7", 
+      label: "Available" 
+    }
   ];
 
   return (
@@ -88,7 +168,7 @@ const Home = ({ onLoginClick }) => {
               </button>
             </div>
             
-            {/* Stats Preview */}
+            {/* Stats Preview - Now showing real data */}
             <div className="hero-stats">
               {stats.map((stat, index) => (
                 <div key={index} className="stat-item">
