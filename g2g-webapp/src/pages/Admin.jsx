@@ -115,6 +115,11 @@ const Admin = () => {
     fetchAllData();
   }, []);
 
+  // useEffect to check for ongoing training on component mount
+  useEffect(() => {
+    checkInitialTrainingStatus();
+  }, []);
+
   // Filter functions
   useEffect(() => {
     if (userSearchTerm.trim() === "") {
@@ -651,7 +656,43 @@ const Admin = () => {
     }
   };
 
+  const checkInitialTrainingStatus = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/training-status');
+      const status = await response.json();
+      
+      setTrainingStatus(status);
+      
+      // If training is in progress, start polling
+      if (status.is_training && !statusInterval) {
+        const interval = setInterval(checkTrainingStatus, 2000);
+        setStatusInterval(interval);
+      }
+    } catch (error) {
+      console.error('Failed to check initial training status:', error);
+    }
+  };
+
   const handleTrainModel = async () => {
+    // Check current status first
+    try {
+      const statusResponse = await fetch('http://localhost:5000/training-status');
+      const currentStatus = await statusResponse.json();
+      
+      if (currentStatus.is_training) {
+        // Training is already in progress, just start polling to show progress
+        setTrainingStatus(currentStatus);
+        if (!statusInterval) {
+          const interval = setInterval(checkTrainingStatus, 2000);
+          setStatusInterval(interval);
+        }
+        return;
+      }
+    } catch (error) {
+      console.error('Failed to check training status:', error);
+    }
+
+    // Start new training
     try {
       const response = await fetch('http://localhost:5000/train-model', {
         method: 'POST',
@@ -664,7 +705,7 @@ const Admin = () => {
       
       if (data.success) {
         // Start polling for status updates
-        const interval = setInterval(checkTrainingStatus, 2000); // Check every 2 seconds
+        const interval = setInterval(checkTrainingStatus, 2000);
         setStatusInterval(interval);
       } else {
         setTrainingStatus({
@@ -1234,18 +1275,26 @@ const Admin = () => {
                         <button 
                           className="submit-btn"
                           onClick={handleTrainModel}
-                          disabled={trainingStatus.is_training || fetchLoading}
+                          disabled={fetchLoading}
                         >
                           <FaBrain />
                           <span>
-                            {trainingStatus.is_training ? 'Training...' : 'Train Model'}
+                            {trainingStatus.is_training 
+                              ? 'Training...' 
+                              : trainingStatus.status === 'idle' 
+                                ? 'Train Model' 
+                                : 'Resume Progress View'
+                            }
                           </span>
                         </button>
                         
-                        {/* Training Status Display */}
+                        {/* Enhanced Training Status Display */}
                         {trainingStatus.status !== 'idle' && (
                           <div className="training-status">
-                            <div className={`status-message ${trainingStatus.status === 'completed' ? 'success' : trainingStatus.status === 'failed' ? 'error' : 'info'}`}>
+                            <div className={`status-message ${
+                              trainingStatus.status === 'completed' ? 'success' : 
+                              trainingStatus.status === 'failed' ? 'error' : 'info'
+                            }`}>
                               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <span>{trainingStatus.message}</span>
                                 {trainingStatus.elapsed_time && (
@@ -1266,6 +1315,13 @@ const Admin = () => {
                                   <div style={{ fontSize: '0.8rem', textAlign: 'center', marginTop: '0.3rem' }}>
                                     {trainingStatus.progress}% Complete
                                   </div>
+                                </div>
+                              )}
+                              
+                              {/* Show resume hint when training is in progress but not polling */}
+                              {trainingStatus.is_training && !statusInterval && (
+                                <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', fontStyle: 'italic', opacity: 0.8 }}>
+                                  Click "Resume Progress View" to continue monitoring
                                 </div>
                               )}
                             </div>
