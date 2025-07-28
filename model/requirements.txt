@@ -12,3 +12,7 @@ joblib
 
 # Google Cloud (for fetch.py)
 google-cloud-firestore
+
+# Web API
+flask
+flask-cors

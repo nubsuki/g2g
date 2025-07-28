@@ -13,7 +13,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 8rem 1.5rem 1.5rem 1.5rem;
+    padding: 7rem 1.5rem 1.5rem 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
@@ -495,4 +495,100 @@
     .stat-value {
         font-size: 1.5rem;
     }
+}
+
+/* Loading and disabled states */
+.calculate-btn:disabled {
+  background: #6b7280;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Prompt messages */
+.login-prompt, .specs-prompt {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 12px;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+/* Confidence bar animation */
+.confidence-fill {
+  transition: width 0.5s ease-in-out;
+}
+
+/* Performance rating colors */
+.detail-value {
+  font-weight: 600;
+}
+
+.detail-value:contains("🟢") {
+  color: #10b981;
+}
+
+.detail-value:contains("🟡") {
+  color: #f59e0b;
+}
+
+.detail-value:contains("🟠") {
+  color: #f97316;
+}
+
+.detail-value:contains("🔴") {
+  color: #ef4444;
+}
+
+/* Dual score row styling */
+.dual-score {
+  padding: 0 !important;
+}
+
+.score-pair {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.score-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 4px;
+}
+
+.score-item .detail-label {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-right: 8px;
+  margin-right: 4px;
+}
+
+.score-item .detail-value {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 14px;
 }
