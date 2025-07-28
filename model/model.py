@@ -12,6 +12,7 @@ import joblib
 import warnings
 warnings.filterwarnings('ignore')
 import os
+import shutil
 from google.cloud import firestore
 from datetime import datetime
 
@@ -293,6 +294,22 @@ model_metadata = {
     }
 }
 
+# Create backup before saving new model
+print("\nBacking up existing model files...")
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+backup_dir = os.path.join('backup', timestamp)
+os.makedirs(backup_dir, exist_ok=True)
+
+# List of model files to backup
+model_files = ['fps_predictor.pkl', 'model_metadata.pkl']
+
+# Move old model files to backup if they exist
+for model_file in model_files:
+    if os.path.exists(model_file):
+        shutil.move(model_file, os.path.join(backup_dir, model_file))
+        print(f"Backed up `{model_file}` -> `{backup_dir}`")
+
+# Save new model and metadata
 joblib.dump(pipeline, 'fps_predictor.pkl')
 joblib.dump(model_metadata, 'model_metadata.pkl')
 print("\nModel saved as 'fps_predictor.pkl'")

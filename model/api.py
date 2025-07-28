@@ -6,6 +6,9 @@ import numpy as np
 import warnings
 import subprocess
 import sys
+import threading
+import time
+from datetime import datetime
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
@@ -25,6 +28,17 @@ req = None
 mae = None
 r2 = None
 accuracy_percentage = None
+
+# Training status tracker
+training_status = {
+    'is_training': False,
+    'start_time': None,
+    'status': 'idle',
+    'message': '',
+    'output': '',
+    'error': '',
+    'progress': 0
+}
 
 def load_model_and_data():
     """Load model and data once when server starts"""
@@ -260,10 +274,115 @@ def calculate_prediction_confidence(fps_pred):
     
     return min(confidence, 99.9)
 
-@app.route('/health', methods=['GET'])
-def health_check():
-    """Health check endpoint"""
-    return jsonify({'status': 'healthy', 'message': 'FPS Predictor API is running'})
+def run_training_background():
+    """Background function to run model training"""
+    global training_status
+    
+    try:
+        training_status.update({
+            'status': 'training',
+            'message': 'Model training in progress...',
+            'start_time': datetime.now().isoformat(),
+            'progress': 10
+        })
+        
+        # Run model.py as subprocess
+        process = subprocess.Popen([sys.executable, 'model.py'], 
+                                 stdout=subprocess.PIPE, 
+                                 stderr=subprocess.PIPE, 
+                                 text=True)
+        
+        # Monitor progress (simple progress simulation)
+        progress_steps = [20, 30, 50, 70, 85, 95]
+        step_duration = 120  # 2 minutes per major step
+        
+        for i, progress in enumerate(progress_steps):
+            time.sleep(step_duration)
+            if process.poll() is not None:  # Process finished early
+                break
+            training_status['progress'] = progress
+            training_status['message'] = f'Training in progress... ({progress}%)'
+        
+        # Wait for completion
+        stdout, stderr = process.communicate()
+        
+        if process.returncode == 0:
+            training_status.update({
+                'status': 'completed',
+                'message': 'Model training completed successfully!',
+                'output': stdout,
+                'progress': 100,
+                'is_training': False
+            })
+        else:
+            training_status.update({
+                'status': 'failed',
+                'message': 'Model training failed',
+                'error': stderr,
+                'is_training': False
+            })
+            
+    except Exception as e:
+        training_status.update({
+            'status': 'failed',
+            'message': 'Training failed with exception',
+            'error': str(e),
+            'is_training': False
+        })
+
+@app.route('/train-model', methods=['POST'])
+def train_model():
+    """Start model training in background"""
+    global training_status
+    
+    if training_status['is_training']:
+        return jsonify({
+            'success': False,
+            'error': 'Model training is already in progress'
+        }), 400
+    
+    # Reset status
+    training_status = {
+        'is_training': True,
+        'start_time': datetime.now().isoformat(),
+        'status': 'starting',
+        'message': 'Starting model training...',
+        'output': '',
+        'error': '',
+        'progress': 0
+    }
+    
+    # Start training in background thread
+    thread = threading.Thread(target=run_training_background)
+    thread.daemon = True
+    thread.start()
+    
+    return jsonify({
+        'success': True,
+        'message': 'Model training started in background',
+        'training_id': training_status['start_time']
+    })
+
+@app.route('/training-status', methods=['GET'])
+def get_training_status():
+    """Get current training status"""
+    global training_status
+    
+    # Calculate elapsed time if training
+    elapsed_time = None
+    if training_status['start_time']:
+        start = datetime.fromisoformat(training_status['start_time'])
+        elapsed_time = str(datetime.now() - start).split('.')[0]  # Remove microseconds
+    
+    return jsonify({
+        'status': training_status['status'],
+        'is_training': training_status['is_training'],
+        'message': training_status['message'],
+        'progress': training_status['progress'],
+        'elapsed_time': elapsed_time,
+        'output': training_status['output'][:500] if training_status['output'] else '',  # First 500 chars
+        'error': training_status['error'][:500] if training_status['error'] else ''
+    })
 
 @app.route('/predict', methods=['POST'])
 def predict():

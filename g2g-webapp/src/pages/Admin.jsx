@@ -102,6 +102,14 @@ const Admin = () => {
 
   const [fetchLoading, setFetchLoading] = useState(false);
   const [fetchMessage, setFetchMessage] = useState('');
+  const [trainingStatus, setTrainingStatus] = useState({
+    is_training: false,
+    status: 'idle',
+    message: '',
+    progress: 0,
+    elapsed_time: null
+  });
+  const [statusInterval, setStatusInterval] = useState(null);
 
   useEffect(() => {
     fetchAllData();
@@ -643,6 +651,67 @@ const Admin = () => {
     }
   };
 
+  const handleTrainModel = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/train-model', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Start polling for status updates
+        const interval = setInterval(checkTrainingStatus, 2000); // Check every 2 seconds
+        setStatusInterval(interval);
+      } else {
+        setTrainingStatus({
+          is_training: false,
+          status: 'failed',
+          message: `Error: ${data.error}`,
+          progress: 0,
+          elapsed_time: null
+        });
+      }
+    } catch (error) {
+      setTrainingStatus({
+        is_training: false,
+        status: 'failed',
+        message: `Failed to start training: ${error.message}`,
+        progress: 0,
+        elapsed_time: null
+      });
+    }
+  };
+
+  const checkTrainingStatus = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/training-status');
+      const status = await response.json();
+      
+      setTrainingStatus(status);
+      
+      // Stop polling when training is complete
+      if (!status.is_training && statusInterval) {
+        clearInterval(statusInterval);
+        setStatusInterval(null);
+      }
+    } catch (error) {
+      console.error('Failed to check training status:', error);
+    }
+  };
+
+  // Cleanup interval on component unmount
+  useEffect(() => {
+    return () => {
+      if (statusInterval) {
+        clearInterval(statusInterval);
+      }
+    };
+  }, [statusInterval]);
+
   const tabs = [
     { id: "users", label: "Users", icon: <FaUsers /> },
     { id: "games", label: "Add Games", icon: <FaGamepad /> },
@@ -1140,7 +1209,7 @@ const Admin = () => {
                         <button 
                           className="submit-btn" 
                           onClick={handleFetchData}
-                          disabled={fetchLoading}
+                          disabled={fetchLoading || trainingStatus.is_training}
                         >
                           <FaBrain />
                           <span>{fetchLoading ? 'Fetching...' : 'Fetch Data'}</span>
@@ -1162,10 +1231,46 @@ const Admin = () => {
                         <p style={{ fontSize: '0.85rem', color: 'rgba(200, 182, 255, 0.7)', margin: '0.5rem 0 1rem 0' }}>
                           Train the model with updated data to improve predictions
                         </p>
-                        <button className="submit-btn">
+                        <button 
+                          className="submit-btn"
+                          onClick={handleTrainModel}
+                          disabled={trainingStatus.is_training || fetchLoading}
+                        >
                           <FaBrain />
-                          <span>Train Model</span>
+                          <span>
+                            {trainingStatus.is_training ? 'Training...' : 'Train Model'}
+                          </span>
                         </button>
+                        
+                        {/* Training Status Display */}
+                        {trainingStatus.status !== 'idle' && (
+                          <div className="training-status">
+                            <div className={`status-message ${trainingStatus.status === 'completed' ? 'success' : trainingStatus.status === 'failed' ? 'error' : 'info'}`}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span>{trainingStatus.message}</span>
+                                {trainingStatus.elapsed_time && (
+                                  <span style={{ fontSize: '0.8rem', opacity: 0.8 }}>
+                                    {trainingStatus.elapsed_time}
+                                  </span>
+                                )}
+                              </div>
+                              
+                              {trainingStatus.is_training && (
+                                <div style={{ marginTop: '0.5rem' }}>
+                                  <div className="progress-bar">
+                                    <div 
+                                      className="progress-fill" 
+                                      style={{ width: `${trainingStatus.progress}%` }}
+                                    ></div>
+                                  </div>
+                                  <div style={{ fontSize: '0.8rem', textAlign: 'center', marginTop: '0.3rem' }}>
+                                    {trainingStatus.progress}% Complete
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
