@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaRegUser, FaUsers, FaComments, FaPaperPlane } from "react-icons/fa";
+import { GiRank1, GiRank2, GiRank3 } from "react-icons/gi";
 import { 
   collection, 
   addDoc, 
@@ -25,6 +26,9 @@ const Community = () => {
   const [loading, setLoading] = useState(true);
   const [onlineUsersCount, setOnlineUsersCount] = useState(0);
   const [todayMessagesCount, setTodayMessagesCount] = useState(0);
+  const [contributors, setContributors] = useState([]);
+  const [loadingContributors, setLoadingContributors] = useState(true);
+  const [registeredUsersCount, setRegisteredUsersCount] = useState(0);
   const messagesEndRef = useRef(null);
   const { currentUser, userProfile } = useAuth();
 
@@ -36,10 +40,7 @@ const Community = () => {
     scrollToBottom();
   }, [messages]);
 
-  /**
-   * Maintains performance by limiting chat history to 1000 messages
-   * Prevents database costs and UI lag from unlimited message accumulation
-   */
+  // Keep chat history under 1000 messages for performance
   const cleanupOldMessages = async () => {
     try {
       const allMessagesQuery = query(collection(db, 'chatMessages'));
@@ -82,11 +83,7 @@ const Community = () => {
     }
   };
 
-  /**
-   * Implements real-time online presence tracking
-   * Updates user status based on tab visibility, focus, and browser events
-   * Uses heartbeat mechanism to maintain accurate online counts
-   */
+  // Track user online status with heartbeat
   useEffect(() => {
     if (!currentUser) return;
 
@@ -133,7 +130,7 @@ const Community = () => {
     window.addEventListener('focus', handleFocus);
     window.addEventListener('blur', handleBlur);
 
-    // Periodic heartbeat to maintain accurate presence status
+    // Update presence every 30 seconds
     const heartbeatInterval = setInterval(() => {
       if (!document.hidden) {
         setUserOnline();
@@ -162,10 +159,7 @@ const Community = () => {
     return () => unsubscribe();
   }, []);
 
-  /**
-   * Real-time message synchronization using Firestore snapshots
-   * Messages are ordered chronologically for natural chat flow
-   */
+  // Listen for real-time chat messages
   useEffect(() => {
     const messagesQuery = query(
       collection(db, 'chatMessages'),
@@ -219,6 +213,112 @@ const Community = () => {
     return count.toString();
   };
 
+  // Function to calculate rank based on submission count
+  const calculateRank = (count) => {
+    if (count >= 1000) return "gold";
+    if (count >= 100) return "silver";
+    return "bronze";
+  };
+
+  // Function to get rank icon
+  const getRankIcon = (rank) => {
+    switch (rank) {
+      case "gold":
+        return <GiRank3 />;
+      case "silver":
+        return <GiRank2 />;
+      case "bronze":
+      default:
+        return <GiRank1 />;
+    }
+  };
+
+  // Function to get rank priority for sorting
+  const getRankPriority = (rank) => {
+    switch (rank) {
+      case "gold":
+        return 3;
+      case "silver":
+        return 2;
+      case "bronze":
+      default:
+        return 1;
+    }
+  };
+
+  // Get contributors with submissions
+  const fetchContributors = async () => {
+    try {
+      setLoadingContributors(true);
+      
+      const usersQuery = query(
+        collection(db, "users"),
+        where("benchmarker", "==", "yes")
+      );
+      
+      const usersSnapshot = await getDocs(usersQuery);
+      const contributorsData = [];
+      
+      for (const userDoc of usersSnapshot.docs) {
+        const userData = userDoc.data();
+        
+        // Check if user has any submissions in users_benchmarks
+        const submissionsQuery = query(
+          collection(db, "users_benchmarks"),
+          where("userId", "==", userDoc.id)
+        );
+        
+        const submissionsSnapshot = await getDocs(submissionsQuery);
+        
+        // Only include contributors who have submissions
+        if (submissionsSnapshot.size > 0) {
+          const submissionCount = submissionsSnapshot.size;
+          const rank = calculateRank(submissionCount);
+          
+          contributorsData.push({
+            id: userDoc.id,
+            username: userData.username || userData.email?.split('@')[0] || 'Anonymous',
+            rank: rank,
+            submissionCount: submissionCount,
+            rankPriority: getRankPriority(rank)
+          });
+        }
+      }
+      
+      // Sort by rank priority (gold first), then by submission count
+      contributorsData.sort((a, b) => {
+        if (a.rankPriority !== b.rankPriority) {
+          return b.rankPriority - a.rankPriority;
+        }
+        return b.submissionCount - a.submissionCount;
+      });
+      
+      setContributors(contributorsData);
+    } catch (error) {
+      console.error("Error fetching contributors:", error);
+    } finally {
+      setLoadingContributors(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchContributors();
+  }, []);
+
+  // fetch total registered users count
+  const fetchRegisteredUsersCount = async () => {
+    try {
+      const usersSnapshot = await getDocs(collection(db, "users"));
+      setRegisteredUsersCount(usersSnapshot.size);
+    } catch (error) {
+      console.error("Error fetching registered users count:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRegisteredUsersCount();
+  }, []);
+
   const handleSendMessage = async () => {
     if (!message.trim()) return;
     
@@ -237,7 +337,7 @@ const Community = () => {
       
       setMessage("");
       
-      // Trigger background cleanup to maintain performance
+      // Clean up old messages after sending
       setTimeout(cleanupOldMessages, 1000);
       
     } catch (error) {
@@ -321,55 +421,35 @@ const Community = () => {
             </div>
 
             <div className="contributors-list">
-              <div className="contributor-item">
-                <div className="contributor-avatar">
-                  <FaRegUser />
+              {loadingContributors ? (
+                <div className="loading-contributors">
+                  <div className="contributor-skeleton">Loading contributors...</div>
                 </div>
-                <div className="contributor-info">
-                  <div className="contributor-name">GameMaster</div>
+              ) : contributors.length === 0 ? (
+                <div className="no-contributors">
+                  <div className="empty-state">
+                    <FaUsers size={32} />
+                    <p>No active contributors yet</p>
+                  </div>
                 </div>
-                <div className="contributor-badge">🏆</div>
-              </div>
-
-              <div className="contributor-item">
-                <div className="contributor-avatar">
-                  <FaRegUser />
-                </div>
-                <div className="contributor-info">
-                  <div className="contributor-name">TechGuru</div>
-                </div>
-                <div className="contributor-badge">⚡</div>
-              </div>
-
-              <div className="contributor-item">
-                <div className="contributor-avatar">
-                  <FaRegUser />
-                </div>
-                <div className="contributor-info">
-                  <div className="contributor-name">BenchmarkPro</div>
-                </div>
-                <div className="contributor-badge">📊</div>
-              </div>
-
-              <div className="contributor-item">
-                <div className="contributor-avatar">
-                  <FaRegUser />
-                </div>
-                <div className="contributor-info">
-                  <div className="contributor-name">OptimizeThis</div>
-                </div>
-                <div className="contributor-badge">🚀</div>
-              </div>
-
-              <div className="contributor-item">
-                <div className="contributor-avatar">
-                  <FaRegUser />
-                </div>
-                <div className="contributor-info">
-                  <div className="contributor-name">FrameSeeker</div>
-                </div>
-                <div className="contributor-badge">🎮</div>
-              </div>
+              ) : (
+                contributors.map((contributor) => (
+                  <div key={contributor.id} className="contributor-item">
+                    <div className="contributor-avatar">
+                      <FaRegUser />
+                    </div>
+                    <div className="contributor-info">
+                      <div className="contributor-name">{contributor.username}</div>
+                      <div className="contributor-stats">
+                        {contributor.submissionCount} submissions
+                      </div>
+                    </div>
+                    <div className="contributor-badge">
+                      {getRankIcon(contributor.rank)}
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
 
             <div className="contributors-info">
@@ -379,6 +459,20 @@ const Community = () => {
                 <li>Help test new hardware</li>
                 <li>Help to improve accuracy</li>
               </ul>
+              <div className="rank-info">
+                <h4>Contributor Ranks</h4>
+                <div className="rank-legend">
+                  <div className="rank-item">
+                    <GiRank1 /> Bronze: 1-99 submissions
+                  </div>
+                  <div className="rank-item">
+                    <GiRank2 /> Silver: 100-999 submissions
+                  </div>
+                  <div className="rank-item">
+                    <GiRank3 /> Gold: 1000+ submissions
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -393,8 +487,8 @@ const Community = () => {
                   <FaUsers />
                 </div>
                 <div className="stat-content">
-                  <div className="stat-number">1,247</div>
-                  <div className="stat-label">Active Members</div>
+                  <div className="stat-number">{formatCount(registeredUsersCount)}</div>
+                  <div className="stat-label">Registered Members</div>
                 </div>
               </div>
 
@@ -416,6 +510,9 @@ const Community = () => {
                 <li>Stay on topic about gaming</li>
                 <li>No spam or excessive promotion</li>
                 <li>Help others learn and improve</li>
+                <li>Maintain a welcoming environment free from discriminatory language or harassment</li>
+                <li>Keep discussions relevant to gaming and technology</li>
+                <li>Violation of community guidelines may result in temporary or permanent account suspension</li>
               </ul>
             </div>
           </div>

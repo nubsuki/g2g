@@ -18,7 +18,7 @@
   width: 100%;
 }
 
-/* Main Content - Three Column Layout */
+/* Main Content */
 .community-content {
   width: 100%;
   display: grid;
@@ -81,7 +81,7 @@
 }
 
 .messages-container {
-  height: 400px;
+  height: 600px;
   overflow-y: auto;
   padding: 1rem;
   display: flex;
