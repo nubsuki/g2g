@@ -1,69 +1,209 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser, FaUsers, FaComments, FaPaperPlane } from "react-icons/fa";
 import "./Community.css";
 
 const Community = () => {
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([
+    { id: 1, user: "GamerPro", text: "Anyone know good budget GPU recommendations?", time: "2 min ago" },
+    { id: 2, user: "TechEnthusiast", text: "RTX 4060 is pretty solid for 1080p gaming!", time: "5 min ago" },
+    { id: 3, user: "PCBuilder", text: "Check out the AMD RX 7600 too, great value", time: "8 min ago" },
+    { id: 4, user: "GameOptimizer", text: "What's your budget and target resolution?", time: "12 min ago" },
+    { id: 5, user: "FrameChaser", text: "Just upgraded to RTX 4070, getting amazing performance!", time: "15 min ago" },
+  ]);
+
+  const handleSendMessage = () => {
+    if (message.trim()) {
+      setMessages(prev => [{
+        id: prev.length + 1,
+        user: "You",
+        text: message,
+        time: "now"
+      }, ...prev]);
+      setMessage("");
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
   return (
     <div className="community-page">
-      <div className="chat-container">
-        <div className="container">
-          <div className="nav-bar">
-            <a>Global Chat</a>
-            <div className="close">
-              <div className="line one"></div>
-              <div className="line two"></div>
-            </div>
-          </div>
-          <div className="messages-area">
-            <div className="message one"></div>
-            <div className="message two"></div>
-            <div className="message three"></div>
-            <div className="message four"></div>
-            <div className="message five"></div>
-            <div className="message six"></div>
-          </div>
-          <div className="sender-area">
-            <div className="input-place">
-              <input
-                placeholder="Send a message."
-                className="send-input"
-                type="text"
-              />
-              <div className="send">
-                <svg
-                  className="send-icon"
-                  version="1.1"
-                  id="Capa_1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 512 512"
-                  style={{ enableBackground: "new 0 0 512 512" }}
-                  xmlSpace="preserve"
-                >
-                  <g>
-                    <g>
-                      <path
-                        fill="#6B6C7B"
-                        d="M481.508,210.336L68.414,38.926c-17.403-7.222-37.064-4.045-51.309,8.287C2.86,59.547-3.098,78.551,1.558,96.808 L38.327,241h180.026c8.284,0,15.001,6.716,15.001,15.001c0,8.284-6.716,15.001-15.001,15.001H38.327L1.558,415.193 c-4.656,18.258,1.301,37.262,15.547,49.595c14.274,12.357,33.937,15.495,51.31,8.287l413.094-171.409 C500.317,293.862,512,276.364,512,256.001C512,235.638,500.317,218.139,481.508,210.336z"
-                      ></path>
-                    </g>
-                  </g>
-                </svg>
+      <div className="community-container">
+        {/* Main Content - Three Column Layout */}
+        <div className="community-content">
+          {/* Chat Section */}
+          <div className="chat-section">
+            <div className="chat-header">
+              <div className="chat-title">
+                <FaComments />
+                <span>Live Chat</span>
+              </div>
+              <div className="online-indicator">
+                <div className="online-dot"></div>
+                <span>234 online</span>
               </div>
             </div>
+
+            <div className="messages-container">
+              {messages.map((msg) => (
+                <div key={msg.id} className="message-item">
+                  <div className="message-avatar">
+                    <FaRegUser />
+                  </div>
+                  <div className="message-content">
+                    <div className="message-header">
+                      <span className="message-user">{msg.user}</span>
+                      <span className="message-time">{msg.time}</span>
+                    </div>
+                    <div className="message-text">{msg.text}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="message-input-container">
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Type your message..."
+                className="message-input"
+              />
+              <button 
+                onClick={handleSendMessage}
+                className="send-button"
+                disabled={!message.trim()}
+              >
+                <FaPaperPlane />
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="community-status">
-        <div className="status-item">
-          <div className="status-icon"><FaRegUser /></div>
-          <div className="status-text">Online</div>
-        </div>
-        <div className="status-item">
-          <div className="status-icon"></div>
-        <div className="status-text">Contributers</div>
+
+          {/* Contributors Section */}
+          <div className="contributors-section">
+            <div className="contributors-header">
+              <div className="contributors-title">
+                <FaUsers />
+                <span>Contributors</span>
+              </div>
+              <div className="contributors-count">12 active</div>
+            </div>
+
+            <div className="contributors-list">
+              <div className="contributor-item">
+                <div className="contributor-avatar">
+                  <FaRegUser />
+                </div>
+                <div className="contributor-info">
+                  <div className="contributor-name">GameMaster</div>
+                </div>
+                <div className="contributor-badge">🏆</div>
+              </div>
+
+              <div className="contributor-item">
+                <div className="contributor-avatar">
+                  <FaRegUser />
+                </div>
+                <div className="contributor-info">
+                  <div className="contributor-name">TechGuru</div>
+                </div>
+                <div className="contributor-badge">⚡</div>
+              </div>
+
+              <div className="contributor-item">
+                <div className="contributor-avatar">
+                  <FaRegUser />
+                </div>
+                <div className="contributor-info">
+                  <div className="contributor-name">BenchmarkPro</div>
+                </div>
+                <div className="contributor-badge">📊</div>
+              </div>
+
+              <div className="contributor-item">
+                <div className="contributor-avatar">
+                  <FaRegUser />
+                </div>
+                <div className="contributor-info">
+                  <div className="contributor-name">OptimizeThis</div>
+                </div>
+                <div className="contributor-badge">🚀</div>
+              </div>
+
+              <div className="contributor-item">
+                <div className="contributor-avatar">
+                  <FaRegUser />
+                </div>
+                <div className="contributor-info">
+                  <div className="contributor-name">FrameSeeker</div>
+                </div>
+                <div className="contributor-badge">🎮</div>
+              </div>
+            </div>
+
+            <div className="contributors-info">
+              <h4>How to Contribute</h4>
+              <ul>
+                <li>Share your benchmark results</li>
+                <li>Help test new hardware</li>
+                <li>Help to improve accuracy</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Stats Sidebar */}
+          <div className="community-stats">
+            <div className="stats-header">
+              <h3>Community Stats</h3>
+            </div>
+            
+            <div className="stats-grid">
+              <div className="stat-card">
+                <div className="stat-icon">
+                  <FaUsers />
+                </div>
+                <div className="stat-content">
+                  <div className="stat-number">1,247</div>
+                  <div className="stat-label">Active Members</div>
+                </div>
+              </div>
+
+              <div className="stat-card">
+                <div className="stat-icon online">
+                  <FaRegUser />
+                </div>
+                <div className="stat-content">
+                  <div className="stat-number">234</div>
+                  <div className="stat-label">Online Now</div>
+                </div>
+              </div>
+
+              <div className="stat-card">
+                <div className="stat-icon">
+                  <FaComments />
+                </div>
+                <div className="stat-content">
+                  <div className="stat-number">15.2k</div>
+                  <div className="stat-label">Messages Today</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="community-info">
+              <h4>Community Guidelines</h4>
+              <ul>
+                <li>Be respectful to all members</li>
+                <li>Stay on topic about gaming</li>
+                <li>No spam or excessive promotion</li>
+                <li>Help others learn and improve</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
