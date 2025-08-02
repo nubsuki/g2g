@@ -352,7 +352,7 @@ def run_training_background():
         })
 
 @app.route('/train-model', methods=['POST'])
-@limiter.limit("1 per hour")
+@limiter.limit("1 per day")
 def train_model():
     """Start model training in background"""
     global training_status
@@ -386,7 +386,7 @@ def train_model():
     })
 
 @app.route('/training-status', methods=['GET'])
-@limiter.limit("30 per minute")
+@limiter.limit("30 per day")
 def get_training_status():
     """Get current training status"""
     global training_status
@@ -467,7 +467,7 @@ def predict():
         return jsonify({'success': False, 'error': 'Internal server error'}), 500
 
 @app.route('/fetch-data', methods=['POST'])
-@limiter.limit("1 per hour")
+@limiter.limit("1 per day")
 def fetch_data():
     """Trigger fetch.py to fetch data from Firestore"""
     try:
