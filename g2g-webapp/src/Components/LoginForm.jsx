@@ -21,7 +21,6 @@ const LoginForm = ({ onClose }) => {
     setError('');
     setSuccessMessage('');
     setIsForgotPassword(false);
-    // Clear fields when switching forms
     setEmail('');
     setPassword('');
     setUsername('');
@@ -45,6 +44,7 @@ const LoginForm = ({ onClose }) => {
     setSuccessMessage('');
   };
 
+  // Close modal when clicking outside the form
   const handleBackdropClick = (e) => {
     if (e.target.className === 'backdrop') {
       onClose();
@@ -54,7 +54,6 @@ const LoginForm = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Handle forgot password submission
     if (isForgotPassword) {
       try {
         setError('');
@@ -68,12 +67,11 @@ const LoginForm = ({ onClose }) => {
       return;
     }
 
-    // Regular login/signup validation
+    // Enforce minimum security requirements
     if (password.length < 6) {
       return setError('Password must be at least 6 characters');
     }
 
-    // Validate username for registration
     if (!isLogin && username.length < 3) {
       return setError('Username must be at least 3 characters');
     }
@@ -88,7 +86,7 @@ const LoginForm = ({ onClose }) => {
         await signup(email, password, username);
       }
       
-      onClose(); // Close modal on successful auth
+      onClose();
     } catch (error) {
       setError('Failed to ' + (isLogin ? 'sign in' : 'create account'));
       console.log(error);
@@ -101,7 +99,6 @@ const LoginForm = ({ onClose }) => {
     <div className='backdrop' onClick={handleBackdropClick}>
       <div className='wrapper'>
         {isForgotPassword ? (
-          // Forgot Password Form
           <form onSubmit={handleSubmit}>
             <div>
               <h1>Reset Password</h1>
@@ -131,7 +128,6 @@ const LoginForm = ({ onClose }) => {
             </div>
           </form>
         ) : isLogin ? (
-          // Login Form
           <form onSubmit={handleSubmit}>
             <div>
               <h1>Login</h1>
@@ -169,7 +165,6 @@ const LoginForm = ({ onClose }) => {
             </div>
           </form>
         ) : (
-          // Register Form
           <form onSubmit={handleSubmit}>
             <div>
               <h1>Register</h1>

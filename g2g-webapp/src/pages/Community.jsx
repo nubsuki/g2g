@@ -9,7 +9,11 @@ import {
   serverTimestamp,
   doc,
   setDoc,
-  deleteDoc
+  deleteDoc,
+  getDocs,
+  where,
+  limit,
+  Timestamp
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
@@ -20,10 +24,10 @@ const Community = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [onlineUsersCount, setOnlineUsersCount] = useState(0);
+  const [todayMessagesCount, setTodayMessagesCount] = useState(0);
   const messagesEndRef = useRef(null);
   const { currentUser, userProfile } = useAuth();
 
-  // Scroll to bottom when new messages arrive
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -32,7 +36,57 @@ const Community = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Track user's online status
+  /**
+   * Maintains performance by limiting chat history to 1000 messages
+   * Prevents database costs and UI lag from unlimited message accumulation
+   */
+  const cleanupOldMessages = async () => {
+    try {
+      const allMessagesQuery = query(collection(db, 'chatMessages'));
+      const allMessagesSnapshot = await getDocs(allMessagesQuery);
+      
+      if (allMessagesSnapshot.size > 1000) {
+        const oldestMessagesQuery = query(
+          collection(db, 'chatMessages'),
+          orderBy('timestamp', 'asc'),
+          limit(allMessagesSnapshot.size - 1000)
+        );
+        
+        const oldestMessagesSnapshot = await getDocs(oldestMessagesQuery);
+        const deletePromises = oldestMessagesSnapshot.docs.map(doc => deleteDoc(doc.ref));
+        await Promise.all(deletePromises);
+        
+        console.log(`Cleaned up ${oldestMessagesSnapshot.size} old messages`);
+      }
+    } catch (error) {
+      console.error("Error cleaning up old messages:", error);
+    }
+  };
+
+  const countTodayMessages = async () => {
+    try {
+      const today = new Date();
+      const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+
+      const todayMessagesQuery = query(
+        collection(db, 'chatMessages'),
+        where('timestamp', '>=', Timestamp.fromDate(startOfToday)),
+        where('timestamp', '<', Timestamp.fromDate(endOfToday))
+      );
+
+      const todayMessagesSnapshot = await getDocs(todayMessagesQuery);
+      setTodayMessagesCount(todayMessagesSnapshot.size);
+    } catch (error) {
+      console.error("Error counting today's messages:", error);
+    }
+  };
+
+  /**
+   * Implements real-time online presence tracking
+   * Updates user status based on tab visibility, focus, and browser events
+   * Uses heartbeat mechanism to maintain accurate online counts
+   */
   useEffect(() => {
     if (!currentUser) return;
 
@@ -57,10 +111,8 @@ const Community = () => {
       }
     };
 
-    // Set user as online when component mounts
     setUserOnline();
 
-    // Handle visibility change (tab switching)
     const handleVisibilityChange = () => {
       if (document.hidden) {
         setUserOffline();
@@ -69,29 +121,25 @@ const Community = () => {
       }
     };
 
-    // Handle page unload
     const handleBeforeUnload = () => {
       setUserOffline();
     };
 
-    // Handle focus/blur events
     const handleFocus = () => setUserOnline();
     const handleBlur = () => setUserOffline();
 
-    // Add event listeners
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('focus', handleFocus);
     window.addEventListener('blur', handleBlur);
 
-    // Heartbeat to keep user status updated
+    // Periodic heartbeat to maintain accurate presence status
     const heartbeatInterval = setInterval(() => {
       if (!document.hidden) {
         setUserOnline();
       }
-    }, 30000); // Update every 30 seconds
+    }, 30000);
 
-    // Cleanup function
     return () => {
       setUserOffline();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -102,7 +150,6 @@ const Community = () => {
     };
   }, [currentUser, userProfile]);
 
-  // Listen to online users count
   useEffect(() => {
     const onlineUsersQuery = collection(db, 'onlineUsers');
 
@@ -115,11 +162,14 @@ const Community = () => {
     return () => unsubscribe();
   }, []);
 
-  // Real-time listener for messages
+  /**
+   * Real-time message synchronization using Firestore snapshots
+   * Messages are ordered chronologically for natural chat flow
+   */
   useEffect(() => {
     const messagesQuery = query(
       collection(db, 'chatMessages'),
-      orderBy('timestamp', 'desc')
+      orderBy('timestamp', 'asc')
     );
 
     const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
@@ -137,6 +187,8 @@ const Community = () => {
       });
       setMessages(messageList);
       setLoading(false);
+      
+      countTodayMessages();
     }, (error) => {
       console.error("Error fetching messages:", error);
       setLoading(false);
@@ -145,7 +197,6 @@ const Community = () => {
     return () => unsubscribe();
   }, []);
 
-  // Format timestamp for display
   const formatTime = (timestamp) => {
     if (!timestamp) return 'now';
     
@@ -158,6 +209,14 @@ const Community = () => {
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
     
     return messageTime.toLocaleDateString();
+  };
+
+  // Format large numbers for better UI display
+  const formatCount = (count) => {
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1) + 'k';
+    }
+    return count.toString();
   };
 
   const handleSendMessage = async () => {
@@ -177,6 +236,10 @@ const Community = () => {
       });
       
       setMessage("");
+      
+      // Trigger background cleanup to maintain performance
+      setTimeout(cleanupOldMessages, 1000);
+      
     } catch (error) {
       console.error("Error sending message:", error);
       alert('Failed to send message. Please try again.');
@@ -192,9 +255,7 @@ const Community = () => {
   return (
     <div className="community-page">
       <div className="community-container">
-        {/* Main Content - Three Column Layout */}
         <div className="community-content">
-          {/* Chat Section */}
           <div className="chat-section">
             <div className="chat-header">
               <div className="chat-title">
@@ -251,7 +312,6 @@ const Community = () => {
             </div>
           </div>
 
-          {/* Contributors Section */}
           <div className="contributors-section">
             <div className="contributors-header">
               <div className="contributors-title">
@@ -323,7 +383,6 @@ const Community = () => {
             </div>
           </div>
 
-          {/* Stats Sidebar */}
           <div className="community-stats">
             <div className="stats-header">
               <h3>Community Stats</h3>
@@ -339,12 +398,13 @@ const Community = () => {
                   <div className="stat-label">Active Members</div>
                 </div>
               </div>
+
               <div className="stat-card">
                 <div className="stat-icon">
                   <FaComments />
                 </div>
                 <div className="stat-content">
-                  <div className="stat-number">15.2k</div>
+                  <div className="stat-number">{formatCount(todayMessagesCount)}</div>
                   <div className="stat-label">Messages Today</div>
                 </div>
               </div>

@@ -11,7 +11,6 @@ const Navbar = ({ onLoginClick }) => {
     onLoginClick();
   };
 
-  // Check if user is admin
   const isAdmin = currentUser && userProfile?.role === 'admin';
 
   return (
@@ -19,7 +18,9 @@ const Navbar = ({ onLoginClick }) => {
       <Link to="/" className='logo'>G2G</Link>
       <nav className='navbar'>
         <Link to="/">Home</Link>
+        {/* FPS predictor requires authentication for personalized results */}
         {currentUser && <Link to="/fps">FPS</Link>}
+        {/* Admin panel only visible to users with admin role */}
         {isAdmin && <Link to="/admin">Admin Panel</Link>}
         <Link to="/community">Community</Link>
         {currentUser ? (

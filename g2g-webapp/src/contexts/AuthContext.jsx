@@ -20,14 +20,16 @@ export function AuthProvider({ children }) {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check if username already exists
   async function checkUsernameExists(username) {
     const q = query(collection(db, 'users'), where('username', '==', username));
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
   }
 
-  // Create user profile in Firestore
+  /**
+   * Creates a user profile document in Firestore with default role and metadata
+   * This separates authentication data from user profile data for better data organization
+   */
   async function createUserProfile(user, additionalData = {}) {
     if (!user) return;
     
@@ -42,7 +44,7 @@ export function AuthProvider({ children }) {
         await setDoc(userRef, {
           uid,
           email,
-          role: 'user',
+          role: 'user', // Default role, can be upgraded to 'admin'
           createdAt,
           ...additionalData
         });
@@ -54,7 +56,6 @@ export function AuthProvider({ children }) {
     return userRef;
   }
 
-  // Get user profile from Firestore
   async function getUserProfile(user) {
     if (!user) return null;
     
@@ -73,15 +74,13 @@ export function AuthProvider({ children }) {
   }
 
   async function signup(email, password, username) {
-    // Check if username already exists
+    // Ensure username uniqueness across the platform
     const usernameExists = await checkUsernameExists(username);
     if (usernameExists) {
       throw new Error('Username already exists');
     }
 
     const result = await createUserWithEmailAndPassword(auth, email, password);
-    
-    // Create user profile with username and default role
     await createUserProfile(result.user, { username });
     return result;
   }
@@ -95,7 +94,6 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
-  // Password reset function
   function resetPassword(email) {
     return sendPasswordResetEmail(auth, email);
   }
@@ -105,7 +103,7 @@ export function AuthProvider({ children }) {
       setCurrentUser(user);
       
       if (user) {
-        // Get user profile when user signs in
+        // Load user profile data to access role and username
         const profile = await getUserProfile(user);
         setUserProfile(profile);
       } else {
