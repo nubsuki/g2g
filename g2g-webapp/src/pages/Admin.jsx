@@ -3,7 +3,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
 import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy, where, getDoc, updateDoc, arrayUnion, setDoc, arrayRemove } from "firebase/firestore";
 import "./Admin.css";
-import { FaUsers, FaGamepad, FaMicrochip, FaPlus, FaTrash, FaEdit, FaSearch, FaFilter, FaLock, FaCheck, FaClock,FaBrain } from "react-icons/fa";
+import { FaUsers, FaGamepad, FaMicrochip, FaPlus, FaTrash, FaEdit, FaSearch, FaFilter, FaLock, FaCheck, FaClock, FaBrain, FaCircleNotch} from "react-icons/fa";
+import { FaRankingStar } from "react-icons/fa6";
 import { BsGpuCard } from "react-icons/bs";
 
 const Admin = () => {
@@ -111,6 +112,11 @@ const Admin = () => {
     elapsed_time: null
   });
   const [statusInterval, setStatusInterval] = useState(null);
+  const [userBenchmarks, setUserBenchmarks] = useState([]);
+  const [filteredBenchmarks, setFilteredBenchmarks] = useState([]);
+  const [benchmarkSearchTerm, setBenchmarkSearchTerm] = useState("");
+  const [benchmarkStatusFilter, setBenchmarkStatusFilter] = useState("all");
+  const [updatingBenchmarks, setUpdatingBenchmarks] = useState(new Set());
 
   useEffect(() => {
     fetchAllData();
@@ -169,6 +175,27 @@ const Admin = () => {
     }
   }, [displayGpus, gpuSearchTerm]);
 
+  useEffect(() => {
+    let filtered = userBenchmarks;
+    
+    // Filter by search term
+    if (benchmarkSearchTerm.trim() !== "") {
+      filtered = filtered.filter(benchmark => 
+        benchmark.Game_Name?.toLowerCase().includes(benchmarkSearchTerm.toLowerCase()) ||
+        benchmark.userName?.toLowerCase().includes(benchmarkSearchTerm.toLowerCase()) ||
+        benchmark.CPU?.toLowerCase().includes(benchmarkSearchTerm.toLowerCase()) ||
+        benchmark.GPU?.toLowerCase().includes(benchmarkSearchTerm.toLowerCase())
+      );
+    }
+    
+    // Filter by status
+    if (benchmarkStatusFilter !== "all") {
+      filtered = filtered.filter(benchmark => benchmark.status === benchmarkStatusFilter);
+    }
+    
+    setFilteredBenchmarks(filtered);
+  }, [userBenchmarks, benchmarkSearchTerm, benchmarkStatusFilter]);
+
   // Click outside handler
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -193,7 +220,8 @@ const Admin = () => {
         fetchCPUs(),
         fetchGPUs(),
         fetchCpuNames(),
-        fetchGpuNames()
+        fetchGpuNames(),
+        fetchUserBenchmarks()
       ]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -325,6 +353,20 @@ const Admin = () => {
       setGpus(gpusData);
     } catch (error) {
       console.error("Error fetching GPUs:", error);
+    }
+  };
+
+  const fetchUserBenchmarks = async () => {
+    try {
+      const querySnapshot = await getDocs(query(collection(db, "users_benchmarks"), orderBy("submittedAt", "desc")));
+      const benchmarksData = [];
+      querySnapshot.forEach((doc) => {
+        benchmarksData.push({ id: doc.id, ...doc.data() });
+      });
+      setUserBenchmarks(benchmarksData);
+      setFilteredBenchmarks(benchmarksData);
+    } catch (error) {
+      console.error("Error fetching user benchmarks:", error);
     }
   };
 
@@ -747,6 +789,70 @@ const Admin = () => {
     }
   };
 
+  // Updating benchmark status
+  const updateBenchmarkStatus = async (benchmarkId, newStatus) => {
+    if (!window.confirm(`Are you sure you want to ${newStatus} this benchmark submission?`)) return;
+    
+    setUpdatingBenchmarks(prev => new Set(prev).add(benchmarkId));
+    try {
+      await updateDoc(doc(db, "users_benchmarks", benchmarkId), {
+        status: newStatus,
+        reviewedAt: new Date()
+      });
+      
+      // Update local state
+      setUserBenchmarks(prev => 
+        prev.map(benchmark => 
+          benchmark.id === benchmarkId 
+            ? { ...benchmark, status: newStatus, reviewedAt: new Date() }
+            : benchmark
+        )
+      );
+      
+      alert(`Benchmark ${newStatus} successfully!`);
+    } catch (error) {
+      console.error(`Error ${newStatus} benchmark:`, error);
+      alert(`Error ${newStatus} benchmark: ${error.message}`);
+    } finally {
+      setUpdatingBenchmarks(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(benchmarkId);
+        return newSet;
+      });
+    }
+  };
+
+  // Deleting benchmark submissions
+  const deleteBenchmarkSubmission = async (benchmarkId) => {
+    if (!window.confirm("Are you sure you want to delete this benchmark submission? This action cannot be undone.")) return;
+    
+    setUpdatingBenchmarks(prev => new Set(prev).add(benchmarkId));
+    try {
+      await deleteDoc(doc(db, "users_benchmarks", benchmarkId));
+      
+      // Update local state
+      setUserBenchmarks(prev => prev.filter(benchmark => benchmark.id !== benchmarkId));
+      
+      alert("Benchmark submission deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting benchmark:", error);
+      alert("Error deleting benchmark: " + error.message);
+    } finally {
+      setUpdatingBenchmarks(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(benchmarkId);
+        return newSet;
+      });
+    }
+  };
+
+  // Formatting dates
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "N/A";
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+  };
+
   // Cleanup interval on component unmount
   useEffect(() => {
     return () => {
@@ -761,6 +867,7 @@ const Admin = () => {
     { id: "games", label: "Add Games", icon: <FaGamepad /> },
     { id: "cpu", label: "Add CPU", icon: <FaMicrochip /> },
     { id: "gpu", label: "Add GPU", icon: <BsGpuCard />},
+    { id: "User Benchmarks", label: "User Benchmarks", icon: <FaRankingStar /> },
     { id: "model", label: "Model", icon: <FaBrain /> }
   ];
 
@@ -1253,6 +1360,155 @@ const Admin = () => {
                       )}
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
+            {activeTab === "User Benchmarks" && (
+              <div className="benchmarks-section">
+                <div className="section-header">
+                  <h2>User Benchmark Submissions</h2>
+                  <div className="benchmark-controls">
+                    <div className="search-container">
+                      <FaSearch />
+                      <input
+                        type="text"
+                        placeholder="Search benchmarks..."
+                        value={benchmarkSearchTerm}
+                        onChange={(e) => setBenchmarkSearchTerm(e.target.value)}
+                        className="search-input"
+                      />
+                    </div>
+                    <div className="filter-container">
+                      <FaFilter />
+                      <select
+                        value={benchmarkStatusFilter}
+                        onChange={(e) => setBenchmarkStatusFilter(e.target.value)}
+                        className="status-filter"
+                      >
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="benchmarks-stats">
+                  <div className="stat-card">
+                    <div className="stat-number">{userBenchmarks.length}</div>
+                    <div className="stat-label">Total Submissions</div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="stat-number">{userBenchmarks.filter(b => b.status === "pending").length}</div>
+                    <div className="stat-label">Pending Review</div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="stat-number">{userBenchmarks.filter(b => b.status === "approved").length}</div>
+                    <div className="stat-label">Approved</div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="stat-number">{userBenchmarks.filter(b => b.status === "rejected").length}</div>
+                    <div className="stat-label">Rejected</div>
+                  </div>
+                </div>
+
+                <div className="data-table-container">
+                  <table className="data-table benchmark-table">
+                    <thead>
+                      <tr>
+                        <th>Game</th>
+                        <th>User</th>
+                        <th>FPS</th>
+                        <th>Hardware</th>
+                        <th>Settings</th>
+                        <th>Submitted</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredBenchmarks.map((benchmark) => (
+                        <tr key={benchmark.id}>
+                          <td>
+                            <div className="game-info">
+                              <strong>{benchmark.Game_Name}</strong>
+                            </div>
+                          </td>
+                          <td>{benchmark.userName || "N/A"}</td>
+                          <td>
+                            <span className="fps-value">{benchmark.FPS} FPS</span>
+                          </td>
+                          <td>
+                            <div className="hardware-info">
+                              <div className="hw-item">
+                                <FaMicrochip className="hw-icon" />
+                                <span>{benchmark.CPU}</span>
+                              </div>
+                              <div className="hw-item">
+                                <BsGpuCard className="hw-icon" />
+                                <span>{benchmark.GPU}</span>
+                              </div>
+                              <div className="hw-item">
+                                <span>{benchmark.RAM}GB RAM • {benchmark.VRAM}GB VRAM</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="settings-info">
+                              <div>{benchmark.Resolution}</div>
+                              <div>{benchmark.Mode} Quality</div>
+                            </div>
+                          </td>
+                          <td>{formatDate(benchmark.submittedAt)}</td>
+                          <td>
+                            <span className={`status-badge ${benchmark.status || 'pending'}`}>
+                              {benchmark.status || 'pending'}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="action-buttons">
+                              {benchmark.status === "pending" && (
+                                <>
+                                  <button
+                                    className="btn-approve"
+                                    onClick={() => updateBenchmarkStatus(benchmark.id, "approved")}
+                                    disabled={updatingBenchmarks.has(benchmark.id)}
+                                    title="Approve Benchmark"
+                                  >
+                                    <FaCheck />
+                                  </button>
+                                  <button
+                                    className="btn-reject"
+                                    onClick={() => updateBenchmarkStatus(benchmark.id, "rejected")}
+                                    disabled={updatingBenchmarks.has(benchmark.id)}
+                                    title="Reject Benchmark"
+                                  >
+                                    <FaCircleNotch />
+                                  </button>
+                                </>
+                              )}
+                              <button
+                                className="btn-delete"
+                                onClick={() => deleteBenchmarkSubmission(benchmark.id)}
+                                disabled={updatingBenchmarks.has(benchmark.id)}
+                                title="Delete Benchmark"
+                              >
+                                <FaTrash />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {filteredBenchmarks.length === 0 && (
+                    <div className="no-data">
+                      {benchmarkSearchTerm || benchmarkStatusFilter !== "all" 
+                        ? "No benchmarks found matching your criteria" 
+                        : "No benchmark submissions found"}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
