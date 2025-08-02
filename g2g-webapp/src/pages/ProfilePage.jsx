@@ -15,6 +15,7 @@ import {
   where,
   deleteDoc,
 } from "firebase/firestore";
+import { GiRank1, GiRank2, GiRank3 } from "react-icons/gi";
 import "./ProfilePage.css";
 
 const ProfilePage = () => {
@@ -27,6 +28,8 @@ const ProfilePage = () => {
   // Benchmarker status
   const [isBenchmarker, setIsBenchmarker] = useState(false);
   const [applyingBenchmarker, setApplyingBenchmarker] = useState(false);
+  const [userRank, setUserRank] = useState("bronze");
+  const [submissionCount, setSubmissionCount] = useState(0);
 
   // User submissions
   const [userSubmissions, setUserSubmissions] = useState([]);
@@ -95,6 +98,39 @@ const ProfilePage = () => {
   const resolutionOptions = ["1920x1080", "2560x1440", "3840x2160 (4K)"];
   const gameModeOptions = ["Low", "Medium", "High", "Ultra"];
 
+  // Function to calculate rank based on submission count
+  const calculateRank = (count) => {
+    if (count >= 1000) return "gold";
+    if (count >= 100) return "silver";
+    return "bronze";
+  };
+
+  // Function to get rank icon
+  const getRankIcon = (rank) => {
+    switch (rank) {
+      case "gold":
+        return <GiRank3 />;
+      case "silver":
+        return <GiRank2 />;
+      case "bronze":
+      default:
+        return <GiRank1 />;
+    }
+  };
+
+  // Function to get rank display name
+  const getRankDisplayName = (rank) => {
+    switch (rank) {
+      case "gold":
+        return "Gold Benchmarker";
+      case "silver":
+        return "Silver Benchmarker";
+      case "bronze":
+      default:
+        return "Bronze Benchmarker";
+    }
+  };
+
   // Initialize data on component mount
   useEffect(() => {
     const fetchSpecsData = async () => {
@@ -134,6 +170,8 @@ const ProfilePage = () => {
 
             if (userData.benchmarker === "yes") {
               setIsBenchmarker(true);
+              setUserRank(userData.rank || "bronze");
+              setSubmissionCount(userData.submissionCount || 0);
             }
           }
         }
@@ -350,10 +388,13 @@ const ProfilePage = () => {
       await updateDoc(userRef, {
         benchmarker: "yes",
         rank: "bronze",
+        submissionCount: 0,
         benchmarkerAppliedAt: new Date(),
       });
 
       setIsBenchmarker(true);
+      setUserRank("bronze");
+      setSubmissionCount(0);
       alert(
         "Successfully applied to be a game benchmarker! You now have Bronze rank."
       );
@@ -404,6 +445,16 @@ const ProfilePage = () => {
 
       const benchmarksRef = collection(db, "users_benchmarks");
       await addDoc(benchmarksRef, benchmarkDoc);
+
+      // Update submission count and rank
+      const newCount = submissionCount + 1;
+      await updateDoc(doc(db, "users", currentUser.uid), {
+        submissionCount: newCount,
+      });
+      setSubmissionCount(newCount);
+      
+      // Check if rank should be updated
+      await updateUserRank(newCount);
 
       setBenchmarkData({
         CPU: "",
@@ -665,10 +716,8 @@ const ProfilePage = () => {
                       <div className="info-item">
                         <span className="label">Benchmarker Status</span>
                         <span className="value benchmarker-badge">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                          </svg>
-                          Bronze Benchmarker
+                          {getRankIcon(userRank)}
+                          {getRankDisplayName(userRank)}
                         </span>
                       </div>
                     )}

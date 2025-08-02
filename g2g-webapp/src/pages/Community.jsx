@@ -318,7 +318,6 @@ const Community = () => {
                 <FaUsers />
                 <span>Contributors</span>
               </div>
-              <div className="contributors-count">12 active</div>
             </div>
 
             <div className="contributors-list">
