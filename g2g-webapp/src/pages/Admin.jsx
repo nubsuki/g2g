@@ -873,30 +873,28 @@ const Admin = () => {
       // If the benchmark is approved, also remove it from game_benchmarks
       if (benchmarkToDelete.status === "approved") {
         try {
-          // Query game_benchmarks to find the matching document
-          const gameBenchmarkQuery = query(
-            collection(db, "game_benchmarks"),
-            where("CPU", "==", benchmarkToDelete.CPU),
-            where("FPS", "==", benchmarkToDelete.FPS),
-            where("GPU", "==", benchmarkToDelete.GPU),
-            where("Game_Name", "==", benchmarkToDelete.Game_Name),
-            where("Mode", "==", benchmarkToDelete.Mode),
-            where("RAM", "==", benchmarkToDelete.RAM),
-            where("Resolution", "==", benchmarkToDelete.Resolution),
-            where("VRAM", "==", benchmarkToDelete.VRAM)
-          );
-          
-          const gameBenchmarkSnapshot = await getDocs(gameBenchmarkQuery);
-          
-          // Delete matching documents from game_benchmarks
-          const deletePromises = [];
-          gameBenchmarkSnapshot.forEach((doc) => {
-            deletePromises.push(deleteDoc(doc.ref));
-          });
-          
-          if (deletePromises.length > 0) {
-            await Promise.all(deletePromises);
-            console.log(`Removed ${deletePromises.length} matching documents from game_benchmarks`);
+          // Use stored gameBenchmarkId if available
+          if (benchmarkToDelete.gameBenchmarkId) {
+            await deleteDoc(doc(db, "game_benchmarks", benchmarkToDelete.gameBenchmarkId));
+            console.log(`Removed specific document ${benchmarkToDelete.gameBenchmarkId} from game_benchmarks`);
+          } else {
+            // Fallback - query by sourceSubmissionId
+            const gameBenchmarkQuery = query(
+              collection(db, "game_benchmarks"),
+              where("sourceSubmissionId", "==", benchmarkId)
+            );
+            
+            const gameBenchmarkSnapshot = await getDocs(gameBenchmarkQuery);
+            
+            const deletePromises = [];
+            gameBenchmarkSnapshot.forEach((doc) => {
+              deletePromises.push(deleteDoc(doc.ref));
+            });
+            
+            if (deletePromises.length > 0) {
+              await Promise.all(deletePromises);
+              console.log(`Removed ${deletePromises.length} documents from game_benchmarks using sourceSubmissionId`);
+            }
           }
         } catch (error) {
           console.error("Error removing from game_benchmarks:", error);
