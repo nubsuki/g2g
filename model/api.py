@@ -11,6 +11,8 @@ import time
 from datetime import datetime
 import requests
 import re
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
@@ -28,6 +30,13 @@ import time
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
+
+# Initialize limiter
+limiter = Limiter(
+    key_func=get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"]
+)
 
 # Global variables to store loaded data
 pipeline = None
@@ -343,6 +352,7 @@ def run_training_background():
         })
 
 @app.route('/train-model', methods=['POST'])
+@limiter.limit("1 per hour")
 def train_model():
     """Start model training in background"""
     global training_status
@@ -376,6 +386,7 @@ def train_model():
     })
 
 @app.route('/training-status', methods=['GET'])
+@limiter.limit("30 per minute")
 def get_training_status():
     """Get current training status"""
     global training_status
@@ -397,6 +408,7 @@ def get_training_status():
     })
 
 @app.route('/predict', methods=['POST'])
+@limiter.limit("10 per minute")
 def predict():
     """Main prediction endpoint"""
     try:
@@ -455,6 +467,7 @@ def predict():
         return jsonify({'success': False, 'error': 'Internal server error'}), 500
 
 @app.route('/fetch-data', methods=['POST'])
+@limiter.limit("1 per hour")
 def fetch_data():
     """Trigger fetch.py to fetch data from Firestore"""
     try:
@@ -488,6 +501,7 @@ def fetch_data():
         }), 500
 
 @app.route('/games', methods=['GET'])
+@limiter.limit("60 per minute")
 def get_games():
     """Get list of available games"""
     try:
@@ -636,6 +650,7 @@ def scrape_protondb_with_selenium(app_id):
             print("Selenium driver closed")
 
 @app.route('/protondb/<game_name>/<app_id>', methods=['GET'])
+@limiter.limit("5 per minute")
 def get_protondb_data_with_appid(game_name, app_id):
     """Get ProtonDB compatibility data using provided AppID"""
     try:
