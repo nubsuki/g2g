@@ -118,6 +118,11 @@ const Admin = () => {
   const [benchmarkStatusFilter, setBenchmarkStatusFilter] = useState("all");
   const [updatingBenchmarks, setUpdatingBenchmarks] = useState(new Set());
 
+  const [editingUser, setEditingUser] = useState(null);
+  const [selectedRole, setSelectedRole] = useState("");
+  const [updatingUser, setUpdatingUser] = useState(false);
+  const [deletingUsers, setDeletingUsers] = useState(new Set());
+
   useEffect(() => {
     fetchAllData();
   }, []);
@@ -932,6 +937,108 @@ const Admin = () => {
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
+  // Delete user function
+  const deleteUser = async (userId, userEmail) => {
+    if (!window.confirm(`Are you sure you want to delete user "${userEmail}"? This will also delete all their benchmark submissions and cannot be undone.`)) return;
+    
+    setDeletingUsers(prev => new Set(prev).add(userId));
+    try {
+      // Delete all user's benchmark submissions first
+      const userBenchmarksQuery = query(
+        collection(db, "users_benchmarks"),
+        where("userId", "==", userId)
+      );
+      
+      const userBenchmarksSnapshot = await getDocs(userBenchmarksQuery);
+      
+      // For each user benchmark, delete it and also from game_benchmarks if approved
+      for (const benchmarkDoc of userBenchmarksSnapshot.docs) {
+        const benchmarkData = benchmarkDoc.data();
+        
+        // If approved, also remove from game_benchmarks
+        if (benchmarkData.status === "approved") {
+          try {
+            if (benchmarkData.gameBenchmarkId) {
+              await deleteDoc(doc(db, "game_benchmarks", benchmarkData.gameBenchmarkId));
+            } else {
+              // Fallback - query by sourceSubmissionId
+              const gameBenchmarkQuery = query(
+                collection(db, "game_benchmarks"),
+                where("sourceSubmissionId", "==", benchmarkDoc.id)
+              );
+              const gameBenchmarkSnapshot = await getDocs(gameBenchmarkQuery);
+              for (const gameDoc of gameBenchmarkSnapshot.docs) {
+                await deleteDoc(gameDoc.ref);
+              }
+            }
+          } catch (error) {
+            console.error("Error removing user's approved benchmarks from game_benchmarks:", error);
+          }
+        }
+        
+        // Delete from users_benchmarks
+        await deleteDoc(benchmarkDoc.ref);
+      }
+      
+      // Finally, delete the user document
+      await deleteDoc(doc(db, "users", userId));
+      
+      // Update local state
+      setUsers(prev => prev.filter(user => user.id !== userId));
+      
+      alert(`User "${userEmail}" and all their data deleted successfully!`);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Error deleting user: " + error.message);
+    } finally {
+      setDeletingUsers(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(userId);
+        return newSet;
+      });
+    }
+  };
+
+  // Edit user role functions
+  const openEditUser = (user) => {
+    setEditingUser(user);
+    setSelectedRole(user.role || "user");
+  };
+
+  const closeEditUser = () => {
+    setEditingUser(null);
+    setSelectedRole("");
+  };
+
+  const updateUserRole = async () => {
+    if (!editingUser || !selectedRole) return;
+    
+    setUpdatingUser(true);
+    try {
+      await updateDoc(doc(db, "users", editingUser.id), {
+        role: selectedRole,
+        roleUpdatedAt: new Date()
+      });
+      
+      // Update local state
+      setUsers(prev => 
+        prev.map(user => 
+          user.id === editingUser.id 
+            ? { ...user, role: selectedRole, roleUpdatedAt: new Date() }
+            : user
+        )
+      );
+      
+      alert(`User role updated to "${selectedRole}" successfully!`);
+      closeEditUser();
+    } catch (error) {
+      console.error("Error updating user role:", error);
+      alert("Error updating user role: " + error.message);
+    } finally {
+      setUpdatingUser(false);
+    }
+  };
+
   // Cleanup interval on component unmount
   useEffect(() => {
     return () => {
@@ -1044,11 +1151,25 @@ const Admin = () => {
                           </td>
                           <td>
                             <div className="action-buttons">
-                              <button className="btn-edit" title="Edit User">
+                              <button 
+                                className="btn-edit" 
+                                title="Edit User"
+                                onClick={() => openEditUser(user)}
+                                disabled={deletingUsers.has(user.id)}
+                              >
                                 <FaEdit />
                               </button>
-                              <button className="btn-delete" title="Delete User">
-                                <FaTrash />
+                              <button 
+                                className="btn-delete" 
+                                title="Delete User"
+                                onClick={() => deleteUser(user.id, user.email)}
+                                disabled={deletingUsers.has(user.id)}
+                              >
+                                {deletingUsers.has(user.id) ? (
+                                  <FaCircleNotch className="spinning" />
+                                ) : (
+                                  <FaTrash />
+                                )}
                               </button>
                             </div>
                           </td>
@@ -1705,6 +1826,80 @@ const Admin = () => {
           </div>
         </div>
       </div>
+      {/* Edit User Role Modal */}
+      {editingUser && (
+        <div className="modal-overlay" onClick={closeEditUser}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Edit User Role</h3>
+              <button className="modal-close" onClick={closeEditUser}>
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="user-info">
+                <p><strong>User:</strong> {editingUser.username || "N/A"}</p>
+                <p><strong>Email:</strong> {editingUser.email}</p>
+                <p><strong>Current Role:</strong> <span className={`role-badge ${editingUser.role || 'user'}`}>{editingUser.role || "user"}</span></p>
+              </div>
+              <div className="role-selection">
+                <label>Select New Role:</label>
+                <div className="role-options">
+                  <label className="role-option">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="user"
+                      checked={selectedRole === "user"}
+                      onChange={(e) => setSelectedRole(e.target.value)}
+                    />
+                    <span className="role-badge user">User</span>
+                  </label>
+                  <label className="role-option">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="admin"
+                      checked={selectedRole === "admin"}
+                      onChange={(e) => setSelectedRole(e.target.value)}
+                    />
+                    <span className="role-badge admin">Admin</span>
+                  </label>
+                  <label className="role-option">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="banned"
+                      checked={selectedRole === "banned"}
+                      onChange={(e) => setSelectedRole(e.target.value)}
+                    />
+                    <span className="role-badge banned">Banned</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="modal-btn-cancel" onClick={closeEditUser}>
+                Cancel
+              </button>
+              <button 
+                className="modal-btn-save" 
+                onClick={updateUserRole}
+                disabled={updatingUser || selectedRole === (editingUser.role || "user")}
+              >
+                {updatingUser ? (
+                  <>
+                    <FaCircleNotch className="spinning" />
+                    Updating...
+                  </>
+                ) : (
+                  "Update Role"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
