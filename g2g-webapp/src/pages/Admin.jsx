@@ -795,10 +795,45 @@ const Admin = () => {
     
     setUpdatingBenchmarks(prev => new Set(prev).add(benchmarkId));
     try {
+      // Update the users_benchmarks document
       await updateDoc(doc(db, "users_benchmarks", benchmarkId), {
         status: newStatus,
         reviewedAt: new Date()
       });
+      
+      // If approved, copy to game_benchmarks collection
+      if (newStatus === "approved") {
+        // Get the benchmark data
+        const benchmarkToApprove = userBenchmarks.find(b => b.id === benchmarkId);
+        
+        if (benchmarkToApprove) {
+          // Create game benchmark document with core data + reference
+          const gameBenchmarkData = {
+            CPU: benchmarkToApprove.CPU,
+            FPS: benchmarkToApprove.FPS,
+            GPU: benchmarkToApprove.GPU,
+            Game_Name: benchmarkToApprove.Game_Name,
+            Mode: benchmarkToApprove.Mode,
+            RAM: benchmarkToApprove.RAM,
+            Resolution: benchmarkToApprove.Resolution,
+            VRAM: benchmarkToApprove.VRAM,
+            sourceSubmissionId: benchmarkId
+          };
+
+          // Add to game_benchmarks collection
+          const docRef = await addDoc(collection(db, "game_benchmarks"), gameBenchmarkData);
+          
+          // Update with document ID
+          await updateDoc(docRef, {
+            id: docRef.id
+          });
+
+          // Store the game_benchmarks ID back in users_benchmarks
+          await updateDoc(doc(db, "users_benchmarks", benchmarkId), {
+            gameBenchmarkId: docRef.id
+          });
+        }
+      }
       
       // Update local state
       setUserBenchmarks(prev => 
@@ -809,7 +844,7 @@ const Admin = () => {
         )
       );
       
-      alert(`Benchmark ${newStatus} successfully!`);
+      alert(`Benchmark ${newStatus} successfully!${newStatus === "approved" ? " Data added to training database." : ""}`);
     } catch (error) {
       console.error(`Error ${newStatus} benchmark:`, error);
       alert(`Error ${newStatus} benchmark: ${error.message}`);
@@ -828,12 +863,58 @@ const Admin = () => {
     
     setUpdatingBenchmarks(prev => new Set(prev).add(benchmarkId));
     try {
+      // Get the benchmark data before deleting
+      const benchmarkToDelete = userBenchmarks.find(b => b.id === benchmarkId);
+      
+      if (!benchmarkToDelete) {
+        throw new Error("Benchmark not found");
+      }
+
+      // If the benchmark is approved, also remove it from game_benchmarks
+      if (benchmarkToDelete.status === "approved") {
+        try {
+          // Query game_benchmarks to find the matching document
+          const gameBenchmarkQuery = query(
+            collection(db, "game_benchmarks"),
+            where("CPU", "==", benchmarkToDelete.CPU),
+            where("FPS", "==", benchmarkToDelete.FPS),
+            where("GPU", "==", benchmarkToDelete.GPU),
+            where("Game_Name", "==", benchmarkToDelete.Game_Name),
+            where("Mode", "==", benchmarkToDelete.Mode),
+            where("RAM", "==", benchmarkToDelete.RAM),
+            where("Resolution", "==", benchmarkToDelete.Resolution),
+            where("VRAM", "==", benchmarkToDelete.VRAM)
+          );
+          
+          const gameBenchmarkSnapshot = await getDocs(gameBenchmarkQuery);
+          
+          // Delete matching documents from game_benchmarks
+          const deletePromises = [];
+          gameBenchmarkSnapshot.forEach((doc) => {
+            deletePromises.push(deleteDoc(doc.ref));
+          });
+          
+          if (deletePromises.length > 0) {
+            await Promise.all(deletePromises);
+            console.log(`Removed ${deletePromises.length} matching documents from game_benchmarks`);
+          }
+        } catch (error) {
+          console.error("Error removing from game_benchmarks:", error);
+          // Continue with users_benchmarks deletion even if game_benchmarks fails
+        }
+      }
+
+      // Always delete from users_benchmarks
       await deleteDoc(doc(db, "users_benchmarks", benchmarkId));
       
       // Update local state
       setUserBenchmarks(prev => prev.filter(benchmark => benchmark.id !== benchmarkId));
       
-      alert("Benchmark submission deleted successfully!");
+      const deleteMessage = benchmarkToDelete.status === "approved" 
+        ? "Approved benchmark deleted from both user submissions and training database!"
+        : "Benchmark submission deleted successfully!";
+      
+      alert(deleteMessage);
     } catch (error) {
       console.error("Error deleting benchmark:", error);
       alert("Error deleting benchmark: " + error.message);
