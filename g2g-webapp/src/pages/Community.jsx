@@ -1,26 +1,91 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaRegUser, FaUsers, FaComments, FaPaperPlane } from "react-icons/fa";
+import { collection, addDoc, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
+import { useAuth } from '../contexts/AuthContext';
 import "./Community.css";
 
 const Community = () => {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
-    { id: 1, user: "GamerPro", text: "Anyone know good budget GPU recommendations?", time: "2 min ago" },
-    { id: 2, user: "TechEnthusiast", text: "RTX 4060 is pretty solid for 1080p gaming!", time: "5 min ago" },
-    { id: 3, user: "PCBuilder", text: "Check out the AMD RX 7600 too, great value", time: "8 min ago" },
-    { id: 4, user: "GameOptimizer", text: "What's your budget and target resolution?", time: "12 min ago" },
-    { id: 5, user: "FrameChaser", text: "Just upgraded to RTX 4070, getting amazing performance!", time: "15 min ago" },
-  ]);
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const messagesEndRef = useRef(null);
+  const { currentUser, userProfile } = useAuth();
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      setMessages(prev => [{
-        id: prev.length + 1,
-        user: "You",
-        text: message,
-        time: "now"
-      }, ...prev]);
+  // Scroll to bottom when new messages arrive
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Real-time listener for messages
+  useEffect(() => {
+    const messagesQuery = query(
+      collection(db, 'chatMessages'),
+      orderBy('timestamp', 'desc')
+    );
+
+    const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+      const messageList = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        messageList.push({
+          id: doc.id,
+          user: data.username || 'Anonymous',
+          text: data.text,
+          timestamp: data.timestamp,
+          uid: data.uid,
+          time: formatTime(data.timestamp)
+        });
+      });
+      setMessages(messageList);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching messages:", error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Format timestamp for display
+  const formatTime = (timestamp) => {
+    if (!timestamp) return 'now';
+    
+    const messageTime = timestamp.toDate();
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - messageTime) / 1000);
+    
+    if (diffInSeconds < 60) return 'now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} min ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    
+    return messageTime.toLocaleDateString();
+  };
+
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
+    
+    if (!currentUser) {
+      alert('Please log in to send messages');
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, 'chatMessages'), {
+        text: message.trim(),
+        username: userProfile?.username || currentUser.email.split('@')[0],
+        uid: currentUser.uid,
+        timestamp: serverTimestamp()
+      });
+      
       setMessage("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert('Failed to send message. Please try again.');
     }
   };
 
@@ -49,20 +114,27 @@ const Community = () => {
             </div>
 
             <div className="messages-container">
-              {messages.map((msg) => (
-                <div key={msg.id} className="message-item">
-                  <div className="message-avatar">
-                    <FaRegUser />
-                  </div>
-                  <div className="message-content">
-                    <div className="message-header">
-                      <span className="message-user">{msg.user}</span>
-                      <span className="message-time">{msg.time}</span>
+              {loading ? (
+                <div className="loading-messages">Loading messages...</div>
+              ) : (
+                <>
+                  {messages.map((msg) => (
+                    <div key={msg.id} className={`message-item ${msg.uid === currentUser?.uid ? 'own-message' : ''}`}>
+                      <div className="message-avatar">
+                        <FaRegUser />
+                      </div>
+                      <div className="message-content">
+                        <div className="message-header">
+                          <span className="message-user">{msg.user}</span>
+                          <span className="message-time">{msg.time}</span>
+                        </div>
+                        <div className="message-text">{msg.text}</div>
+                      </div>
                     </div>
-                    <div className="message-text">{msg.text}</div>
-                  </div>
-                </div>
-              ))}
+                  ))}
+                  <div ref={messagesEndRef} />
+                </>
+              )}
             </div>
 
             <div className="message-input-container">
@@ -71,13 +143,14 @@ const Community = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Type your message..."
+                placeholder={currentUser ? "Type your message..." : "Please log in to chat"}
                 className="message-input"
+                disabled={!currentUser}
               />
               <button 
                 onClick={handleSendMessage}
                 className="send-button"
-                disabled={!message.trim()}
+                disabled={!message.trim() || !currentUser}
               >
                 <FaPaperPlane />
               </button>
@@ -172,17 +245,6 @@ const Community = () => {
                   <div className="stat-label">Active Members</div>
                 </div>
               </div>
-
-              <div className="stat-card">
-                <div className="stat-icon online">
-                  <FaRegUser />
-                </div>
-                <div className="stat-content">
-                  <div className="stat-number">234</div>
-                  <div className="stat-label">Online Now</div>
-                </div>
-              </div>
-
               <div className="stat-card">
                 <div className="stat-icon">
                   <FaComments />
