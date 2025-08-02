@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaRegUser, FaUsers, FaComments, FaPaperPlane } from "react-icons/fa";
-import { collection, addDoc, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
+import { 
+  collection, 
+  addDoc, 
+  onSnapshot, 
+  orderBy, 
+  query, 
+  serverTimestamp,
+  doc,
+  setDoc,
+  deleteDoc
+} from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 import "./Community.css";
@@ -9,6 +19,7 @@ const Community = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [onlineUsersCount, setOnlineUsersCount] = useState(0);
   const messagesEndRef = useRef(null);
   const { currentUser, userProfile } = useAuth();
 
@@ -20,6 +31,89 @@ const Community = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Track user's online status
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const setUserOnline = async () => {
+      try {
+        await setDoc(doc(db, 'onlineUsers', currentUser.uid), {
+          uid: currentUser.uid,
+          username: userProfile?.username || currentUser.email.split('@')[0],
+          lastSeen: serverTimestamp(),
+          isOnline: true
+        });
+      } catch (error) {
+        console.error("Error setting user online:", error);
+      }
+    };
+
+    const setUserOffline = async () => {
+      try {
+        await deleteDoc(doc(db, 'onlineUsers', currentUser.uid));
+      } catch (error) {
+        console.error("Error setting user offline:", error);
+      }
+    };
+
+    // Set user as online when component mounts
+    setUserOnline();
+
+    // Handle visibility change (tab switching)
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setUserOffline();
+      } else {
+        setUserOnline();
+      }
+    };
+
+    // Handle page unload
+    const handleBeforeUnload = () => {
+      setUserOffline();
+    };
+
+    // Handle focus/blur events
+    const handleFocus = () => setUserOnline();
+    const handleBlur = () => setUserOffline();
+
+    // Add event listeners
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('blur', handleBlur);
+
+    // Heartbeat to keep user status updated
+    const heartbeatInterval = setInterval(() => {
+      if (!document.hidden) {
+        setUserOnline();
+      }
+    }, 30000); // Update every 30 seconds
+
+    // Cleanup function
+    return () => {
+      setUserOffline();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('blur', handleBlur);
+      clearInterval(heartbeatInterval);
+    };
+  }, [currentUser, userProfile]);
+
+  // Listen to online users count
+  useEffect(() => {
+    const onlineUsersQuery = collection(db, 'onlineUsers');
+
+    const unsubscribe = onSnapshot(onlineUsersQuery, (snapshot) => {
+      setOnlineUsersCount(snapshot.size);
+    }, (error) => {
+      console.error("Error fetching online users:", error);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Real-time listener for messages
   useEffect(() => {
@@ -109,7 +203,7 @@ const Community = () => {
               </div>
               <div className="online-indicator">
                 <div className="online-dot"></div>
-                <span>234 online</span>
+                <span>{onlineUsersCount} online</span>
               </div>
             </div>
 
