@@ -14,12 +14,6 @@ import re
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import hashlib
-
-# Suppress sklearn warnings
-warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
-warnings.filterwarnings('ignore', message='X does not have valid feature names')
-
-# Add these imports at the top
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -28,6 +22,17 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
+from waitress import serve
+
+# Suppress sklearn warnings
+warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
+warnings.filterwarnings('ignore', message='X does not have valid feature names')
+
+# Suppress XGBoost & pickle warnings
+warnings.filterwarnings('ignore', message='.*If you are loading a serialized model.*')
+warnings.filterwarnings('ignore', category=UserWarning, module='pickle')
+warnings.filterwarnings('ignore', message='.*serialized model.*')
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
@@ -36,7 +41,8 @@ CORS(app)  # Enable CORS for React frontend
 limiter = Limiter(
     key_func=get_remote_address,
     app=app,
-    default_limits=["200 per day", "50 per hour"]
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
 )
 
 # Global variables to store loaded data
@@ -100,7 +106,7 @@ def load_model_and_data():
         gpu = pd.read_csv('gpu_benchmarks.csv')
         req_data = pd.read_csv('game_requirements.csv')
         
-        # Build lookup tables (same as test.py)
+        # Build lookup tables
         cpu_mc = cpu[cpu['Test_Type'] == 'Multi-core'][['Processor', 'Score', 'GHz', 'Cores']].rename(
             columns={'Processor': 'CPU', 'Score': 'CPU_Score', 'GHz': 'CPU_GHz', 'Cores': 'CPU_Cores'})
 
@@ -373,8 +379,10 @@ def root():
         'endpoints': {
             'games': '/games (GET)',
             'game_requirements': '/games/<game_name>/req (GET)',
-            'protondb': '/protondb/<game_name>/<app_id> (GET)'
-        }
+            'protondb': '/protondb/<game_name>/<app_id> (GET)',
+            'online_users_count': '/online-users/count (GET)'
+        },
+        'notice': 'This is api for G2G webapp fps predictor dont overuse it'
     })
 
 @app.route('/train-model', methods=['POST'])
@@ -453,7 +461,7 @@ def predict():
         game_name = data['game_name']
         cpu_name = data['cpu_name']
         gpu_name = data['gpu_name']
-        ram_gb = float(data['ram_gb'].replace('GB', ''))  # Handle "16GB" format
+        ram_gb = float(data['ram_gb'].replace('GB', ''))
         resolution = data['resolution']
         
         # Make prediction
@@ -890,6 +898,6 @@ if __name__ == '__main__':
     # Load model and data
     if load_model_and_data():
         print("API ready to serve predictions!")
-        app.run(host='0.0.0.0', port=5000, debug=True)
+        serve(app, host='0.0.0.0', port=5000, threads=4)
     else:
         print("Failed to start API - model loading failed") 

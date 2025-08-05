@@ -19,3 +19,4 @@ flask-cors
 flask-limiter
 selenium
 webdriver-manager
+waitress
