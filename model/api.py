@@ -359,11 +359,8 @@ def root():
         'message': 'FPS Predictor API is running',
         'version': '1.0',
         'endpoints': {
-            'predict': '/predict (POST)',
-            'games': '/games (GET)', 
-            'train_model': '/train-model (POST)',
-            'training_status': '/training-status (GET)',
-            'fetch_data': '/fetch-data (POST)',
+            'games': '/games (GET)',
+            'game_requirements': '/games/<game_name>/req (GET)',
             'protondb': '/protondb/<game_name>/<app_id> (GET)'
         }
     })
