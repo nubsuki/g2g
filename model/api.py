@@ -13,6 +13,7 @@ import requests
 import re
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+import hashlib
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
@@ -60,6 +61,17 @@ training_status = {
     'error': '',
     'progress': 0
 }
+
+online_users = {}  # Format: {session_id: last_seen_timestamp}
+ONLINE_TIMEOUT = 60  # Consider user offline after 60 seconds
+
+def cleanup_offline_users():
+    """Remove users who haven't been seen for more than ONLINE_TIMEOUT"""
+    current_time = time.time()
+    offline_users = [session_id for session_id, last_seen in online_users.items() 
+                    if current_time - last_seen > ONLINE_TIMEOUT]
+    for session_id in offline_users:
+        del online_users[session_id]
 
 def load_model_and_data():
     """Load model and data once when server starts"""
@@ -807,6 +819,69 @@ def get_protondb_data_with_appid(game_name, app_id):
         
     except Exception as e:
         print(f"Exception: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+# Online users tracking
+@app.route('/online-users/heartbeat', methods=['POST'])
+@limiter.limit("120 per minute")  # Allow frequent heartbeats
+def user_heartbeat():
+    """Anonymous heartbeat to track online users"""
+    try:
+        data = request.json or {}
+        # Generate anonymous session ID from request fingerprint
+        session_data = f"{get_remote_address()}_{data.get('userAgent', '')[:50]}"
+        session_id = hashlib.md5(session_data.encode()).hexdigest()
+        
+        # Update heartbeat
+        online_users[session_id] = time.time()
+        
+        # Clean up offline users
+        cleanup_offline_users()
+        
+        return jsonify({
+            'success': True,
+            'online_count': len(online_users)
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/online-users/count', methods=['GET'])
+@limiter.limit("60 per minute")
+def get_online_count():
+    """Get current online users count"""
+    try:
+        # Clean up offline users before returning count
+        cleanup_offline_users()
+        
+        return jsonify({
+            'success': True,
+            'online_count': len(online_users),
+            'last_cleanup': time.time()
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/online-users/leave', methods=['POST'])
+@limiter.limit("60 per minute")  
+def user_leave():
+    """User leaving - remove from online count"""
+    try:
+        data = request.json or {}
+        session_data = f"{get_remote_address()}_{data.get('userAgent', '')[:50]}"
+        import hashlib
+        session_id = hashlib.md5(session_data.encode()).hexdigest()
+        
+        # Remove user from online list
+        online_users.pop(session_id, None)
+        
+        return jsonify({
+            'success': True,
+            'online_count': len(online_users)
+        })
+        
+    except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
 if __name__ == '__main__':
