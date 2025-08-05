@@ -685,7 +685,7 @@ const Admin = () => {
     setFetchMessage('');
     
     try {
-      const response = await fetch('http://localhost:5000/fetch-data', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/fetch-data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -708,7 +708,7 @@ const Admin = () => {
 
   const checkInitialTrainingStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5000/training-status');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/training-status`);
       const status = await response.json();
       
       setTrainingStatus(status);
@@ -726,7 +726,7 @@ const Admin = () => {
   const handleTrainModel = async () => {
     // Check current status first
     try {
-      const statusResponse = await fetch('http://localhost:5000/training-status');
+      const statusResponse = await fetch(`${import.meta.env.VITE_API_URL}/training-status`);
       const currentStatus = await statusResponse.json();
       
       if (currentStatus.is_training) {
@@ -744,7 +744,7 @@ const Admin = () => {
 
     // Start new training
     try {
-      const response = await fetch('http://localhost:5000/train-model', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/train-model`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -779,7 +779,7 @@ const Admin = () => {
 
   const checkTrainingStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5000/training-status');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/training-status`);
       const status = await response.json();
       
       setTrainingStatus(status);

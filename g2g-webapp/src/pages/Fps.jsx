@@ -131,7 +131,7 @@ const Fps = () => {
       console.log('Game requirements data:', gameReqs);
       
       // Use the endpoint with AppID
-      const endpoint = `http://localhost:5000/protondb/${encodeURIComponent(gameName)}/${encodeURIComponent(steamAppId)}`;
+      const endpoint = `${import.meta.env.VITE_API_URL}/protondb/${encodeURIComponent(gameName)}/${encodeURIComponent(steamAppId)}`;
       
       console.log(`Calling endpoint: ${endpoint}`);
       
@@ -232,7 +232,7 @@ const Fps = () => {
 
       console.log("Sending prediction request:", requestData);
 
-      const response = await fetch('http://localhost:5000/predict', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/predict`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
