@@ -695,26 +695,39 @@ def get_protondb_data_with_appid(game_name, app_id):
                 
                 # Fallback to API if Selenium fails
                 try:
-                    api_url = f"https://protondb.max-p.me/games/{app_id}/reports"
+                    api_url = f"https://protondb-community-api-04f42bc1742f.herokuapp.com/api/games/{app_id}/summary"
                     api_response = requests.get(api_url, timeout=10)
                     if api_response.status_code == 200:
-                        reports_data = api_response.json()
-                        if reports_data and len(reports_data) > 0:
-                            compatibility_data = process_protondb_reports(reports_data)
+                        summary_data = api_response.json()
+                        if summary_data and summary_data.get('tier'):
+                            # Map confidence levels
+                            confidence_mapping = {
+                                'strong': 'high',
+                                'moderate': 'medium', 
+                                'weak': 'low'
+                            }
+                            
+                            confidence = confidence_mapping.get(
+                                summary_data.get('confidence', '').lower(), 
+                                summary_data.get('confidence', 'unknown')
+                            )
+                            
                             return jsonify({
                                 'success': True,
                                 'data': {
                                     'appId': app_id,
                                     'title': game_name,
-                                    'tier': compatibility_data['tier'],
-                                    'confidence': compatibility_data['confidence'],
-                                    'total': compatibility_data['total_reports'],
-                                    'breakdown': compatibility_data.get('breakdown', {}),
-                                    'source': 'api_fallback'
+                                    'tier': summary_data['tier'],
+                                    'confidence': confidence,
+                                    'total': summary_data.get('total', 0),
+                                    'score': summary_data.get('score'),
+                                    'bestReportedTier': summary_data.get('bestReportedTier'),
+                                    'trendingTier': summary_data.get('trendingTier'),
+                                    'source': 'heroku_api_fallback'
                                 }
                             })
                 except Exception as e:
-                    print(f"API fallback failed: {e}")
+                    print(f"Heroku API fallback failed: {e}")
             
             # Handle special cases (non-numeric AppIDs)
             else:
