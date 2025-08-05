@@ -19,18 +19,19 @@ import {
 import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 import "./Community.css";
+import { useOnlineUsers } from '../hooks/useOnlineUsers';
 
 const Community = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [onlineUsersCount, setOnlineUsersCount] = useState(0);
   const [todayMessagesCount, setTodayMessagesCount] = useState(0);
   const [contributors, setContributors] = useState([]);
   const [loadingContributors, setLoadingContributors] = useState(true);
   const [registeredUsersCount, setRegisteredUsersCount] = useState(0);
   const messagesEndRef = useRef(null);
   const { currentUser, userProfile } = useAuth();
+  const { onlineCount: onlineUsersCount, error: onlineUsersError } = useOnlineUsers();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -82,82 +83,6 @@ const Community = () => {
       console.error("Error counting today's messages:", error);
     }
   };
-
-  // Track user online status with heartbeat
-  useEffect(() => {
-    if (!currentUser) return;
-
-    const setUserOnline = async () => {
-      try {
-        await setDoc(doc(db, 'onlineUsers', currentUser.uid), {
-          uid: currentUser.uid,
-          username: userProfile?.username || currentUser.email.split('@')[0],
-          lastSeen: serverTimestamp(),
-          isOnline: true
-        });
-      } catch (error) {
-        console.error("Error setting user online:", error);
-      }
-    };
-
-    const setUserOffline = async () => {
-      try {
-        await deleteDoc(doc(db, 'onlineUsers', currentUser.uid));
-      } catch (error) {
-        console.error("Error setting user offline:", error);
-      }
-    };
-
-    setUserOnline();
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        setUserOffline();
-      } else {
-        setUserOnline();
-      }
-    };
-
-    const handleBeforeUnload = () => {
-      setUserOffline();
-    };
-
-    const handleFocus = () => setUserOnline();
-    const handleBlur = () => setUserOffline();
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('focus', handleFocus);
-    window.addEventListener('blur', handleBlur);
-
-    // Update presence every 30 seconds
-    const heartbeatInterval = setInterval(() => {
-      if (!document.hidden) {
-        setUserOnline();
-      }
-    }, 30000);
-
-    return () => {
-      setUserOffline();
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('focus', handleFocus);
-      window.removeEventListener('blur', handleBlur);
-      clearInterval(heartbeatInterval);
-    };
-  }, [currentUser, userProfile]);
-
-  useEffect(() => {
-    const onlineUsersQuery = collection(db, 'onlineUsers');
-
-    const unsubscribe = onSnapshot(onlineUsersQuery, (snapshot) => {
-      setOnlineUsersCount(snapshot.size);
-    }, (error) => {
-      console.error("Error fetching online users:", error);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   // Listen for real-time chat messages
   useEffect(() => {
