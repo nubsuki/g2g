@@ -420,7 +420,7 @@ def train_model():
     })
 
 @app.route('/training-status', methods=['GET'])
-@limiter.limit("30 per day")
+@limiter.limit("100 per minute")
 def get_training_status():
     """Get current training status"""
     global training_status

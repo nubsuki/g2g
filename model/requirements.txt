@@ -13,6 +13,9 @@ joblib
 # Google Cloud
 google-cloud-firestore
 
+# Environment variables
+python-dotenv
+
 # Web API
 flask
 flask-cors

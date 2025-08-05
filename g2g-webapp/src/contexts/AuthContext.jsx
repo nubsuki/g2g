@@ -25,11 +25,9 @@ export function AuthProvider({ children }) {
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
   }
+  
+  //Creates a user profile document in Firestore with default role and metadata
 
-  /**
-   * Creates a user profile document in Firestore with default role and metadata
-   * This separates authentication data from user profile data for better data organization
-   */
   async function createUserProfile(user, additionalData = {}) {
     if (!user) return;
     
@@ -44,9 +42,8 @@ export function AuthProvider({ children }) {
         await setDoc(userRef, {
           uid,
           email,
-          role: 'user', // Default role, can be upgraded to 'admin'
-          createdAt,
-          ...additionalData
+          role: 'user',
+          createdAt
         });
       } catch (error) {
         console.log('Error creating user profile:', error);
