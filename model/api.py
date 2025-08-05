@@ -351,6 +351,23 @@ def run_training_background():
             'is_training': False
         })
 
+@app.route('/', methods=['GET'])
+def root():
+    """Root endpoint to show server status"""
+    return jsonify({
+        'status': 'online',
+        'message': 'FPS Predictor API is running',
+        'version': '1.0',
+        'endpoints': {
+            'predict': '/predict (POST)',
+            'games': '/games (GET)', 
+            'train_model': '/train-model (POST)',
+            'training_status': '/training-status (GET)',
+            'fetch_data': '/fetch-data (POST)',
+            'protondb': '/protondb/<game_name>/<app_id> (GET)'
+        }
+    })
+
 @app.route('/train-model', methods=['POST'])
 @limiter.limit("1 per day")
 def train_model():
