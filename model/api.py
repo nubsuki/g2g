@@ -528,6 +528,51 @@ def get_games():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/games/<game_name>/req', methods=['GET'])
+@limiter.limit("60 per minute") 
+def get_game_requirements(game_name):
+    """Get requirements for a specific game"""
+    try:
+        # Decode URL-encoded game name
+        game_name_decoded = game_name.replace('%20', ' ').replace('+', ' ')
+        
+        # Search for the game (case-insensitive)
+        game_match = req[req['Game_Name'].str.lower() == game_name_decoded.lower()]
+        
+        if game_match.empty:
+            # If no exact match, try partial match
+            game_match = req[req['Game_Name'].str.contains(game_name_decoded, case=False, na=False)]
+            
+        if game_match.empty:
+            return jsonify({
+                'success': False,
+                'error': f'Game "{game_name_decoded}" not found',
+                'available_games': req['Game_Name'].tolist()
+            }), 404
+        
+        # Get the first match
+        game_data = game_match.iloc[0]
+        
+        # Format the response
+        requirements = {
+            'success': True,
+            'game_name': game_data['Game_Name'],
+            'requirements': {
+                'cpu': game_data['CPU'],
+                'gpu': game_data['GPU'], 
+                'ram': f"{game_data['RAM']} GB",
+                'storage': f"{game_data['File_size']} GB",
+            }
+        }
+        
+        return jsonify(requirements)
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 def scrape_protondb_with_selenium(app_id):
     """Use Selenium to scrape ProtonDB page with JavaScript execution"""
     driver = None
