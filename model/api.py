@@ -23,6 +23,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 from waitress import serve
+import os
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
@@ -35,7 +36,10 @@ warnings.filterwarnings('ignore', message='.*serialized model.*')
 
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for React frontend
+
+# Get allowed origins from environment variable
+allowed_origins = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:4173').split(',')
+CORS(app, origins=allowed_origins)
 
 # Initialize limiter
 limiter = Limiter(
