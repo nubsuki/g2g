@@ -14,15 +14,31 @@ def get_collections_config():
         'game_benchmarks':      'dataset/game_benchmarks.csv',
     }
 
-    # (Optional) existing column-order mapping
+    # Define which columns to keep for each collection (ignore unwanted fields)
+    column_filters = {
+        'cpu_benchmarks': [
+            'Processor', 'GHz', 'Cores', 'Test_Type', 'Score'
+        ],
+        'gpu_benchmarks': [
+            'GPU', 'Score', 'API', 'VRAM'
+        ],
+        'game_requirements': [
+            'Game_Name', 'CPU', 'GPU', 'RAM', 'File_size', 'OS', 'Steam_AppID'
+        ],
+        'game_benchmarks': [
+            'Game_Name', 'CPU', 'GPU', 'VRAM', 'Mode', 'Resolution', 'RAM', 'FPS'
+        ],
+    }
+
+    # Column-order mapping
     column_orders = {
         'dataset/cpu_benchmarks.csv':       ['Processor', 'GHz', 'Cores','Test_Type', 'Score'],
         'dataset/gpu_benchmarks.csv':       ['GPU', 'Score', 'API', 'VRAM'],
-        'dataset/game_requirements.csv':    ['Game_Name', 'CPU', 'GPU', 'RAM', 'File_size', 'OS'],
+        'dataset/game_requirements.csv':    ['Game_Name', 'CPU', 'GPU', 'RAM', 'File_size', 'OS', 'Steam_AppID'],
         'dataset/game_benchmarks.csv':      ['Game_Name', 'CPU', 'GPU', 'VRAM', 'Mode', 'Resolution', 'RAM', 'FPS'],
     }
 
-    return collections, column_orders
+    return collections, column_orders, column_filters
 
 def backup_existing_data(collections, progress_callback=None):
     """Backup existing CSV files before fetching new data"""
@@ -51,8 +67,8 @@ def backup_existing_data(collections, progress_callback=None):
     
     return backup_dir, backed_up_files
 
-def fetch_collection_data(db, collection_name, progress_callback=None):
-    """Fetch data from a single Firestore collection"""
+def fetch_collection_data(db, collection_name, column_filter, progress_callback=None):
+    """Fetch data from a single Firestore collection with column filtering"""
     if progress_callback:
         progress_callback(-1, f"Fetching {collection_name}...")
     
@@ -60,10 +76,28 @@ def fetch_collection_data(db, collection_name, progress_callback=None):
     records = [doc.to_dict() for doc in db.collection(collection_name).stream()]
     df = pd.DataFrame(records)
     
-    # Drop the helper 'id' field if it exists
-    df.drop(columns=['id'], errors='ignore', inplace=True)
+    # Drop unwanted columns (like 'id', 'timestamp', etc.)
+    unwanted_columns = ['id', 'timestamp', 'created_at', 'updated_at', 'firestore_id']
+    
+    # Remove unwanted columns if they exist
+    for col in unwanted_columns:
+        if col in df.columns:
+            df.drop(columns=[col], inplace=True)
+            print(f"  -> Removed unwanted column: {col}")
+    
+    # Filter to only keep the columns we want
+    available_columns = [col for col in column_filter if col in df.columns]
+    missing_columns = [col for col in column_filter if col not in df.columns]
+    
+    if missing_columns:
+        print(f"  -> Warning: Missing columns in {collection_name}: {missing_columns}")
+    
+    # Keep only the columns we want
+    df = df[available_columns]
     
     print(f"  -> Fetched {len(df)} records from {collection_name}")
+    print(f"  -> Kept columns: {list(df.columns)}")
+    
     return df
 
 def apply_column_order(df, csv_file, column_orders):
@@ -86,7 +120,7 @@ def fetch_data_from_firestore(progress_callback=None):
         db = get_firestore_client()
         
         # Get configuration
-        collections, column_orders = get_collections_config()
+        collections, column_orders, column_filters = get_collections_config()
         
         if progress_callback:
             progress_callback(10, "Backing up existing data...")
@@ -114,8 +148,11 @@ def fetch_data_from_firestore(progress_callback=None):
             
             print(f"\nExporting collection '{coll_name}' -> {csv_file}...")
             
-            # Fetch data from collection
-            df = fetch_collection_data(db, coll_name, progress_callback)
+            # Get column filter for this collection
+            column_filter = column_filters.get(coll_name, [])
+
+            # Fetch data from collection with column filtering
+            df = fetch_collection_data(db, coll_name, column_filter, progress_callback)
             
             # Apply custom column order
             df = apply_column_order(df, csv_file, column_orders)
@@ -127,7 +164,8 @@ def fetch_data_from_firestore(progress_callback=None):
             fetched_data[coll_name] = {
                 'file': csv_file,
                 'records': len(df),
-                'columns': list(df.columns)
+                'columns': list(df.columns),
+                'filtered_columns': column_filter
             }
         
         if progress_callback:
