@@ -22,7 +22,7 @@ const Navbar = ({ onLoginClick }) => {
         {currentUser && <Link to="/fps">FPS</Link>}
         {/* Admin panel only visible to users with admin role */}
         {isAdmin && <Link to="/admin">Admin Panel</Link>}
-        <Link to="/community">Community</Link>
+        {currentUser && <Link to="/community">Community</Link>}
         {currentUser ? (
           <Link to="/profile" className='username-link'>
             {userProfile?.username || 'User'}

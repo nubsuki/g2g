@@ -202,7 +202,7 @@ const Community = () => {
           
           contributorsData.push({
             id: userDoc.id,
-            username: userData.username || userData.email?.split('@')[0] || 'Anonymous',
+            username: userData.username,
             rank: rank,
             submissionCount: submissionCount,
             rankPriority: getRankPriority(rank)
@@ -255,7 +255,7 @@ const Community = () => {
     try {
       await addDoc(collection(db, 'chatMessages'), {
         text: message.trim(),
-        username: userProfile?.username || currentUser.email.split('@')[0],
+        username: userProfile?.username,
         uid: currentUser.uid,
         timestamp: serverTimestamp()
       });
