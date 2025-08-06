@@ -21,9 +21,13 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   async function checkUsernameExists(username) {
-    const q = query(collection(db, 'users'), where('username', '==', username));
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty;
+    try {
+      const usernameDoc = await getDoc(doc(db, 'usernames', username));
+      return usernameDoc.exists();
+    } catch (error) {
+      console.log('Error checking username:', error);
+      return false;
+    }
   }
   
   //Creates a user profile document in Firestore with default role and metadata
@@ -37,14 +41,25 @@ export function AuthProvider({ children }) {
     if (!userDoc.exists()) {
       const { email, uid } = user;
       const createdAt = new Date();
+      const { username } = additionalData;
       
       try {
+        // Create user document
         await setDoc(userRef, {
           uid,
           email,
+          username,
           role: 'user',
           createdAt
         });
+        
+        // Create username document for uniqueness checking
+        if (username) {
+          await setDoc(doc(db, 'usernames', username), {
+            uid,
+            createdAt
+          });
+        }
       } catch (error) {
         console.log('Error creating user profile:', error);
       }

@@ -23,6 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment variables
 src/firebase.js
 .env
 .env.production
+firestore.rules
