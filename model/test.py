@@ -31,10 +31,10 @@ except Exception as e:
 
 # Load lookup tables
 print("Loading hardware databases...")
-cpu = pd.read_csv('cpu_benchmarks.csv')
-gpu = pd.read_csv('gpu_benchmarks.csv')
-req = pd.read_csv('game_requirements.csv')
-bench = pd.read_csv('game_benchmarks.csv')
+cpu = pd.read_csv('dataset/cpu_benchmarks.csv')
+gpu = pd.read_csv('dataset/gpu_benchmarks.csv')
+req = pd.read_csv('dataset/game_requirements.csv')
+bench = pd.read_csv('dataset/game_benchmarks.csv')
 
 # Build lookup tables
 cpu_mc = cpu[cpu['Test_Type'] == 'Multi-core'][['Processor', 'Score', 'GHz', 'Cores']].rename(

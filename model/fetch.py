@@ -9,23 +9,23 @@ db = get_firestore_client()
 
 # Define collections <-> CSVs
 collections = {
-    'cpu_benchmarks':       'cpu_benchmarks.csv',
-    'gpu_benchmarks':       'gpu_benchmarks.csv',
-    'game_requirements':    'game_requirements.csv',
-    'game_benchmarks':      'game_benchmarks.csv',
+    'cpu_benchmarks':       'dataset/cpu_benchmarks.csv',
+    'gpu_benchmarks':       'dataset/gpu_benchmarks.csv',
+    'game_requirements':    'dataset/game_requirements.csv',
+    'game_benchmarks':      'dataset/game_benchmarks.csv',
 }
 
 # (Optional) existing column-order mapping
 column_orders = {
-    'cpu_benchmarks.csv':       ['Processor', 'GHz', 'Cores','Test_Type', 'Score'],
-    'gpu_benchmarks.csv':       ['GPU', 'Score', 'API', 'VRAM'],
-    'game_requirements.csv':    ['Game_Name', 'CPU', 'GPU', 'RAM', 'File_size', 'OS'],
-    'game_benchmarks.csv':      ['Game_Name', 'CPU', 'GPU', 'VRAM', 'Mode', 'Resolution', 'RAM', 'FPS'],
+    'dataset/cpu_benchmarks.csv':       ['Processor', 'GHz', 'Cores','Test_Type', 'Score'],
+    'dataset/gpu_benchmarks.csv':       ['GPU', 'Score', 'API', 'VRAM'],
+    'dataset/game_requirements.csv':    ['Game_Name', 'CPU', 'GPU', 'RAM', 'File_size', 'OS'],
+    'dataset/game_benchmarks.csv':      ['Game_Name', 'CPU', 'GPU', 'VRAM', 'Mode', 'Resolution', 'RAM', 'FPS'],
 }
 
 # Make a timestamped backup folder
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-backup_dir = os.path.join('backup', timestamp)
+backup_dir = os.path.join('backup', 'data', timestamp)
 os.makedirs(backup_dir, exist_ok=True)
 
 # Move any old CSVs into backup/
