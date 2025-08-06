@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
 import "./Home.css";
 import { FaGithubAlt, FaRobot, FaLinux, FaUsers, FaMicrochip, FaArrowRight, FaStar, FaGamepad } from "react-icons/fa";
 import geekbenchLogo from "../assets/geekbench.png";
@@ -24,45 +22,32 @@ const Home = ({ onLoginClick }) => {
       try {
         setLoadingStats(true);
         
-        // Fetch model stats from model_stats > latest
-        const modelStatsRef = doc(db, "model_stats", "latest");
-        const modelStatsSnapshot = await getDoc(modelStatsRef);
+        // Fetch from API instead of Firebase
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/model-stats`);
+        const result = await response.json();
         
-        if (modelStatsSnapshot.exists()) {
-          const modelData = modelStatsSnapshot.data();
+        if (result.success) {
+          const data = result.data;
           
-          // Get breakdown data
-          const breakdown = modelData.breakdown || {};
-          
-          // Set individual stats from breakdown
-          setModelAccuracy(modelData.model_accuracy_percentage || 0);
-          setUniqueGames(breakdown.unique_games || 0);
-          
-          // Calculate total benchmarks from breakdown map
-          const cpuBenchmarks = breakdown.cpu_benchmark_records || 0;
-          const gameBenchmarks = breakdown.game_benchmark_records || 0;
-          const gpuBenchmarks = breakdown.gpu_benchmark_records || 0;
-          setTotalBenchmarks(cpuBenchmarks + gameBenchmarks + gpuBenchmarks);
+          setModelAccuracy(data.model_accuracy_percentage || 0);
+          setUniqueGames(data.unique_games || 0);
+          setTotalBenchmarks(data.total_benchmarks || 0);
 
-          console.log("Model stats loaded on Home page:", {
-            model_accuracy_percentage: modelData.model_accuracy_percentage,
-            unique_games: breakdown.unique_games,
-            total_benchmarks: cpuBenchmarks + gameBenchmarks + gpuBenchmarks
-          });
+          console.log("Model stats loaded from API:", data);
         } else {
-          console.log("No model stats found");
+          console.log("No model stats found in API");
           // Set default values if no stats found
-          setModelAccuracy(99);
-          setUniqueGames(50000);
-          setTotalBenchmarks(0);
+          setModelAccuracy(87.32);
+          setUniqueGames(25);
+          setTotalBenchmarks(3757);
         }
 
       } catch (error) {
-        console.error("Error fetching model stats:", error);
+        console.error("Error fetching model stats from API:", error);
         // Set fallback values on error
-        setModelAccuracy(99);
-        setUniqueGames(50000);
-        setTotalBenchmarks(0);
+        setModelAccuracy(87.32);
+        setUniqueGames(25);
+        setTotalBenchmarks(3757);
       } finally {
         setLoadingStats(false);
       }

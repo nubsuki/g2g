@@ -110,6 +110,7 @@ def load_model_and_data():
         cpu = pd.read_csv('dataset/cpu_benchmarks.csv')
         gpu = pd.read_csv('dataset/gpu_benchmarks.csv')
         req_data = pd.read_csv('dataset/game_requirements.csv')
+        game_benchmarks = pd.read_csv('dataset/game_benchmarks.csv')
         
         # Build lookup tables
         cpu_mc = cpu[cpu['Test_Type'] == 'Multi-core'][['Processor', 'Score', 'GHz', 'Cores']].rename(
@@ -379,7 +380,8 @@ def root():
             'games': '/games (GET)',
             'game_requirements': '/games/<game_name>/req (GET)',
             'protondb': '/protondb/<game_name>/<app_id> (GET)',
-            'online_users_count': '/online-users/count (GET)'
+            'online_users_count': '/online-users/count (GET)',
+            'model-stats': '/model-stats (GET)',
         },
         'notice': 'This is api for G2G webapp fps predictor dont overuse it'
     })
@@ -832,6 +834,58 @@ def get_protondb_data_with_appid(game_name, app_id):
     except Exception as e:
         print(f"Exception: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/model-stats', methods=['GET'])
+@limiter.limit("100 per minute")
+def get_model_stats():
+    """Get model statistics calculated from loaded data"""
+    try:
+        # Check if data is loaded
+        if cpu_mc is None or gpu_scores is None or req is None:
+            return jsonify({
+                'success': False,
+                'error': 'Model data not loaded'
+            }), 503
+        
+        # Load game benchmarks
+        try:
+            game_benchmarks = pd.read_csv('dataset/game_benchmarks.csv')
+        except Exception as e:
+            print(f"Error loading game benchmarks: {e}")
+            game_benchmarks = pd.DataFrame()  # Empty DataFrame as fallback
+        
+        # Calculate statistics from loaded data
+        unique_games = len(req['Game_Name'].unique())
+        total_benchmarks = len(cpu_mc) + len(gpu_scores) + len(game_benchmarks)
+        # Get model accuracy from metadata
+        model_accuracy = round(accuracy_percentage, 2) if accuracy_percentage else 0
+        
+        return jsonify({
+            'success': True,
+            'data': {
+                'model_accuracy_percentage': model_accuracy,
+                'unique_games': unique_games,
+                'total_benchmarks': total_benchmarks,
+                'breakdown': {
+                    'cpu_benchmark_records': len(cpu_mc),
+                    'gpu_benchmark_records': len(gpu_scores),
+                    'game_benchmark_records': len(game_benchmarks),
+                    'unique_games': unique_games
+                },
+                'model_metrics': {
+                    'mae': mae,
+                    'r2_score': r2,
+                    'accuracy_percentage': accuracy_percentage
+                },
+                'source': 'calculated_from_loaded_data'
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'Error calculating model stats: {str(e)}'
+        }), 500
 
 # Online users tracking
 @app.route('/online-users/heartbeat', methods=['POST'])
