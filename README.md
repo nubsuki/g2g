@@ -128,10 +128,9 @@ This project is developed for academic purposes. All rights reserved.
 
 ## Acknowledgments
 
-- GeekBench for CPU benchmark data
-- TechPowerUp for GPU benchmark data
+- GeekBench for CPU & GPU benchmark data
+- TechPowerUp for Games benchmark data
 - ProtonDB for Linux gaming compatibility data
-- Open source community for frameworks and libraries used
 
 ---
 

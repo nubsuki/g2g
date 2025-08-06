@@ -1,29 +1,29 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import pandas as pd
+import os
+import time
 import joblib
-import numpy as np
-import warnings
 import subprocess
 import sys
 import threading
-import time
-from datetime import datetime
+import warnings
+import pandas as pd
+import numpy as np
 import requests
 import re
+import hashlib
+from datetime import datetime
+from selenium import webdriver
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-import hashlib
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-import time
 from waitress import serve
-import os
+from model import train_model
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
@@ -321,47 +321,41 @@ def run_training_background():
     """Background function to run model training"""
     global training_status
     
+    def progress_callback(progress, message):
+        """Callback function to update training progress"""
+        training_status.update({
+            'progress': max(0, progress),  # -1 indicates error
+            'message': message,
+            'status': 'failed' if progress < 0 else 'training'
+        })
+    
     try:
         training_status.update({
             'status': 'training',
             'message': 'Model training in progress...',
             'start_time': datetime.now().isoformat(),
-            'progress': 10
+            'progress': 0
         })
         
-        # Run model.py as subprocess
-        process = subprocess.Popen([sys.executable, 'model.py'], 
-                                 stdout=subprocess.PIPE, 
-                                 stderr=subprocess.PIPE, 
-                                 text=True)
+        # Call the training function directly instead of subprocess
+        result = train_model(progress_callback=progress_callback)
         
-        # Monitor progress (simple progress simulation)
-        progress_steps = [20, 30, 50, 70, 85, 95]
-        step_duration = 120  # 2 minutes per major step
-        
-        for i, progress in enumerate(progress_steps):
-            time.sleep(step_duration)
-            if process.poll() is not None:  # Process finished early
-                break
-            training_status['progress'] = progress
-            training_status['message'] = f'Training in progress... ({progress}%)'
-        
-        # Wait for completion
-        stdout, stderr = process.communicate()
-        
-        if process.returncode == 0:
+        if result['success']:
             training_status.update({
                 'status': 'completed',
                 'message': 'Model training completed successfully!',
-                'output': stdout,
+                'output': f"MAE: {result['mae']:.2f}, R²: {result['r2']:.4f}, Samples: {result['training_samples']}",
                 'progress': 100,
                 'is_training': False
             })
+            
+            # Reload the model after training
+            load_model_and_data()
         else:
             training_status.update({
                 'status': 'failed',
                 'message': 'Model training failed',
-                'error': stderr,
+                'error': result.get('error', 'Unknown error'),
                 'is_training': False
             })
             
