@@ -24,6 +24,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from waitress import serve
 from model import train_model
+from fetch import fetch_data_from_firestore
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
@@ -117,7 +118,7 @@ def load_model_and_data():
         gpu_scores = gpu[['GPU', 'Score', 'VRAM']].rename(columns={'Score': 'GPU_Score', 'VRAM': 'VRAM_GB'})
 
         # Game requirements
-        req = req_data[['Game_Name', 'CPU', 'GPU', 'RAM', 'File_size']].copy()
+        req = req_data[['Game_Name', 'CPU', 'GPU', 'RAM', 'File_size', 'OS']].copy()
         req['Min_RAM_GB'] = req['RAM'].astype(int)
         req['Min_File_Size_GB'] = req['File_size'].astype(int)
         req['CPU'] = req['CPU'].str.strip()
@@ -502,34 +503,37 @@ def predict():
 @limiter.limit("1 per day")
 def fetch_data():
     """Trigger fetch.py to fetch data from Firestore"""
+    def progress_callback(progress, message):
+        """Callback function to update fetch progress (optional for future use)"""
+        # store this in a global status like training_status if needed
+        print(f"Fetch Progress {progress}%: {message}")
+    
     try:
-        # Run fetch.py as a subprocess
-        result = subprocess.run([sys.executable, 'fetch.py'], 
-                              capture_output=True, 
-                              text=True, 
-                              timeout=300)  # 5 minute timeout
+        # Call the fetch function
+        result = fetch_data_from_firestore(progress_callback=progress_callback)
         
-        if result.returncode == 0:
+        if result['success']:
             return jsonify({
                 'success': True,
-                'message': 'Data fetched successfully',
-                'output': result.stdout
+                'message': 'Data fetched successfully from Firestore',
+                'details': {
+                    'total_records': result['total_records'],
+                    'collections_updated': result['collections_updated'],
+                    'backup_created': result['backup_dir'],
+                    'files_backed_up': result['backed_up_files'],
+                    'fetched_data': result['fetched_data']
+                }
             })
         else:
             return jsonify({
                 'success': False,
-                'error': f'fetch.py failed: {result.stderr}'
+                'error': f'Data fetch failed: {result["error"]}'
             }), 500
             
-    except subprocess.TimeoutExpired:
-        return jsonify({
-            'success': False,
-            'error': 'Fetch operation timed out (>5 minutes)'
-        }), 500
     except Exception as e:
         return jsonify({
             'success': False,
-            'error': str(e)
+            'error': f'Fetch operation failed: {str(e)}'
         }), 500
 
 @app.route('/games', methods=['GET'])
@@ -577,6 +581,7 @@ def get_game_requirements(game_name):
                 'gpu': game_data['GPU'], 
                 'ram': f"{game_data['RAM']} GB",
                 'storage': f"{game_data['File_size']} GB",
+                'os': game_data['OS'],
             }
         }
         

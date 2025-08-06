@@ -462,7 +462,7 @@ def save_model_stats_to_db(cpu, gpu, bench, req, df_train, mae, rmse, r2, cv_sco
         doc_ref_history = db.collection('model_stats').document(timestamp_id)
         doc_ref_history.set(model_stats)
 
-        print(f"✅ Model statistics saved to database successfully!")
+        print(f"Model statistics saved to database successfully!")
         print(f"Latest stats updated, history saved as: {timestamp_id}")
 
     except Exception as e:
