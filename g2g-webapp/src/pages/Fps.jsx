@@ -34,17 +34,10 @@ const Fps = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch games list
-        const gameRequirementsSnapshot = await getDocs(
-          collection(db, "game_requirements")
-        );
-        const games = [];
-        gameRequirementsSnapshot.forEach((doc) => {
-          const gameData = doc.data();
-          if (gameData.Game_Name) {
-            games.push(gameData.Game_Name);
-          }
-        });
+        // Fetch games list from local API
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/games`);
+        const data = await response.json();
+        const games = data.games;
         games.sort();
         setGamesList(games);
 
@@ -90,26 +83,29 @@ const Fps = () => {
     }
   };
 
-  // Fetch game requirements from Firebase
+  // Fetch game requirements from local API
   const fetchGameRequirements = async (selectedGameName) => {
     setLoadingRequirements(true);
     try {
-      const gameQuery = query(
-        collection(db, "game_requirements"),
-        where("Game_Name", "==", selectedGameName)
-      );
+      const reqResponse = await fetch(`${import.meta.env.VITE_API_URL}/games/${encodeURIComponent(selectedGameName)}/req`);
+      const reqData = await reqResponse.json();
       
-      const querySnapshot = await getDocs(gameQuery);
-      
-      if (!querySnapshot.empty) {
-        // Get the first matching document
-        const gameDoc = querySnapshot.docs[0];
-        const requirements = gameDoc.data();
+      if (reqData.success) {
+        // Transform the API response to match the expected format
+        const requirements = {
+          CPU: reqData.requirements.cpu,
+          GPU: reqData.requirements.gpu,
+          RAM: reqData.requirements.ram.replace(' GB', ''), 
+          OS: reqData.requirements.os,
+          File_size: reqData.requirements.storage.replace(' GB', ''),
+          Steam_AppID: reqData.requirements.appid
+        };
         setGameRequirements(requirements);
       } else {
         console.log("No requirements found for:", selectedGameName);
         setGameRequirements(null);
-      }    } catch (error) {
+      }
+    } catch (error) {
       console.error("Error fetching game requirements:", error);
       setGameRequirements(null);
     } finally {
@@ -125,7 +121,7 @@ const Fps = () => {
       
       // Use the passed requirements or fall back to state
       const gameReqs = requirements || gameRequirements;
-      const steamAppId = gameReqs?.Steam_AppID || 'null';
+      const steamAppId = gameReqs?.Steam_AppID || gameReqs?.appid || 'null';
       
       console.log(`Using Steam AppID: ${steamAppId}`);
       console.log('Game requirements data:', gameReqs);
@@ -133,7 +129,6 @@ const Fps = () => {
       // Use the endpoint with AppID
       const endpoint = `${import.meta.env.VITE_API_URL}/protondb/${encodeURIComponent(gameName)}/${encodeURIComponent(steamAppId)}`;
       
-      console.log(`Calling endpoint: ${endpoint}`);
       
       const response = await fetch(endpoint);
       const data = await response.json();
@@ -169,16 +164,19 @@ const Fps = () => {
     
     try {
       // Fetch requirements for the selected game
-      const gameQuery = query(
-        collection(db, "game_requirements"),
-        where("Game_Name", "==", selectedGame)
-      );
+      const reqResponse = await fetch(`${import.meta.env.VITE_API_URL}/games/${encodeURIComponent(selectedGame)}/req`);
+      const reqData = await reqResponse.json();
       
-      const querySnapshot = await getDocs(gameQuery);
-      
-      if (!querySnapshot.empty) {
-        const gameDoc = querySnapshot.docs[0];
-        const requirements = gameDoc.data();
+      if (reqData.success) {
+        // Transform the API response to match the expected format
+        const requirements = {
+          CPU: reqData.requirements.cpu,
+          GPU: reqData.requirements.gpu,
+          RAM: reqData.requirements.ram.replace(' GB', ''),
+          OS: reqData.requirements.os,
+          File_size: reqData.requirements.storage.replace(' GB', ''),
+          Steam_AppID: reqData.requirements.appid
+        };
         
         // Set the state
         setGameRequirements(requirements);

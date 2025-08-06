@@ -118,7 +118,7 @@ def load_model_and_data():
         gpu_scores = gpu[['GPU', 'Score', 'VRAM']].rename(columns={'Score': 'GPU_Score', 'VRAM': 'VRAM_GB'})
 
         # Game requirements
-        req = req_data[['Game_Name', 'CPU', 'GPU', 'RAM', 'File_size', 'OS']].copy()
+        req = req_data[['Game_Name', 'CPU', 'GPU', 'RAM', 'File_size', 'OS', 'Steam_AppID']].copy()
         req['Min_RAM_GB'] = req['RAM'].astype(int)
         req['Min_File_Size_GB'] = req['File_size'].astype(int)
         req['CPU'] = req['CPU'].str.strip()
@@ -582,6 +582,7 @@ def get_game_requirements(game_name):
                 'ram': f"{game_data['RAM']} GB",
                 'storage': f"{game_data['File_size']} GB",
                 'os': game_data['OS'],
+                'appid': game_data['Steam_AppID'],
             }
         }
         
