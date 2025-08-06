@@ -420,7 +420,7 @@ def save_model_stats_to_db(cpu, gpu, bench, req, df_train, mae, rmse, r2, cv_sco
     total_games_count = len(req['Game_Name'].unique())
 
     # Calculate model accuracy percentage
-    model_accuracy_percentage = r2 * 100
+    model_reliability_percentage = r2 * 100
 
     # Calculate training data amount
     training_data_amount = len(df_train)
@@ -429,7 +429,7 @@ def save_model_stats_to_db(cpu, gpu, bench, req, df_train, mae, rmse, r2, cv_sco
     model_stats = {
         'timestamp': datetime.now(),
         'training_data_amount': training_data_amount,
-        'model_accuracy_percentage': round(model_accuracy_percentage, 2),
+        'model_accuracy_percentage': round(model_reliability_percentage, 2),
         'total_benchmark_data': total_benchmark_data,
         'total_games_count': total_games_count,
         'breakdown': {

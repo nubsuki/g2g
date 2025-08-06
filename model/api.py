@@ -1,8 +1,6 @@
 import os
 import time
 import joblib
-import subprocess
-import sys
 import threading
 import warnings
 import pandas as pd
@@ -388,8 +386,9 @@ def root():
 
 @app.route('/train-model', methods=['POST'])
 @limiter.limit("1 per day")
-def train_model():
+def start_training():
     """Start model training in background"""
+
     global training_status
     
     if training_status['is_training']:
