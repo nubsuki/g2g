@@ -19,6 +19,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isBanned, setIsBanned] = useState(false);
 
   async function checkUsernameExists(username) {
     try {
@@ -97,12 +98,23 @@ export function AuthProvider({ children }) {
     return result;
   }
 
-  function login(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
+  async function login(email, password) {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    
+    // Check if user is banned after successful authentication
+    const profile = await getUserProfile(result.user);
+    if (profile?.role === 'banned') {
+      // Sign out the user immediately if they're banned
+      await signOut(auth);
+      throw new Error('BANNED_USER');
+    }
+    
+    return result;
   }
 
   function logout() {
     setUserProfile(null);
+    setIsBanned(false);
     return signOut(auth);
   }
 
@@ -118,8 +130,20 @@ export function AuthProvider({ children }) {
         // Load user profile data to access role and username
         const profile = await getUserProfile(user);
         setUserProfile(profile);
+        
+        // Check if user is banned
+        if (profile?.role === 'banned') {
+          setIsBanned(true);
+          // Automatically log out banned users
+          await signOut(auth);
+          setCurrentUser(null);
+          setUserProfile(null);
+        } else {
+          setIsBanned(false);
+        }
       } else {
         setUserProfile(null);
+        setIsBanned(false);
       }
       
       setLoading(false);
@@ -131,6 +155,7 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     userProfile,
+    isBanned,
     login,
     signup,
     logout,
