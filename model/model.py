@@ -233,16 +233,21 @@ def train_model(progress_callback=None):
             progress_callback(65, "Creating ensemble model...")
 
         print("Training ensemble model...")
+        
         # Create ensemble with multiple algorithms
+        print("Configuring XGBoost model...")
         xgb_model = XGBRegressor(
             n_estimators=300, 
             learning_rate=0.03, 
             max_depth=6,
             subsample=0.8,
             colsample_bytree=0.8,
-            random_state=42
+            random_state=42,
+            verbosity=1,
+            eval_metric='mae'
         )
 
+        print("Configuring LightGBM model...")
         lgb_model = LGBMRegressor(
             n_estimators=300,
             learning_rate=0.03,
@@ -250,15 +255,18 @@ def train_model(progress_callback=None):
             subsample=0.8,
             colsample_bytree=0.8,
             random_state=42,
-            verbose=-1
+            verbose=-1,
+            force_col_wise=True
         )
 
+        print("Configuring RandomForest model...")
         rf_model = RandomForestRegressor(
             n_estimators=200,
             max_depth=10,
             min_samples_split=5,
             min_samples_leaf=2,
-            random_state=42
+            random_state=42,
+            verbose=1
         )
 
         # Create ensemble
@@ -288,21 +296,30 @@ def train_model(progress_callback=None):
         }
 
         print("Performing hyperparameter tuning...")
+        print(f"Grid search will test {len(param_grid['model__xgb__n_estimators']) * len(param_grid['model__xgb__learning_rate']) * len(param_grid['model__xgb__max_depth']) * len(param_grid['model__lgb__n_estimators']) * len(param_grid['model__lgb__learning_rate']) * len(param_grid['model__rf__n_estimators'])} parameter combinations")
+        
         grid_search = GridSearchCV(
-            pipeline, param_grid, cv=3, scoring='neg_mean_absolute_error', n_jobs=-1, verbose=2
+            pipeline, param_grid, cv=3, scoring='neg_mean_absolute_error', n_jobs=-1, verbose=3
         )
 
         # Use log transformation for better performance
         y_train_log = np.log1p(y_train)
         y_test_log = np.log1p(y_test)
 
+        print("Starting grid search training...")
+        print("Each dot represents a completed fold:")
         grid_search.fit(X_train, y_train_log)
+        
+        print("\n" + "=" * 50)
+        print("Grid search completed!")
         print("Best parameters:", grid_search.best_params_)
+        print(f"Best cross-validation score: {-grid_search.best_score_:.4f} MAE")
         pipeline = grid_search.best_estimator_
 
         if progress_callback:
             progress_callback(85, "Evaluating model...")
 
+        print("\nEvaluating final model...")
         # Evaluate model
         y_pred_log = pipeline.predict(X_test)
         y_pred = np.expm1(y_pred_log)
@@ -317,6 +334,7 @@ def train_model(progress_callback=None):
         print(f"Test R²: {r2:.4f}")
 
         # Cross-validation
+        print("\nPerforming cross-validation...")
         cv_scores = cross_val_score(pipeline, X_selected, np.log1p(y), cv=5, scoring='neg_mean_absolute_error')
         print(f"Cross-validated MAE: {-cv_scores.mean():.2f} ± {cv_scores.std():.2f}")
 
@@ -324,6 +342,7 @@ def train_model(progress_callback=None):
             progress_callback(90, "Saving model...")
 
         # Feature importance from XGBoost
+        print("\nExtracting feature importance...")
         xgb_importances = pipeline.named_steps['model'].named_estimators_['xgb'].feature_importances_
         print(f"\nTop 10 Feature Importances (XGBoost):")
         importance_df = pd.DataFrame({
@@ -367,9 +386,10 @@ def train_model(progress_callback=None):
                 print(f"Backed up `{model_file}` -> `{backup_dir}`")
 
         # Save new model and metadata
+        print("\nSaving new model files...")
         joblib.dump(pipeline, 'fps_predictor.pkl')
         joblib.dump(model_metadata, 'model_metadata.pkl')
-        print("\nModel saved as 'fps_predictor.pkl'")
+        print("Model saved as 'fps_predictor.pkl'")
         print("Model metadata saved as 'model_metadata.pkl'")
 
         if progress_callback:
